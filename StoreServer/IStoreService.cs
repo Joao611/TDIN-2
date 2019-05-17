@@ -10,22 +10,33 @@ namespace StoreServer {
     public interface IStoreService {
         // updates store stock and prints receipt, bypasses order?
         [OperationContract]
-        void SellBook(int id);
+        void SellBook(int bookId);
 
         [OperationContract]
-        int GetBookStock(int id);
+        int GetBookStock(int bookId);
 
         [OperationContract]
-        Order CreateOrder(int id);
+        Book[] GetBooks();
+
+        [OperationContract]
+        Order CreateOrder(int clientId, int bookId, int quantity);
 
         [OperationContract]
         Order SetState(int id);
     }
 
     public class Client {
-        private string email { get; }
-        private string name { get; }
-        private string address { get; }
+        public int id;
+        public string email;
+        public string name;
+        public string address;
+    }
+
+    public class Book {
+        public int id;
+        public string title;
+        public int stock;
+        public double price;
     }
 
     /**
@@ -35,31 +46,44 @@ namespace StoreServer {
     [DataContract]
     public class Order {
         public class State {
-            enum Type {
+            public enum Type {
                 WAITING,
                 DISPATCH_OCCURS_AT,
-                DISPATCH_AT,
+                DISPATCHED_AT,
             }
-            private Type type { get; }
-            private DateTime dispatchDate { get; }
+            public Type type;
+            public DateTime dispatchDate;
+        }
+
+        public Order(Client client, Book book, int quantity) {
+            guid = Guid.NewGuid();
+            this.book = book;
+            this.quantity = quantity;
+            this.client = client;
+            totalPrice = quantity * book.price;
+            if (book.stock >= quantity) {
+                state = new State() { type = State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
+            } else {
+                state = new State() { type = State.Type.WAITING };
+            }
         }
 
         [DataMember]
-        private string guid { get; }
+        public Guid guid { get; private set; }
 
         [DataMember]
-        private string title { get; }
+        public Book book { get; private set; }
 
         [DataMember]
-        private int quantity { get; }
+        public int quantity { get; private set; }
 
         [DataMember]
-        private Client client { get; }
+        public Client client { get; private set; }
 
         [DataMember]
-        private int totalPrice { get; }
+        public double totalPrice { get; private set; }
 
         [DataMember]
-        private State state { get; }
+        public State state { get; private set; }
     }
 }

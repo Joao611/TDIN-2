@@ -16,29 +16,98 @@ namespace StoreServer {
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
         }
 
-        public Order CreateOrder(int id) {
-            int id = 0;
+        private Client GetClient(SqlConnection c, int id) {
+            string sql = "SELECT * FROM Clients" +
+                        "WHERE id = @id";
+            SqlCommand cmd = new SqlCommand(sql, c);
+            cmd.Parameters.AddWithValue("@id", id);
+            using (SqlDataReader reader = cmd.ExecuteReader()) {
+                reader.Read();
+                return new Client() {
+                    id = id,
+                    name = reader["name"].ToString(),
+                    email = reader["email"].ToString(),
+                    address = reader["address"].ToString()
+                };
+            }
+        }
+
+        private Book GetBook(SqlConnection c, int id) {
+            string sql = "SELECT * FROM Books" +
+                        "WHERE id = @id";
+            SqlCommand cmd = new SqlCommand(sql, c);
+            cmd.Parameters.AddWithValue("@id", id);
+            using (SqlDataReader reader = cmd.ExecuteReader()) {
+                reader.Read();
+                return new Book() {
+                    id = id,
+                    title = reader["title"].ToString(),
+                    stock = Convert.ToInt32(reader["stock"])
+                };
+            }
+        }
+
+        private void InsertOrderInDb(SqlConnection c, Order order) {
+            string sql = "INSERT INTO Orders(guid, client, book, quantity, state, dispatch_date" +
+                        " VALUES (@guid, @c, @b, @qty, @state, @date)";
+            SqlCommand cmd = new SqlCommand(sql, c);
+            cmd.Parameters.AddWithValue("@guid", order.guid);
+            cmd.Parameters.AddWithValue("@c", order.client.id);
+            cmd.Parameters.AddWithValue("@b", order.book.id);
+            cmd.Parameters.AddWithValue("@qty", order.quantity);
+            cmd.Parameters.AddWithValue("@state", order.state.type);
+            cmd.Parameters.AddWithValue("@date", order.state.dispatchDate);
+            cmd.ExecuteNonQuery();
+        }
+
+        private void UpdateStock(SqlConnection c, int bookId, int quantity) {
+            string sql = "UPDATE Books SET stock = stock + @q" +
+                        " WHERE id = @id";
+            SqlCommand cmd = new SqlCommand(sql, c);
+            cmd.Parameters.AddWithValue("@q", quantity);
+            cmd.Parameters.AddWithValue("@id", bookId);
+            cmd.ExecuteNonQuery();
+        }
+
+        public Order CreateOrder(int clientId, int bookId, int quantity) {
 
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "insert into TTickets(Author, Problem, Answer, Status) values (@a1, @p1, '', 1)"; // injection protection
-                    SqlCommand cmd = new SqlCommand(sql, c);                                                       // injection protection
-                    cmd.Parameters.AddWithValue("@a1", author);                                                    // injection protection
-                    cmd.Parameters.AddWithValue("@p1", problem);                                                   // injection protection
-                    cmd.ExecuteNonQuery();
-                    cmd.CommandText = "select max(Id) from TTickets";
-                    id = (int)cmd.ExecuteScalar();
+
+                    Order order = new Order(GetClient(c, clientId), GetBook(c, bookId), quantity);
+                    InsertOrderInDb(c, order);
+                    switch (order.state.type) {
+                        case Order.State.Type.WAITING:
+                            // TODO: warehouse MSMQ request
+                            break;
+                        case Order.State.Type.DISPATCH_OCCURS_AT:
+                            UpdateStock(c, bookId, -quantity);
+                            break;
+                        default:
+                            Console.WriteLine("oops - CreateOrder()");
+                            break;
+                    }
+
+                    return order;
                 } catch (SqlException) {
                 } finally {
                     c.Close();
                 }
             }
-            return id;
+
+            return null;
         }
 
-        public int GetBookStock(int id) {
+        public int GetBookStock(int bookId) {
             throw new NotImplementedException();
+        }
+
+        public Book[] GetBooks() {
+            using (SqlConnection c = new SqlConnection()) {
+                
+            }
+            return null;
         }
 
         public string SellBook(int value) {
