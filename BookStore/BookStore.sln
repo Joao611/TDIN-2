@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreServiceLib", "StoreServiceLib\StoreServiceLib.csproj", "{FAB32533-BD5E-4D58-B22D-EA9E929CF698}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreHost", "StoreHost\StoreHost.csproj", "{3A0EE3D5-BFC0-4017-903C-DA89F88939ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{FAB32533-BD5E-4D58-B22D-EA9E929CF698}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAB32533-BD5E-4D58-B22D-EA9E929CF698}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAB32533-BD5E-4D58-B22D-EA9E929CF698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A0EE3D5-BFC0-4017-903C-DA89F88939ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A0EE3D5-BFC0-4017-903C-DA89F88939ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A0EE3D5-BFC0-4017-903C-DA89F88939ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A0EE3D5-BFC0-4017-903C-DA89F88939ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
