@@ -28,13 +28,17 @@ namespace StoreService {
         [OperationContract]
         List<Book> GetBooks();
 
+        [WebGet(UriTemplate = "/orders", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        List<Order> GetOrders();
+
         [WebInvoke(Method = "POST", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell);
 
         [WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        Order SetState(string id);
+        Order SetState(string id, string stateType);
     }
 
     /**
@@ -54,22 +58,13 @@ namespace StoreService {
             public DateTime dispatchDate;
         }
 
-        public Order(Client client, Book book, int quantity, bool instantSell) {
+        public Order(Client client, Book book, int quantity, Order.State state) {
             guid = Guid.NewGuid();
             this.book = book;
             this.quantity = quantity;
             this.client = client;
+            this.state = state;
             totalPrice = quantity * book.price;
-            
-            if (book.stock < quantity) {
-                state = new State() { type = State.Type.WAITING };
-            } else {
-                if(instantSell) {
-                    state = new State() { type = State.Type.DELIVERED, dispatchDate = DateTime.Now };
-                } else {
-                    state = new State() { type = State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
-                }
-            }
         }
 
         [DataMember]
