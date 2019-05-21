@@ -26,7 +26,7 @@ namespace StoreService {
         }
 
         private Order.State getState(string stateType, DateTime date) {
-            switch (stateType) {
+            switch (stateType.Trim()) {
                 case "DELIVERED":
                     return new Order.State() { type = Order.State.Type.DELIVERED, dispatchDate = date };
                 case "WAITING":
@@ -146,12 +146,12 @@ namespace StoreService {
         }
 
         private void UpdateOrderState(SqlConnection c, string id, Order.State state) {
-            string sql = "UPDATE Orders SET State = @s AND DispatchDate = @d" +
+            string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
                         " WHERE Id = @id";
             SqlCommand cmd = new SqlCommand(sql, c);
             cmd.Parameters.AddWithValue("@s", state.type.ToString());
             cmd.Parameters.AddWithValue("@d", state.dispatchDate);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
             cmd.ExecuteNonQuery();
         }
 
