@@ -1,30 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
 using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
+using System.ServiceModel.Web;
 
-namespace StoreServiceLib {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
+namespace StoreService {
     [ServiceContract]
     public interface IStoreService {
-        // updates store stock and prints receipt, bypasses order?
+        /*[WebInvoke(Method="POST", UriTemplate="/tickets", BodyStyle=WebMessageBodyStyle.WrappedRequest, RequestFormat=WebMessageFormat.Json, ResponseFormat=WebMessageFormat.Json)]
         [OperationContract]
-        void SellBook(int bookId);
+        int AddTicket(string author, string problem);
 
+        [WebGet(UriTemplate="/tickets/{author}", ResponseFormat=WebMessageFormat.Json)]
         [OperationContract]
-        int GetBookStock(int bookId);
+        DataTable GetTickets(string author);
 
+        [WebGet(UriTemplate="/users", ResponseFormat=WebMessageFormat.Json)]
+        [OperationContract]
+        DataTable GetUsers();*/
+        
+        [WebInvoke(BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        void SellBook(int id, int bookId, int quantity, int clientId);
+
+        [WebGet(UriTemplate = "/books", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         List<Book> GetBooks();
 
-        /*[WebInvoke(Method = "POST", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [WebInvoke(Method = "POST", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity);
-        */
+
+        [WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        Order SetState(int id);
+        Order SetState(string id);
     }
 
     /**
@@ -35,6 +45,7 @@ namespace StoreServiceLib {
     public class Order {
         public class State {
             public enum Type {
+                DELIVERED,
                 WAITING,
                 DISPATCH_OCCURS_AT,
                 DISPATCHED_AT,
