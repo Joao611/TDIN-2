@@ -1,20 +1,27 @@
 <template>
-    <div class="products">
-        <BookCard v-for="book in books" v-bind:key="book.id"></BookCard>
+    <div class="row">
+        <div class="col-lg-3" v-for="book in books">
+            <BookCard v-bind:key="book.id" :book="book"></BookCard>
+        </div>
     </div>
 </template>
 
 <script>
     import axiosInstance from '../utils/axiosInstance';
+    import BookCard from './BookCard';
 
     export default {
         name: 'Books',
+        components: {
+            BookCard
+        },
         data() {
             return {
                 books: [{
                     id: 1,
-                    title: 'Metro 2033',
-                    stock: 2
+                    title: 'Metro 2033 - HARDCODED',
+                    stock: 2,
+                    price: 10.5
                 }]
             }
         },

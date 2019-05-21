@@ -32,10 +32,13 @@
     <Content Include="public\favicon.ico" />
     <Content Include="public\index.html" />
     <Content Include="src\App.vue" />
+    <Content Include="src\components\BookCard.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\Navbar.vue">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\Home.vue" />
+    <Content Include="src\components\Books.vue" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="src\components\Orders.vue">
@@ -48,12 +51,16 @@
     <Folder Include="src\" />
     <Folder Include="src\assets\" />
     <Folder Include="src\components\" />
+    <Folder Include="src\utils\" />
     <Folder Include="src\router\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="babel.config.js" />
     <Compile Include="src\main.js" />
     <Compile Include="src\router\index.js">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="src\utils\axiosInstance.js">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
