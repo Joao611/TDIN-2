@@ -30,7 +30,7 @@ namespace StoreService {
 
         [WebInvoke(Method = "POST", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        Order CreateOrder(int clientId, int bookId, int quantity);
+        Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell);
 
         [WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
@@ -54,16 +54,21 @@ namespace StoreService {
             public DateTime dispatchDate;
         }
 
-        public Order(Client client, Book book, int quantity) {
+        public Order(Client client, Book book, int quantity, bool instantSell) {
             guid = Guid.NewGuid();
             this.book = book;
             this.quantity = quantity;
             this.client = client;
             totalPrice = quantity * book.price;
-            if (book.stock >= quantity) {
-                state = new State() { type = State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
-            } else {
+            
+            if (book.stock < quantity) {
                 state = new State() { type = State.Type.WAITING };
+            } else {
+                if(instantSell) {
+                    state = new State() { type = State.Type.DELIVERED, dispatchDate = DateTime.Now };
+                } else {
+                    state = new State() { type = State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
+                }
             }
         }
 
