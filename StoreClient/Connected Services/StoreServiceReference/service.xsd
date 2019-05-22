@@ -28,6 +28,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetBook">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBookResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetBookResult" nillable="true" type="q2:Book" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetOrders">
     <xs:complexType>
       <xs:sequence />
@@ -36,7 +50,7 @@
   <xs:element name="GetOrdersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetOrdersResult" nillable="true" type="q2:ArrayOfOrder" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetOrdersResult" nillable="true" type="q3:ArrayOfOrder" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -53,7 +67,7 @@
   <xs:element name="CreateOrderResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateOrderResult" nillable="true" type="q3:Order" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateOrderResult" nillable="true" type="q4:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -68,7 +82,7 @@
   <xs:element name="SetStateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q4:Order" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q5:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
