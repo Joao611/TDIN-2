@@ -27,7 +27,6 @@
         },
         async created() {
             this.books = (await axiosInstance.get('/books')).data;
-            console.log(this.books);
         }
     };
 </script>
