@@ -1,7 +1,7 @@
 <template>
     <div class="row">
-        <div class="col-lg-3" v-for="book in books">
-            <BookCard v-bind:key="book.id" :book="book"></BookCard>
+        <div class="col-sm-6 col-md-5 col-lg-4 col-xl-3" v-for="book in books" v-bind:key="book.id">
+            <BookCard :book="book"></BookCard>
         </div>
     </div>
 </template>

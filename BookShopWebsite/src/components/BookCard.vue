@@ -1,5 +1,5 @@
 ﻿<template>
-    <router-link tag="div" :to="`/book-pay/${book.id}`" class="container-fluid">
+    <router-link tag="div" :to="`/book-pay/${book.id}`">
         <div class="card">
             <div class="card-body">
                 <div class="card-title">{{book.title}}</div>
