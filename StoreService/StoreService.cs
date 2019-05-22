@@ -116,6 +116,8 @@ namespace StoreService {
                     }
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
                 } finally {
                     c.Close();
                 }
@@ -218,7 +220,6 @@ namespace StoreService {
         }
         public List<Book> GetBooks() {
             var books = new List<Book>();
-            Console.WriteLine("-------------------------------------");
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();

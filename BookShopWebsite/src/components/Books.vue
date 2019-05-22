@@ -18,7 +18,7 @@
         data() {
             return {
                 books: [{
-                    id: 1,
+                    id: 0,
                     title: 'Metro 2033 - HARDCODED',
                     stock: 2,
                     price: 10.5

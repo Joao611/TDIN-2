@@ -23,4 +23,7 @@
 </script>
 
 <style>
+    .pointer {
+        cursor: pointer;
+    }
 </style>
