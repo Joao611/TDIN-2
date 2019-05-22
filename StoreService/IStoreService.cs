@@ -28,6 +28,10 @@ namespace StoreService {
         [OperationContract]
         List<Book> GetBooks();
 
+        [WebGet(UriTemplate = "/books/{id}", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        Book GetBook(string id);
+
         [WebGet(UriTemplate = "/orders", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         List<Order> GetOrders();
