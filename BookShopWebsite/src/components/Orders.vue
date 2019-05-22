@@ -20,6 +20,8 @@
 </template>
 
 <script>
+    import axiosInstance from '../utils/axiosInstance';
+
     export default {
         name: 'Orders',
         data() {
@@ -33,7 +35,7 @@
             }
         },
         async created() {
-            orders = await axiosInstance.get('/orders');
+            this.orders = await axiosInstance.get('/orders');
         }
     }
 </script>
