@@ -2,7 +2,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col">GUID</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Title</th>
                 <th scope="col">Price</th>
