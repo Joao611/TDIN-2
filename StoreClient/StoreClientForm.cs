@@ -18,16 +18,15 @@ namespace StoreClient {
             stockPanel.Location = newOrderPanel.Location;
             requestsPanel.Parent = this;
             requestsPanel.Location = newOrderPanel.Location;
-            newMemberPanel.Parent = newOrderPanel;
-            regMemberPanel.Parent = newOrderPanel;
-            newMemberPanel.Location = regMemberPanel.Location;
-            newMemberPanel.Visible = false;
+            newClientPanel.Parent = newOrderPanel;
+            regClientPanel.Parent = newOrderPanel;
+            newClientPanel.Location = regClientPanel.Location;
+            newClientPanel.Visible = false;
             setVisibility(0);
         }
 
-        public async void addBooksToFormAsync() {
-            Book[] books2 = proxy.GetBooks();
-            //books = new List<Book>(await proxy.GetBooksAsync());
+        public void addBooksToForm() {
+            books = new List<Book>(proxy.GetBooks());
             books.ForEach(book => booksComboBox.Items.Add(book.title));
         }
 
@@ -39,8 +38,8 @@ namespace StoreClient {
 
         private void newOrderButton_Click(object sender, EventArgs e) {
             setVisibility(0);
-            regMemberPanel.Visible = true;
-            newMemberPanel.Visible = false;
+            regClientPanel.Visible = true;
+            newClientPanel.Visible = false;
         }
 
         private void stockButton_Click(object sender, EventArgs e) {
@@ -51,14 +50,14 @@ namespace StoreClient {
             setVisibility(2);
         }
 
-        private void resMemberButton_Click(object sender, EventArgs e) {
-            regMemberPanel.Visible = true;
-            newMemberPanel.Visible = false;
+        private void resClientButton_Click(object sender, EventArgs e) {
+            regClientPanel.Visible = true;
+            newClientPanel.Visible = false;
         }
 
-        private void newMemberButton_Click(object sender, EventArgs e) {
-            regMemberPanel.Visible = false;
-            newMemberPanel.Visible = true;
+        private void newClientButton_Click(object sender, EventArgs e) {
+            regClientPanel.Visible = false;
+            newClientPanel.Visible = true;
         }
 
         private void booksComboBox_SelectedIndexChanged(object sender, EventArgs e) {
@@ -73,15 +72,15 @@ namespace StoreClient {
         public void updateTotalPrice() {
             if (selectedBook == null) {
                 totalPrice = 0;
+            } else {
+                totalPrice = Convert.ToInt32(quantityNumericUpDown.Value) * selectedBook.price;
             }
-            totalPrice = Convert.ToInt32(quantityNumericUpDown.Value) * selectedBook.price;
+            
             totalPriceLabel.Text = totalPrice.ToString();
         }
 
-        private async void StoreClientForm_Shown(object sender, EventArgs e) {
-
-            addBooksToFormAsync();
-            Console.WriteLine(books);
+        private void StoreClientForm_Shown(object sender, EventArgs e) {
+            addBooksToForm();
         }
     }
 }

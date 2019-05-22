@@ -41,7 +41,7 @@
             this.booksComboBox = new System.Windows.Forms.ComboBox();
             this.clientsComboBox = new System.Windows.Forms.ComboBox();
             this.newOrderPanel = new System.Windows.Forms.Panel();
-            this.newMemberPanel = new System.Windows.Forms.Panel();
+            this.newClientPanel = new System.Windows.Forms.Panel();
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.emailLabel = new System.Windows.Forms.Label();
             this.addressTextBox = new System.Windows.Forms.TextBox();
@@ -51,10 +51,10 @@
             this.payButton = new System.Windows.Forms.Button();
             this.totalPriceLabel = new System.Windows.Forms.Label();
             this.priceLabel = new System.Windows.Forms.Label();
-            this.regMemberPanel = new System.Windows.Forms.Panel();
+            this.regClientPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.newMemberButton = new System.Windows.Forms.Button();
-            this.resMemberButton = new System.Windows.Forms.Button();
+            this.newClientButton = new System.Windows.Forms.Button();
+            this.resClientButton = new System.Windows.Forms.Button();
             this.quantityNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.quantityLabel = new System.Windows.Forms.Label();
             this.bookLabel = new System.Windows.Forms.Label();
@@ -72,8 +72,8 @@
             this.stockButton = new System.Windows.Forms.Button();
             this.requestsButton = new System.Windows.Forms.Button();
             this.newOrderPanel.SuspendLayout();
-            this.newMemberPanel.SuspendLayout();
-            this.regMemberPanel.SuspendLayout();
+            this.newClientPanel.SuspendLayout();
+            this.regClientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quantityNumericUpDown)).BeginInit();
             this.requestsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.requestsGrid)).BeginInit();
@@ -102,13 +102,12 @@
             // 
             // newOrderPanel
             // 
-            this.newOrderPanel.Controls.Add(this.newMemberPanel);
             this.newOrderPanel.Controls.Add(this.payButton);
             this.newOrderPanel.Controls.Add(this.totalPriceLabel);
             this.newOrderPanel.Controls.Add(this.priceLabel);
-            this.newOrderPanel.Controls.Add(this.regMemberPanel);
-            this.newOrderPanel.Controls.Add(this.newMemberButton);
-            this.newOrderPanel.Controls.Add(this.resMemberButton);
+            this.newOrderPanel.Controls.Add(this.regClientPanel);
+            this.newOrderPanel.Controls.Add(this.newClientButton);
+            this.newOrderPanel.Controls.Add(this.resClientButton);
             this.newOrderPanel.Controls.Add(this.quantityNumericUpDown);
             this.newOrderPanel.Controls.Add(this.quantityLabel);
             this.newOrderPanel.Controls.Add(this.bookLabel);
@@ -121,19 +120,19 @@
             this.newOrderPanel.Size = new System.Drawing.Size(776, 354);
             this.newOrderPanel.TabIndex = 2;
             // 
-            // newMemberPanel
+            // newClientPanel
             // 
-            this.newMemberPanel.Controls.Add(this.emailTextBox);
-            this.newMemberPanel.Controls.Add(this.emailLabel);
-            this.newMemberPanel.Controls.Add(this.addressTextBox);
-            this.newMemberPanel.Controls.Add(this.addressLabel);
-            this.newMemberPanel.Controls.Add(this.nameTextBox);
-            this.newMemberPanel.Controls.Add(this.label2);
-            this.newMemberPanel.Location = new System.Drawing.Point(44, 199);
-            this.newMemberPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.newMemberPanel.Name = "newMemberPanel";
-            this.newMemberPanel.Size = new System.Drawing.Size(476, 140);
-            this.newMemberPanel.TabIndex = 10;
+            this.newClientPanel.Controls.Add(this.emailTextBox);
+            this.newClientPanel.Controls.Add(this.emailLabel);
+            this.newClientPanel.Controls.Add(this.addressTextBox);
+            this.newClientPanel.Controls.Add(this.addressLabel);
+            this.newClientPanel.Controls.Add(this.nameTextBox);
+            this.newClientPanel.Controls.Add(this.label2);
+            this.newClientPanel.Location = new System.Drawing.Point(0, 0);
+            this.newClientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.newClientPanel.Name = "newClientPanel";
+            this.newClientPanel.Size = new System.Drawing.Size(476, 140);
+            this.newClientPanel.TabIndex = 10;
             // 
             // emailTextBox
             // 
@@ -225,15 +224,16 @@
             this.priceLabel.TabIndex = 9;
             this.priceLabel.Text = "Total Price";
             // 
-            // regMemberPanel
+            // regClientPanel
             // 
-            this.regMemberPanel.Controls.Add(this.label1);
-            this.regMemberPanel.Controls.Add(this.clientsComboBox);
-            this.regMemberPanel.Location = new System.Drawing.Point(44, 199);
-            this.regMemberPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.regMemberPanel.Name = "regMemberPanel";
-            this.regMemberPanel.Size = new System.Drawing.Size(476, 140);
-            this.regMemberPanel.TabIndex = 8;
+            this.regClientPanel.Controls.Add(this.newClientPanel);
+            this.regClientPanel.Controls.Add(this.label1);
+            this.regClientPanel.Controls.Add(this.clientsComboBox);
+            this.regClientPanel.Location = new System.Drawing.Point(44, 199);
+            this.regClientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.regClientPanel.Name = "regClientPanel";
+            this.regClientPanel.Size = new System.Drawing.Size(476, 140);
+            this.regClientPanel.TabIndex = 8;
             // 
             // label1
             // 
@@ -246,33 +246,33 @@
             this.label1.TabIndex = 9;
             this.label1.Text = "Name";
             // 
-            // newMemberButton
+            // newClientButton
             // 
-            this.newMemberButton.BackColor = System.Drawing.Color.White;
-            this.newMemberButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.newMemberButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.newMemberButton.Location = new System.Drawing.Point(253, 151);
-            this.newMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.newMemberButton.Name = "newMemberButton";
-            this.newMemberButton.Size = new System.Drawing.Size(155, 43);
-            this.newMemberButton.TabIndex = 7;
-            this.newMemberButton.Text = "New Member";
-            this.newMemberButton.UseVisualStyleBackColor = false;
-            this.newMemberButton.Click += new System.EventHandler(this.newMemberButton_Click);
+            this.newClientButton.BackColor = System.Drawing.Color.White;
+            this.newClientButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.newClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.newClientButton.Location = new System.Drawing.Point(253, 151);
+            this.newClientButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.newClientButton.Name = "newClientButton";
+            this.newClientButton.Size = new System.Drawing.Size(155, 43);
+            this.newClientButton.TabIndex = 7;
+            this.newClientButton.Text = "New Client";
+            this.newClientButton.UseVisualStyleBackColor = false;
+            this.newClientButton.Click += new System.EventHandler(this.newClientButton_Click);
             // 
-            // resMemberButton
+            // resClientButton
             // 
-            this.resMemberButton.BackColor = System.Drawing.Color.White;
-            this.resMemberButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.resMemberButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.resMemberButton.Location = new System.Drawing.Point(44, 151);
-            this.resMemberButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.resMemberButton.Name = "resMemberButton";
-            this.resMemberButton.Size = new System.Drawing.Size(204, 43);
-            this.resMemberButton.TabIndex = 6;
-            this.resMemberButton.Text = "Registered Member";
-            this.resMemberButton.UseVisualStyleBackColor = false;
-            this.resMemberButton.Click += new System.EventHandler(this.resMemberButton_Click);
+            this.resClientButton.BackColor = System.Drawing.Color.White;
+            this.resClientButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.resClientButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.resClientButton.Location = new System.Drawing.Point(44, 151);
+            this.resClientButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.resClientButton.Name = "resClientButton";
+            this.resClientButton.Size = new System.Drawing.Size(204, 43);
+            this.resClientButton.TabIndex = 6;
+            this.resClientButton.Text = "Registered Client";
+            this.resClientButton.UseVisualStyleBackColor = false;
+            this.resClientButton.Click += new System.EventHandler(this.resClientButton_Click);
             // 
             // quantityNumericUpDown
             // 
@@ -582,10 +582,10 @@
             this.Shown += new System.EventHandler(this.StoreClientForm_Shown);
             this.newOrderPanel.ResumeLayout(false);
             this.newOrderPanel.PerformLayout();
-            this.newMemberPanel.ResumeLayout(false);
-            this.newMemberPanel.PerformLayout();
-            this.regMemberPanel.ResumeLayout(false);
-            this.regMemberPanel.PerformLayout();
+            this.newClientPanel.ResumeLayout(false);
+            this.newClientPanel.PerformLayout();
+            this.regClientPanel.ResumeLayout(false);
+            this.regClientPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quantityNumericUpDown)).EndInit();
             this.requestsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.requestsGrid)).EndInit();
@@ -607,8 +607,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bookStockColumn;
         private System.Windows.Forms.Label totalPriceLabel;
         private System.Windows.Forms.Label priceLabel;
-        private System.Windows.Forms.Panel regMemberPanel;
-        private System.Windows.Forms.Panel newMemberPanel;
+        private System.Windows.Forms.Panel regClientPanel;
+        private System.Windows.Forms.Panel newClientPanel;
         private System.Windows.Forms.TextBox emailTextBox;
         private System.Windows.Forms.Label emailLabel;
         private System.Windows.Forms.TextBox addressTextBox;
@@ -616,8 +616,8 @@
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button newMemberButton;
-        private System.Windows.Forms.Button resMemberButton;
+        private System.Windows.Forms.Button newClientButton;
+        private System.Windows.Forms.Button resClientButton;
         private System.Windows.Forms.NumericUpDown quantityNumericUpDown;
         private System.Windows.Forms.Label quantityLabel;
         private System.Windows.Forms.Label bookLabel;
