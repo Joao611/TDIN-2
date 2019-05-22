@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.ServiceModel.Web;
 
 namespace StoreService {
     public class StoreService : IStoreService {
@@ -160,7 +161,11 @@ namespace StoreService {
         }
 
         public Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell) {
-
+            if (quantity < 1) {
+                WebOperationContext ctx = WebOperationContext.Current;
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                return null;
+            }
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
