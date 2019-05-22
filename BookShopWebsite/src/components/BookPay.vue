@@ -22,7 +22,7 @@
         data() {
             return {
                 book: {
-                    id: 0,
+                    id: this.$route.params.id,
                     title: 'Metro 2033 - HARDCODED',
                     stock: 2,
                     price: 10.5
@@ -31,12 +31,17 @@
             }
         },
         async created() {
-            this.book = await axiosInstance(`/books/${this.$route.params.id}`);
+            this.book = (await axiosInstance.get(`/books/${this.$route.params.id}`)).data;
         },
         methods: {
             submitOrder(e) {
                 e.preventDefault();
-                const body = {};
+                const body = {
+                    clientId: 1,
+                    bookId: this.book.id,
+                    quantity: this.quantity,
+                    instantSell: false
+                };
                 axiosInstance.post('/orders', body);
             }
         }
