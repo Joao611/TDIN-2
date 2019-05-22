@@ -417,6 +417,12 @@ namespace StoreClient.StoreServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBooks", ReplyAction="http://tempuri.org/IStoreService/GetBooksResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book[]> GetBooksAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBook", ReplyAction="http://tempuri.org/IStoreService/GetBookResponse")]
+        StoreClient.StoreServiceReference.Book GetBook(string id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBook", ReplyAction="http://tempuri.org/IStoreService/GetBookResponse")]
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book> GetBookAsync(string id);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetOrders", ReplyAction="http://tempuri.org/IStoreService/GetOrdersResponse")]
         StoreClient.StoreServiceReference.Order[] GetOrders();
         
@@ -477,6 +483,14 @@ namespace StoreClient.StoreServiceReference {
         
         public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book[]> GetBooksAsync() {
             return base.Channel.GetBooksAsync();
+        }
+        
+        public StoreClient.StoreServiceReference.Book GetBook(string id) {
+            return base.Channel.GetBook(id);
+        }
+        
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book> GetBookAsync(string id) {
+            return base.Channel.GetBookAsync(id);
         }
         
         public StoreClient.StoreServiceReference.Order[] GetOrders() {
