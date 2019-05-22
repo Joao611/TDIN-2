@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="StoreService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import namespace="http://tempuri.org/" />
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/StoreService" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IStoreService_SellBook_InputMessage">
+    <wsdl:part name="parameters" element="tns:SellBook" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_SellBook_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SellBookResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_GetBooks_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBooks" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_GetBooks_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBooksResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_GetOrders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrders" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_GetOrders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_CreateOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateOrder" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_CreateOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_SetState_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetState" />
+  </wsdl:message>
+  <wsdl:message name="IStoreService_SetState_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetStateResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IStoreService">
+    <wsdl:operation name="SellBook">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStoreService/SellBook" message="tns:IStoreService_SellBook_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStoreService/SellBookResponse" message="tns:IStoreService_SellBook_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBooks">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStoreService/GetBooks" message="tns:IStoreService_GetBooks_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStoreService/GetBooksResponse" message="tns:IStoreService_GetBooks_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStoreService/GetOrders" message="tns:IStoreService_GetOrders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStoreService/GetOrdersResponse" message="tns:IStoreService_GetOrders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStoreService/CreateOrder" message="tns:IStoreService_CreateOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStoreService/CreateOrderResponse" message="tns:IStoreService_CreateOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetState">
+      <wsdl:input wsaw:Action="http://tempuri.org/IStoreService/SetState" message="tns:IStoreService_SetState_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IStoreService/SetStateResponse" message="tns:IStoreService_SetState_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IStoreService" type="tns:IStoreService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="SellBook">
+      <soap:operation soapAction="http://tempuri.org/IStoreService/SellBook" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBooks">
+      <soap:operation soapAction="http://tempuri.org/IStoreService/GetBooks" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrders">
+      <soap:operation soapAction="http://tempuri.org/IStoreService/GetOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateOrder">
+      <soap:operation soapAction="http://tempuri.org/IStoreService/CreateOrder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetState">
+      <soap:operation soapAction="http://tempuri.org/IStoreService/SetState" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="StoreService">
+    <wsdl:port name="BasicHttpBinding_IStoreService" binding="tns:BasicHttpBinding_IStoreService">
+      <soap:address location="http://localhost:8733/Design_Time_Addresses/StoreService/" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
