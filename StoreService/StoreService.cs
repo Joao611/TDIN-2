@@ -59,7 +59,7 @@ namespace StoreService {
             using (SqlDataReader reader = cmd.ExecuteReader()) {
                 reader.Read();
                 Order order = new Order(GetClient(c, Convert.ToInt32(reader["Client"])),
-                    GetBook(c, Convert.ToInt32(reader["Book"])),
+                    GetBook(reader["Book"].ToString()),
                     Convert.ToInt32(reader["Quantity"]),
                     getState(reader["State"].ToString(), reader.GetDateTime(6)));//is 6 the index of DispatchDate column???
                 reader.Close();
@@ -94,8 +94,8 @@ namespace StoreService {
             }
             return client;
         }
-
-        private Book GetBook(SqlConnection c2, int id) {
+        
+        public Book GetBook(string id) {
             Book book = null;
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
@@ -103,11 +103,11 @@ namespace StoreService {
                     string sql = "SELECT * FROM Books" +
                         " WHERE Id = @id";
                     SqlCommand cmd = new SqlCommand(sql, c);
-                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         reader.Read();
                         book = new Book() {
-                            id = id,
+                            id = Convert.ToInt32(id),
                             title = reader["title"].ToString(),
                             stock = Convert.ToInt32(reader["stock"]),
                             price = Convert.ToDouble(reader["price"])
@@ -160,7 +160,7 @@ namespace StoreService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    Book book = GetBook(c, bookId);
+                    Book book = GetBook(bookId.ToString());
                     Order order = new Order(GetClient(c, clientId), book, quantity, getState(book.stock, quantity, instantSell));
                     InsertOrderInDb(c, order);
                     switch (order.state.type) {
@@ -200,7 +200,7 @@ namespace StoreService {
                         while (reader.Read()) {
                             Order order = new Order(
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
-                                GetBook(c, Convert.ToInt32(reader["Book"])),
+                                GetBook(reader["Book"].ToString()),
                                 Convert.ToInt32(reader["Quantity"]),
                                 getState(reader["State"].ToString(), reader.GetDateTime(6))
                             );
