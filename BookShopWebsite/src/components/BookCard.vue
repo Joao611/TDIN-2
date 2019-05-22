@@ -1,5 +1,5 @@
 ﻿<template>
-    <router-link tag="div" :to="`/book-pay/${book.id}`">
+    <router-link :to="`/book-pay/${book.id}`" tag="div" class="pointer">
         <div class="card">
             <div class="card-body">
                 <div class="card-title">{{book.title}}</div>

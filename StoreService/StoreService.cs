@@ -88,6 +88,8 @@ namespace StoreService {
                     }
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
                 } finally {
                     c.Close();
                 }
@@ -116,6 +118,8 @@ namespace StoreService {
                     }
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
                 } finally {
                     c.Close();
                 }
@@ -218,7 +222,6 @@ namespace StoreService {
         }
         public List<Book> GetBooks() {
             var books = new List<Book>();
-            Console.WriteLine("-------------------------------------");
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
@@ -229,14 +232,15 @@ namespace StoreService {
                             Book book = new Book() {
                                 id = Convert.ToInt32(reader["id"]),
                                 title = reader["title"].ToString(),
-                                stock = Convert.ToInt32(reader["stock"])
+                                stock = Convert.ToInt32(reader["stock"]),
+                                price = Convert.ToDouble(reader["price"]),
                             };
                             books.Add(book);
                         }
                         reader.Close();
                     }
                 } catch (Exception e) {
-                    Console.WriteLine("DB Exception: " + e);
+                    Console.WriteLine("Exception: " + e);
                 } finally {
                     c.Close();
                 }

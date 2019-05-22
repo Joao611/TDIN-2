@@ -18,7 +18,7 @@
         data() {
             return {
                 books: [{
-                    id: 1,
+                    id: 0,
                     title: 'Metro 2033 - HARDCODED',
                     stock: 2,
                     price: 10.5
@@ -26,7 +26,8 @@
             }
         },
         async created() {
-            this.books = await axiosInstance.get('/books');
+            this.books = (await axiosInstance.get('/books')).data;
+            console.log(this.books);
         }
     };
 </script>

@@ -36,6 +36,7 @@
     <Content Include="src\components\BookCard.vue">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\components\BookPay.vue" />
     <Content Include="src\components\Navbar.vue">
       <SubType>Code</SubType>
     </Content>
