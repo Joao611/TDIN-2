@@ -93,7 +93,25 @@ namespace StoreClient {
 
         public void addOrdersToForm() {
             orders = new List<Order>(proxy.GetOrders());
-            orders.ForEach(order => requestsGrid.Rows.Add(order.guid, order.book.title, order.quantity, order.state.ToString()));
+            orders.ForEach(order => {
+                Console.WriteLine(order.state.ToString());
+                requestsGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
+                });
+        }
+
+        private string stateToString(Order.State state) {
+            switch (state.type) {
+                case Order.State.Type.DELIVERED:
+                    return "Delivered at " + state.dispatchDate.ToString("MM/dd/yyyy");
+                case Order.State.Type.WAITING:
+                    return "Waiting Expedition";
+                case Order.State.Type.DISPATCHED_AT:
+                    return "Dispatched at " + state.dispatchDate.ToString("MM/dd/yyyy");
+                case Order.State.Type.DISPATCH_OCCURS_AT:
+                    return "Dispatch will occur at" + state.dispatchDate.ToString("MM/dd/yyyy");
+                default:
+                    return "";
+            }
         }
     }
 }
