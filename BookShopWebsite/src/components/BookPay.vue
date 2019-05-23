@@ -34,7 +34,7 @@
             this.book = (await axiosInstance.get(`/books/${this.$route.params.id}`)).data;
         },
         methods: {
-            submitOrder(e) {
+            submitOrder() {
                 const body = {
                     clientId: 1,
                     bookId: this.book.id,
@@ -42,6 +42,7 @@
                     instantSell: false
                 };
                 axiosInstance.post('/orders', body);
+                this.$router.push('/');
             }
         }
     }
