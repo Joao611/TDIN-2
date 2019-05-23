@@ -4,12 +4,23 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreService", "StoreService\StoreService.csproj", "{8AB4ED96-EF23-4D20-8819-BBA00AE2770D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE4607F7-457E-4040-9A14-00F48056E6AD} = {BE4607F7-457E-4040-9A14-00F48056E6AD}
+	EndProjectSection
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "BookShopWebsite", "BookShopWebsite\BookShopWebsite.njsproj", "{29FD17FD-6E3F-44C0-86C9-11E8AB89E3CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StoreClient", "StoreClient\StoreClient.csproj", "{B55A43E1-36AF-4B5E-85F3-E06A81C52D01}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8AB4ED96-EF23-4D20-8819-BBA00AE2770D} = {8AB4ED96-EF23-4D20-8819-BBA00AE2770D}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseService", "WarehouseService\WarehouseService.csproj", "{BE4607F7-457E-4040-9A14-00F48056E6AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseClient", "WarehouseClient\WarehouseClient.csproj", "{FD098764-6428-49DD-901F-BC6CD9B3CF99}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8AB4ED96-EF23-4D20-8819-BBA00AE2770D} = {8AB4ED96-EF23-4D20-8819-BBA00AE2770D}
+		{BE4607F7-457E-4040-9A14-00F48056E6AD} = {BE4607F7-457E-4040-9A14-00F48056E6AD}
 	EndProjectSection
 EndProject
 Global
@@ -30,6 +41,14 @@ Global
 		{B55A43E1-36AF-4B5E-85F3-E06A81C52D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B55A43E1-36AF-4B5E-85F3-E06A81C52D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B55A43E1-36AF-4B5E-85F3-E06A81C52D01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE4607F7-457E-4040-9A14-00F48056E6AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE4607F7-457E-4040-9A14-00F48056E6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE4607F7-457E-4040-9A14-00F48056E6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE4607F7-457E-4040-9A14-00F48056E6AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

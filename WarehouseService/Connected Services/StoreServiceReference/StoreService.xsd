@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/StoreService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/StoreService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfBook">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Book" nillable="true" type="tns:Book" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBook" nillable="true" type="tns:ArrayOfBook" />
+  <xs:complexType name="Book">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="xs:int" />
+      <xs:element minOccurs="0" name="price" type="xs:double" />
+      <xs:element minOccurs="0" name="stock" type="xs:int" />
+      <xs:element minOccurs="0" name="title" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Book" nillable="true" type="tns:Book" />
+  <xs:complexType name="ArrayOfClient">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Client" nillable="true" type="tns:Client" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClient" nillable="true" type="tns:ArrayOfClient" />
+  <xs:complexType name="Client">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:int" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Client" nillable="true" type="tns:Client" />
+  <xs:complexType name="ArrayOfOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrder" nillable="true" type="tns:ArrayOfOrder" />
+  <xs:complexType name="Order">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="book" nillable="true" type="tns:Book" />
+      <xs:element minOccurs="0" name="client" nillable="true" type="tns:Client" />
+      <xs:element minOccurs="0" name="guid" type="ser:guid" />
+      <xs:element minOccurs="0" name="quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="state" nillable="true" type="tns:Order.State" />
+      <xs:element minOccurs="0" name="totalPrice" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Order" nillable="true" type="tns:Order" />
+  <xs:complexType name="Order.State">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dispatchDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="type" type="tns:Order.State.Type" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Order.State" nillable="true" type="tns:Order.State" />
+  <xs:simpleType name="Order.State.Type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DELIVERED" />
+      <xs:enumeration value="WAITING" />
+      <xs:enumeration value="DISPATCH_OCCURS_AT" />
+      <xs:enumeration value="DISPATCHED_AT" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Order.State.Type" nillable="true" type="tns:Order.State.Type" />
+</xs:schema>
