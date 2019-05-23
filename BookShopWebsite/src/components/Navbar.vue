@@ -10,6 +10,7 @@
                     <router-link tag="a" class="nav-link" :to="`${route.page}`">{{route.text}}</router-link>
                 </li>
             </ul>
+            <router-link tag="button" to="/register" class="btn btn-warning">+</router-link>
             <ClientSelector></ClientSelector>
         </div>
     </nav>
