@@ -8,17 +8,6 @@ using System.ServiceModel.Web;
 namespace StoreService {
     [ServiceContract]
     public interface IStoreService {
-        /*[WebInvoke(Method="POST", UriTemplate="/tickets", BodyStyle=WebMessageBodyStyle.WrappedRequest, RequestFormat=WebMessageFormat.Json, ResponseFormat=WebMessageFormat.Json)]
-        [OperationContract]
-        int AddTicket(string author, string problem);
-
-        [WebGet(UriTemplate="/tickets/{author}", ResponseFormat=WebMessageFormat.Json)]
-        [OperationContract]
-        DataTable GetTickets(string author);
-
-        [WebGet(UriTemplate="/users", ResponseFormat=WebMessageFormat.Json)]
-        [OperationContract]
-        DataTable GetUsers();*/
         
         [WebInvoke(BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
@@ -28,6 +17,10 @@ namespace StoreService {
         [OperationContract]
         List<Book> GetBooks();
 
+        [WebGet(UriTemplate = "/clients", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        List<Client> GetClients();
+        
         [WebGet(UriTemplate = "/books/{id}", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Book GetBook(string id);
@@ -60,6 +53,7 @@ namespace StoreService {
             }
             public Type type;
             public DateTime dispatchDate;
+            public string ToString => "ola";
         }
 
         public Order(Client client, Book book, int quantity, Order.State state) {

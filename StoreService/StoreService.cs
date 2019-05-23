@@ -253,6 +253,34 @@ namespace StoreService {
             return books;
         }
 
+        public List<Client> GetClients() {
+            List<Client> clients = new List<Client>();
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT * FROM Clients";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            Client client = new Client() {
+                                id = Convert.ToInt32(reader["id"]),
+                                name = reader["name"].ToString(),
+                                email = reader["email"].ToString(),
+                                address = reader["address"].ToString()
+                            };
+                            clients.Add(client);
+                        }
+                        reader.Close();
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return clients;
+        }
+
         public Order SetState(string id, string stateType) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {

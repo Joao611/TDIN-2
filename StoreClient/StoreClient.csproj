@@ -85,6 +85,9 @@
     <None Include="Connected Services\StoreServiceReference\StoreClient.StoreServiceReference.Book.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\StoreServiceReference\StoreClient.StoreServiceReference.Client.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\StoreServiceReference\StoreClient.StoreServiceReference.Order.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
