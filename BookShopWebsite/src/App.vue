@@ -12,7 +12,7 @@
     import Navbar from './components/Navbar.vue';
     import router from './router/index';
     import Vue from 'vue';
-    import Vuex, { mapState } from 'vuex';
+    import Vuex from 'vuex';
 
     Vue.use(Vuex);
 
@@ -28,21 +28,13 @@
                 state.client = newClient;
             }
         },
-        actions: {
-            setActiveClient({ commit }, newClient) {
-                commit('setActiveClient', newClient);
-            }
-        },
-        computed: mapState([
-            'client',
-        ]),
     });
 
     export default {
         name: 'app',
         components: {
             Books,
-            Navbar
+            Navbar,
         },
         router,
         store,
