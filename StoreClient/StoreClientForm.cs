@@ -1,6 +1,7 @@
 ﻿using StoreClient.StoreServiceReference;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace StoreClient {
@@ -75,6 +76,33 @@ namespace StoreClient {
             addOrdersToForm();
         }
 
+        private void payButton_Click(object sender, EventArgs e) {
+            if (booksComboBox.SelectedItem == null) {
+                return;
+            }
+            int clientId = 0;
+            if (newClientPanel.Visible) {
+                if (nameTextBox.Text != "" && emailTextBox.Text != "" && addressTextBox.Text != "") {
+                    clientId = registerClient();
+                } else {
+                    return;
+                }
+            } else {
+                string clientName = clientsComboBox.SelectedItem.ToString();
+                clientsComboBox.SelectedItem = null;
+                clientId = clients.Find(client => client.name == clientName).id;
+            }
+            string bookName = booksComboBox.SelectedItem.ToString();
+            booksComboBox.SelectedItem = null;
+            int bookId = books.Find(book => book.title == bookName).id;
+            int quantity = Convert.ToInt32(quantityNumericUpDown.Value);
+            quantityNumericUpDown.Value = 1;
+            Order newOrder = proxy.SellBook(bookId, quantity, clientId);
+            orders.Add(newOrder);
+            requestsGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
+            updateBookStock(newOrder.book.title, newOrder.book.stock);
+        }
+
         public void setVisibility(int index) {
             List<Panel> panels = new List<Panel>() { newOrderPanel, stockPanel, requestsPanel };
             panels.ForEach(panel => panel.Visible = false);
@@ -117,8 +145,30 @@ namespace StoreClient {
             }
         }
 
-        public void registerClient() {
-
+        public int registerClient() {
+            string name = nameTextBox.Text;
+            nameTextBox.Text = "";
+            string address = addressTextBox.Text;
+            addressTextBox.Text = "";
+            string email = emailTextBox.Text;
+            emailTextBox.Text = "";
+            Client newClient = proxy.CreateClient(name, address, email);
+            clients.Add(newClient);
+            clientsComboBox.Items.Add(newClient.name);
+            return newClient.id;
         }
+
+        private void updateBookStock(string bookTitle, int stock) {
+            Book book = books.Find(b => b.title == bookTitle);
+            if(book.stock != stock) {
+                book.stock = stock;
+                DataGridViewRow row = stockGrid.Rows
+                            .Cast<DataGridViewRow>()
+                            .FirstOrDefault(r => (string)r.Cells["bookNameColumn"].Value == bookTitle);
+                row.Cells["bookStockColumn"].Value = stock;
+            }
+        }
+
+
     }
 }
