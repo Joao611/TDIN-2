@@ -34,15 +34,19 @@
             this.book = (await axiosInstance.get(`/books/${this.$route.params.id}`)).data;
         },
         methods: {
-            submitOrder() {
+            async submitOrder() {
                 const body = {
                     clientId: 1,
                     bookId: this.book.id,
                     quantity: this.quantity,
                     instantSell: false
                 };
-                axiosInstance.post('/orders', body);
-                this.$router.push('/');
+                try {
+                    await axiosInstance.post('/orders', body);
+                    this.$router.push('/orders');
+                } catch (e) {
+                    alert('Bad request');
+                }
             }
         }
     }
