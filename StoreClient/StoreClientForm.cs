@@ -8,6 +8,7 @@ namespace StoreClient {
         StoreServiceClient proxy;
         List<Book> books = new List<Book>();
         List<Client> clients = new List<Client>();
+        List<Order> orders = new List<Order>();
         Book selectedBook = null;
         double totalPrice = 0;
         public StoreClientForm(StoreServiceClient proxy) {
@@ -23,11 +24,6 @@ namespace StoreClient {
             newClientPanel.Location = regClientPanel.Location;
             newClientPanel.Visible = false;
             setVisibility(0);
-        }
-
-        public void addBooksToForm() {
-            books = new List<Book>(proxy.GetBooks());
-            books.ForEach(book => booksComboBox.Items.Add(book.title));
         }
 
         public void setVisibility(int index) {
@@ -81,6 +77,23 @@ namespace StoreClient {
 
         private void StoreClientForm_Shown(object sender, EventArgs e) {
             addBooksToForm();
+            addClientsToForm();
+            addOrdersToForm();
+        }
+
+        public void addBooksToForm() {
+            books = new List<Book>(proxy.GetBooks());
+            books.ForEach(book => booksComboBox.Items.Add(book.title));
+        }
+
+        public void addClientsToForm() {
+            clients = new List<Client>(proxy.GetClients());
+            clients.ForEach(client => clientsComboBox.Items.Add(client.name));
+        }
+
+        public void addOrdersToForm() {
+            orders = new List<Order>(proxy.GetOrders());
+            orders.ForEach(order => requestsGrid.Rows.Add(order.guid, order.book.title, order.quantity, order.state.ToString()));
         }
     }
 }

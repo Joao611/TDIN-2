@@ -16,6 +16,21 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Book" nillable="true" type="tns:Book" />
+  <xs:complexType name="ArrayOfClient">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Client" nillable="true" type="tns:Client" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClient" nillable="true" type="tns:ArrayOfClient" />
+  <xs:complexType name="Client">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:int" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Client" nillable="true" type="tns:Client" />
   <xs:complexType name="ArrayOfOrder">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
@@ -33,15 +48,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Order" nillable="true" type="tns:Order" />
-  <xs:complexType name="Client">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="id" type="xs:int" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Client" nillable="true" type="tns:Client" />
   <xs:complexType name="Order.State">
     <xs:sequence>
       <xs:element minOccurs="0" name="dispatchDate" type="xs:dateTime" />

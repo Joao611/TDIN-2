@@ -28,6 +28,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetClients">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClientsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetClientsResult" nillable="true" type="q2:ArrayOfClient" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetBook">
     <xs:complexType>
       <xs:sequence>
@@ -38,7 +50,7 @@
   <xs:element name="GetBookResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetBookResult" nillable="true" type="q2:Book" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetBookResult" nillable="true" type="q3:Book" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -50,7 +62,7 @@
   <xs:element name="GetOrdersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetOrdersResult" nillable="true" type="q3:ArrayOfOrder" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetOrdersResult" nillable="true" type="q4:ArrayOfOrder" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -67,7 +79,7 @@
   <xs:element name="CreateOrderResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateOrderResult" nillable="true" type="q4:Order" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateOrderResult" nillable="true" type="q5:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -82,7 +94,7 @@
   <xs:element name="SetStateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q5:Order" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q6:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
