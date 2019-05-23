@@ -430,16 +430,10 @@ namespace StoreClient.StoreServiceReference {
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order[]> GetOrdersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateOrder", ReplyAction="http://tempuri.org/IStoreService/CreateOrderResponse")]
-        StoreClient.StoreServiceReference.Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell);
+        StoreClient.StoreServiceReference.Order CreateOrder(int clientId, int bookId, int quantity);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateOrder", ReplyAction="http://tempuri.org/IStoreService/CreateOrderResponse")]
-        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity, bool instantSell);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
-        StoreClient.StoreServiceReference.Order SellBook(int bookId, int quantity, int clientId);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
-        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SellBookAsync(int bookId, int quantity, int clientId);
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SetState", ReplyAction="http://tempuri.org/IStoreService/SetStateResponse")]
         StoreClient.StoreServiceReference.Order SetState(string id, string stateType);
@@ -513,20 +507,12 @@ namespace StoreClient.StoreServiceReference {
             return base.Channel.GetOrdersAsync();
         }
         
-        public StoreClient.StoreServiceReference.Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell) {
-            return base.Channel.CreateOrder(clientId, bookId, quantity, instantSell);
+        public StoreClient.StoreServiceReference.Order CreateOrder(int clientId, int bookId, int quantity) {
+            return base.Channel.CreateOrder(clientId, bookId, quantity);
         }
         
-        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity, bool instantSell) {
-            return base.Channel.CreateOrderAsync(clientId, bookId, quantity, instantSell);
-        }
-        
-        public StoreClient.StoreServiceReference.Order SellBook(int bookId, int quantity, int clientId) {
-            return base.Channel.SellBook(bookId, quantity, clientId);
-        }
-        
-        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SellBookAsync(int bookId, int quantity, int clientId) {
-            return base.Channel.SellBookAsync(bookId, quantity, clientId);
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity) {
+            return base.Channel.CreateOrderAsync(clientId, bookId, quantity);
         }
         
         public StoreClient.StoreServiceReference.Order SetState(string id, string stateType) {

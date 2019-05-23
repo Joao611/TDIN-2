@@ -57,7 +57,6 @@
         <xs:element minOccurs="0" name="clientId" type="xs:int" />
         <xs:element minOccurs="0" name="bookId" type="xs:int" />
         <xs:element minOccurs="0" name="quantity" type="xs:int" />
-        <xs:element minOccurs="0" name="instantSell" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -65,22 +64,6 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateOrderResult" nillable="true" type="q5:Order" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SellBook">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="bookId" type="xs:int" />
-        <xs:element minOccurs="0" name="quantity" type="xs:int" />
-        <xs:element minOccurs="0" name="clientId" type="xs:int" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="SellBookResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SellBookResult" nillable="true" type="q6:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -95,7 +78,7 @@
   <xs:element name="SetStateResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q7:Order" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="SetStateResult" nillable="true" type="q6:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -111,7 +94,7 @@
   <xs:element name="CreateClientResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateClientResult" nillable="true" type="q8:Client" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="CreateClientResult" nillable="true" type="q7:Client" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
