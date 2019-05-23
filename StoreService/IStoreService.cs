@@ -8,10 +8,6 @@ using System.ServiceModel.Web;
 namespace StoreService {
     [ServiceContract]
     public interface IStoreService {
-        
-        [WebInvoke(BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        [OperationContract]
-        void SellBook(int id, int bookId, int quantity, int clientId);
 
         [WebGet(UriTemplate = "/books", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
@@ -33,9 +29,17 @@ namespace StoreService {
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell);
 
+        [WebInvoke(BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        void SellBook(int id, int bookId, int quantity, int clientId);
+
         [WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Order SetState(string id, string stateType);
+
+        [WebInvoke(Method = "POST", UriTemplate = "/clients", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        Client CreateClient(string name, string address, string email);
     }
 
     /**
