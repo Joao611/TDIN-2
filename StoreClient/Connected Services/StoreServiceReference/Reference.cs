@@ -405,12 +405,6 @@ namespace StoreClient.StoreServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="StoreServiceReference.IStoreService")]
     public interface IStoreService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
-        void SellBook(int id, int bookId, int quantity, int clientId);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
-        System.Threading.Tasks.Task SellBookAsync(int id, int bookId, int quantity, int clientId);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBooks", ReplyAction="http://tempuri.org/IStoreService/GetBooksResponse")]
         StoreClient.StoreServiceReference.Book[] GetBooks();
         
@@ -441,11 +435,23 @@ namespace StoreClient.StoreServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateOrder", ReplyAction="http://tempuri.org/IStoreService/CreateOrderResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity, bool instantSell);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
+        StoreClient.StoreServiceReference.Order SellBook(int bookId, int quantity, int clientId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SellBook", ReplyAction="http://tempuri.org/IStoreService/SellBookResponse")]
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SellBookAsync(int bookId, int quantity, int clientId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SetState", ReplyAction="http://tempuri.org/IStoreService/SetStateResponse")]
         StoreClient.StoreServiceReference.Order SetState(string id, string stateType);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/SetState", ReplyAction="http://tempuri.org/IStoreService/SetStateResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SetStateAsync(string id, string stateType);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateClient", ReplyAction="http://tempuri.org/IStoreService/CreateClientResponse")]
+        StoreClient.StoreServiceReference.Client CreateClient(string name, string address, string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateClient", ReplyAction="http://tempuri.org/IStoreService/CreateClientResponse")]
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Client> CreateClientAsync(string name, string address, string email);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -473,14 +479,6 @@ namespace StoreClient.StoreServiceReference {
         
         public StoreServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
-        }
-        
-        public void SellBook(int id, int bookId, int quantity, int clientId) {
-            base.Channel.SellBook(id, bookId, quantity, clientId);
-        }
-        
-        public System.Threading.Tasks.Task SellBookAsync(int id, int bookId, int quantity, int clientId) {
-            return base.Channel.SellBookAsync(id, bookId, quantity, clientId);
         }
         
         public StoreClient.StoreServiceReference.Book[] GetBooks() {
@@ -523,12 +521,28 @@ namespace StoreClient.StoreServiceReference {
             return base.Channel.CreateOrderAsync(clientId, bookId, quantity, instantSell);
         }
         
+        public StoreClient.StoreServiceReference.Order SellBook(int bookId, int quantity, int clientId) {
+            return base.Channel.SellBook(bookId, quantity, clientId);
+        }
+        
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SellBookAsync(int bookId, int quantity, int clientId) {
+            return base.Channel.SellBookAsync(bookId, quantity, clientId);
+        }
+        
         public StoreClient.StoreServiceReference.Order SetState(string id, string stateType) {
             return base.Channel.SetState(id, stateType);
         }
         
         public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> SetStateAsync(string id, string stateType) {
             return base.Channel.SetStateAsync(id, stateType);
+        }
+        
+        public StoreClient.StoreServiceReference.Client CreateClient(string name, string address, string email) {
+            return base.Channel.CreateClient(name, address, email);
+        }
+        
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Client> CreateClientAsync(string name, string address, string email) {
+            return base.Channel.CreateClientAsync(name, address, email);
         }
     }
 }

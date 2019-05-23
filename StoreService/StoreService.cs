@@ -141,9 +141,11 @@ namespace StoreService {
                             break;
                         case Order.State.Type.DISPATCH_OCCURS_AT:
                             UpdateStock(c, bookId, -quantity);
+                            order.book.stock -= quantity;
                             break;
                         case Order.State.Type.DELIVERED:
                             UpdateStock(c, bookId, -quantity);
+                            order.book.stock -= quantity;
                             break;
                         default:
                             Console.WriteLine("oops - CreateOrder()");
@@ -161,8 +163,8 @@ namespace StoreService {
             return null;
         }
 
-        public void SellBook(int id, int bookId, int quantity, int clientId) {
-            CreateOrder(clientId, bookId, quantity, true);
+        public Order SellBook(int bookId, int quantity, int clientId) {
+            return CreateOrder(clientId, bookId, quantity, true);
         }
 
         public Order SetState(string id, string stateType) {

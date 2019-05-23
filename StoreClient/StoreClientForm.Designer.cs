@@ -41,6 +41,10 @@
             this.booksComboBox = new System.Windows.Forms.ComboBox();
             this.clientsComboBox = new System.Windows.Forms.ComboBox();
             this.newOrderPanel = new System.Windows.Forms.Panel();
+            this.payButton = new System.Windows.Forms.Button();
+            this.totalPriceLabel = new System.Windows.Forms.Label();
+            this.priceLabel = new System.Windows.Forms.Label();
+            this.regClientPanel = new System.Windows.Forms.Panel();
             this.newClientPanel = new System.Windows.Forms.Panel();
             this.emailTextBox = new System.Windows.Forms.TextBox();
             this.emailLabel = new System.Windows.Forms.Label();
@@ -48,10 +52,6 @@
             this.addressLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.payButton = new System.Windows.Forms.Button();
-            this.totalPriceLabel = new System.Windows.Forms.Label();
-            this.priceLabel = new System.Windows.Forms.Label();
-            this.regClientPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.newClientButton = new System.Windows.Forms.Button();
             this.resClientButton = new System.Windows.Forms.Button();
@@ -72,8 +72,8 @@
             this.stockButton = new System.Windows.Forms.Button();
             this.requestsButton = new System.Windows.Forms.Button();
             this.newOrderPanel.SuspendLayout();
-            this.newClientPanel.SuspendLayout();
             this.regClientPanel.SuspendLayout();
+            this.newClientPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quantityNumericUpDown)).BeginInit();
             this.requestsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.requestsGrid)).BeginInit();
@@ -119,6 +119,51 @@
             this.newOrderPanel.Name = "newOrderPanel";
             this.newOrderPanel.Size = new System.Drawing.Size(776, 354);
             this.newOrderPanel.TabIndex = 2;
+            // 
+            // payButton
+            // 
+            this.payButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.payButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.payButton.ForeColor = System.Drawing.Color.White;
+            this.payButton.Location = new System.Drawing.Point(696, 297);
+            this.payButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.payButton.Name = "payButton";
+            this.payButton.Size = new System.Drawing.Size(77, 43);
+            this.payButton.TabIndex = 11;
+            this.payButton.Text = "Pay";
+            this.payButton.UseVisualStyleBackColor = false;
+            this.payButton.Click += new System.EventHandler(this.payButton_Click);
+            // 
+            // totalPriceLabel
+            // 
+            this.totalPriceLabel.AutoSize = true;
+            this.totalPriceLabel.Location = new System.Drawing.Point(656, 265);
+            this.totalPriceLabel.Name = "totalPriceLabel";
+            this.totalPriceLabel.Size = new System.Drawing.Size(16, 17);
+            this.totalPriceLabel.TabIndex = 10;
+            this.totalPriceLabel.Text = "0";
+            // 
+            // priceLabel
+            // 
+            this.priceLabel.AutoSize = true;
+            this.priceLabel.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.priceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.priceLabel.Location = new System.Drawing.Point(525, 257);
+            this.priceLabel.Name = "priceLabel";
+            this.priceLabel.Size = new System.Drawing.Size(118, 27);
+            this.priceLabel.TabIndex = 9;
+            this.priceLabel.Text = "Total Price";
+            // 
+            // regClientPanel
+            // 
+            this.regClientPanel.Controls.Add(this.newClientPanel);
+            this.regClientPanel.Controls.Add(this.label1);
+            this.regClientPanel.Controls.Add(this.clientsComboBox);
+            this.regClientPanel.Location = new System.Drawing.Point(44, 199);
+            this.regClientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.regClientPanel.Name = "regClientPanel";
+            this.regClientPanel.Size = new System.Drawing.Size(476, 140);
+            this.regClientPanel.TabIndex = 8;
             // 
             // newClientPanel
             // 
@@ -190,50 +235,6 @@
             this.label2.Size = new System.Drawing.Size(72, 27);
             this.label2.TabIndex = 9;
             this.label2.Text = "Name";
-            // 
-            // payButton
-            // 
-            this.payButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.payButton.Font = new System.Drawing.Font("Open Sans", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.payButton.ForeColor = System.Drawing.Color.White;
-            this.payButton.Location = new System.Drawing.Point(696, 297);
-            this.payButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.payButton.Name = "payButton";
-            this.payButton.Size = new System.Drawing.Size(77, 43);
-            this.payButton.TabIndex = 11;
-            this.payButton.Text = "Pay";
-            this.payButton.UseVisualStyleBackColor = false;
-            // 
-            // totalPriceLabel
-            // 
-            this.totalPriceLabel.AutoSize = true;
-            this.totalPriceLabel.Location = new System.Drawing.Point(656, 265);
-            this.totalPriceLabel.Name = "totalPriceLabel";
-            this.totalPriceLabel.Size = new System.Drawing.Size(16, 17);
-            this.totalPriceLabel.TabIndex = 10;
-            this.totalPriceLabel.Text = "0";
-            // 
-            // priceLabel
-            // 
-            this.priceLabel.AutoSize = true;
-            this.priceLabel.Font = new System.Drawing.Font("Open Sans", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.priceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
-            this.priceLabel.Location = new System.Drawing.Point(525, 257);
-            this.priceLabel.Name = "priceLabel";
-            this.priceLabel.Size = new System.Drawing.Size(118, 27);
-            this.priceLabel.TabIndex = 9;
-            this.priceLabel.Text = "Total Price";
-            // 
-            // regClientPanel
-            // 
-            this.regClientPanel.Controls.Add(this.newClientPanel);
-            this.regClientPanel.Controls.Add(this.label1);
-            this.regClientPanel.Controls.Add(this.clientsComboBox);
-            this.regClientPanel.Location = new System.Drawing.Point(44, 199);
-            this.regClientPanel.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.regClientPanel.Name = "regClientPanel";
-            this.regClientPanel.Size = new System.Drawing.Size(476, 140);
-            this.regClientPanel.TabIndex = 8;
             // 
             // label1
             // 
@@ -582,10 +583,10 @@
             this.Shown += new System.EventHandler(this.StoreClientForm_Shown);
             this.newOrderPanel.ResumeLayout(false);
             this.newOrderPanel.PerformLayout();
-            this.newClientPanel.ResumeLayout(false);
-            this.newClientPanel.PerformLayout();
             this.regClientPanel.ResumeLayout(false);
             this.regClientPanel.PerformLayout();
+            this.newClientPanel.ResumeLayout(false);
+            this.newClientPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.quantityNumericUpDown)).EndInit();
             this.requestsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.requestsGrid)).EndInit();
