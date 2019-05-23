@@ -26,12 +26,6 @@ namespace StoreClient {
             setVisibility(0);
         }
 
-        public void setVisibility(int index) {
-            List<Panel> panels = new List<Panel>() { newOrderPanel, stockPanel, requestsPanel };
-            panels.ForEach(panel => panel.Visible = false);
-            panels[index].Visible = true;
-        }
-
         private void newOrderButton_Click(object sender, EventArgs e) {
             setVisibility(0);
             regClientPanel.Visible = true;
@@ -81,6 +75,12 @@ namespace StoreClient {
             addOrdersToForm();
         }
 
+        public void setVisibility(int index) {
+            List<Panel> panels = new List<Panel>() { newOrderPanel, stockPanel, requestsPanel };
+            panels.ForEach(panel => panel.Visible = false);
+            panels[index].Visible = true;
+        }
+
         public void addBooksToForm() {
             books = new List<Book>(proxy.GetBooks());
             books.ForEach(book => {
@@ -115,6 +115,10 @@ namespace StoreClient {
                 default:
                     return "";
             }
+        }
+
+        public void registerClient() {
+
         }
     }
 }
