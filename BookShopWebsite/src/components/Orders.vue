@@ -37,7 +37,17 @@
             }
         },
         async created() {
-            this.orders = (await axiosInstance.get('/orders')).data;
+            this.orders = (await axiosInstance.get(`/clients/${this.clientId}/orders`)).data;
+        },
+        computed: {
+            clientId() {
+                return this.$store.state.client.id;
+            }
+        },
+        watch: {
+            async clientId(newId) {
+                this.orders = (await axiosInstance.get(`/clients/${newId}/orders`)).data;
+            }
         }
     }
 </script>

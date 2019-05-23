@@ -36,10 +36,10 @@
         methods: {
             async submitOrder() {
                 const body = {
-                    clientId: 1,
+                    clientId: this.$store.state.client.id,
                     bookId: this.book.id,
                     quantity: this.quantity,
-                    instantSell: false
+                    instantSell: false,
                 };
                 try {
                     await axiosInstance.post('/orders', body);
