@@ -45,15 +45,16 @@ namespace StoreService {
     [DataContract]
     public class Order {
         public class State {
+            [DataContract]
             public enum Type {
-                DELIVERED,
-                WAITING,
-                DISPATCH_OCCURS_AT,
-                DISPATCHED_AT,
+                [EnumMember] DELIVERED,
+                [EnumMember] WAITING,
+                [EnumMember] DISPATCH_OCCURS_AT,
+                [EnumMember] DISPATCHED_AT,
             }
             public Type type;
             public DateTime dispatchDate;
-            public string ToString => "ola";
+            
         }
 
         public Order(Client client, Book book, int quantity, Order.State state) {
@@ -82,6 +83,7 @@ namespace StoreService {
 
         [DataMember]
         public State state { get; private set; }
+        
     }
 
     public class Client {
