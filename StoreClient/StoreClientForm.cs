@@ -97,7 +97,7 @@ namespace StoreClient {
             int bookId = books.Find(book => book.title == bookName).id;
             int quantity = Convert.ToInt32(quantityNumericUpDown.Value);
             quantityNumericUpDown.Value = 1;
-            Order newOrder = proxy.SellBook(bookId, quantity, clientId);
+            Order newOrder = proxy.CreateOrder(bookId, quantity, clientId);
             orders.Add(newOrder);
             requestsGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
             updateBookStock(newOrder.book.title, newOrder.book.stock);
@@ -132,8 +132,6 @@ namespace StoreClient {
 
         private string stateToString(Order.State state) {
             switch (state.type) {
-                case Order.State.Type.DELIVERED:
-                    return "Delivered at " + state.dispatchDate.ToString("MM/dd/yyyy");
                 case Order.State.Type.WAITING:
                     return "Waiting Expedition";
                 case Order.State.Type.DISPATCHED_AT:

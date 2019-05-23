@@ -128,7 +128,7 @@ namespace StoreService {
             return book;
         }
 
-        public Order CreateOrder(int clientId, int bookId, int quantity, bool instantSell) {
+        public Order CreateOrder(int clientId, int bookId, int quantity) {
             if (quantity < 1) {
                 WebOperationContext ctx = WebOperationContext.Current;
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
@@ -138,7 +138,7 @@ namespace StoreService {
                 try {
                     c.Open();
                     Book book = GetBook(bookId.ToString());
-                    Order order = new Order(GetClient(c, clientId), book, quantity, getState(book.stock, quantity, instantSell));
+                    Order order = new Order(GetClient(c, clientId), book, quantity, getState(book.stock, quantity));
                     InsertOrderInDb(c, order);
                     switch (order.state.type) {
                         case Order.State.Type.WAITING:
@@ -167,11 +167,7 @@ namespace StoreService {
 
             return null;
         }
-
-        public Order SellBook(int bookId, int quantity, int clientId) {
-            return CreateOrder(clientId, bookId, quantity, true);
-        }
-
+        
         public Order SetState(string id, string stateType) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
@@ -219,28 +215,20 @@ namespace StoreService {
          * Private Methods
          **/
 
-        private Order.State getState(int stock, int quantity, bool instantSell) {
+        private Order.State getState(int stock, int quantity) {
             if (stock < quantity) {
                 return new Order.State() { type = Order.State.Type.WAITING };
             } else {
-                if (instantSell) {
-                    return new Order.State() { type = Order.State.Type.DELIVERED, dispatchDate = DateTime.Now };
-                } else {
-                    return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
-                }
+                   return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now.AddDays(1) };
             }
         }
 
         private Order.State getState(string stateType, DateTime date) {
             switch (stateType.Trim()) {
-                case "DELIVERED":
-                    return new Order.State() { type = Order.State.Type.DELIVERED, dispatchDate = date };
                 case "WAITING":
                     return new Order.State() { type = Order.State.Type.WAITING, dispatchDate = date };
                 case "DISPATCH_OCCURS_AT":
                     return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = date };
-                case "DISPATCHED_AT":
-                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = date };
                 default:
                     return null;
             }
@@ -249,9 +237,9 @@ namespace StoreService {
         private Order.State nextState(string stateType) {
             switch (stateType) {
                 case "WAITING":
-                    return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(1) };
+                    return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(2) };
                 case "DISPATCH_OCCURS_AT":
-                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now.AddDays(2) };
+                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now };
                 default:
                     return null;
             }
