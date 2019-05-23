@@ -83,7 +83,10 @@ namespace StoreClient {
 
         public void addBooksToForm() {
             books = new List<Book>(proxy.GetBooks());
-            books.ForEach(book => booksComboBox.Items.Add(book.title));
+            books.ForEach(book => {
+                booksComboBox.Items.Add(book.title);
+                stockGrid.Rows.Add(book.title, book.stock);
+            });
         }
 
         public void addClientsToForm() {
