@@ -11,14 +11,33 @@
     import Books from './components/Books.vue';
     import Navbar from './components/Navbar.vue';
     import router from './router/index';
+    import Vue from 'vue';
+    import Vuex from 'vuex';
+
+    Vue.use(Vuex);
+
+    const store = new Vuex.Store({
+        state: {
+            client: {
+                id: Number,
+                name: String,
+            }
+        },
+        mutations: {
+            setActiveClient(state, newClient) {
+                state.client = newClient;
+            }
+        },
+    });
 
     export default {
         name: 'app',
         components: {
             Books,
-            Navbar
+            Navbar,
         },
-        router
+        router,
+        store,
     };
 </script>
 

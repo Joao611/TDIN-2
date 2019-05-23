@@ -2,7 +2,7 @@
     <div v-if="book">
         <h3>{{book.title}}</h3>
         <p>Availability: {{book.stock ? 'Immediate from store' : 'Needs shipping from the warehouse'}}</p>
-        <form @submit="submitOrder">
+        <form @submit.stop.prevent="submitOrder">
             <div class="form-group">
                 <label for="quantity-input">Quantity</label>
                 <input type="number" v-model="quantity" class="form-control"
@@ -34,15 +34,19 @@
             this.book = (await axiosInstance.get(`/books/${this.$route.params.id}`)).data;
         },
         methods: {
-            submitOrder(e) {
-                e.preventDefault();
+            async submitOrder() {
                 const body = {
                     clientId: 1,
                     bookId: this.book.id,
                     quantity: this.quantity,
                     instantSell: false
                 };
-                axiosInstance.post('/orders', body);
+                try {
+                    await axiosInstance.post('/orders', body);
+                    this.$router.push('/orders');
+                } catch (e) {
+                    alert('Bad request');
+                }
             }
         }
     }
