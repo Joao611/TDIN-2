@@ -10,13 +10,19 @@
                     <router-link tag="a" class="nav-link" :to="`${route.page}`">{{route.text}}</router-link>
                 </li>
             </ul>
+            <ClientSelector></ClientSelector>
         </div>
     </nav>
 </template>
 
 <script>
+    import ClientSelector from './ClientSelector';
+
     export default {
         name: 'Navbar',
+        components: {
+            ClientSelector,
+        },
         data() {
             return {
                 links: [
