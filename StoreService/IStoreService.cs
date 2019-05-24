@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StoreService.WarehouseServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.Serialization;
@@ -33,13 +34,18 @@ namespace StoreService {
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity);
 
-        [WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        /*[WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        Order SetState(string id, string stateType);
+        Order SetState(string id, string stateType);*/
 
         [WebInvoke(Method = "POST", UriTemplate = "/clients", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Client CreateClient(string name, string address, string email);
+
+        //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
+        [WebInvoke(Method = "PATCH", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        void NotifyFutureArrival(Request request);
     }
 
     /**

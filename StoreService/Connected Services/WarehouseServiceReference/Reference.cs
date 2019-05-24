@@ -29,6 +29,9 @@ namespace StoreService.WarehouseServiceReference {
         private int idField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid orderGuidField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int quantityField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -66,6 +69,19 @@ namespace StoreService.WarehouseServiceReference {
                 if ((this.idField.Equals(value) != true)) {
                     this.idField = value;
                     this.RaisePropertyChanged("id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid orderGuid {
+            get {
+                return this.orderGuidField;
+            }
+            set {
+                if ((this.orderGuidField.Equals(value) != true)) {
+                    this.orderGuidField = value;
+                    this.RaisePropertyChanged("orderGuid");
                 }
             }
         }

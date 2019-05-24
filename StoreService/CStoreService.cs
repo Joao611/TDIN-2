@@ -1,4 +1,5 @@
-﻿using System;
+﻿using StoreService.WarehouseServiceReference;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -200,21 +201,6 @@ namespace StoreService {
             return null;
         }
         
-        public Order SetState(string id, string stateType) {
-            using (SqlConnection c = new SqlConnection(database)) {
-                try {
-                    c.Open();
-                    Order.State state = nextState(stateType);
-                    UpdateOrderState(c, id, state);
-                    Order order = getOrder(c, Guid.Parse(id));
-                    return order;
-                } catch (SqlException e) {
-                    Console.WriteLine("DB Exception: " + e);
-                }
-                return null;
-            }
-        }
-
         public Client CreateClient(string name, string address, string email) {
             Client client = null;
             using (SqlConnection c = new SqlConnection(database)) {
@@ -243,6 +229,25 @@ namespace StoreService {
             return client;
         }
 
+        public void NotifyFutureArrival(Request request) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
+                        " WHERE Guid = @id";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@s", "DISPATCH_OCCURS_AT");
+                    cmd.Parameters.AddWithValue("@d", DateTime.Now.AddDays(2));
+                    cmd.Parameters.AddWithValue("@id", request.orderGuid.ToString());
+                    cmd.ExecuteNonQuery();
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+        }
+
         /** 
          * Private Methods
          **/
@@ -261,17 +266,6 @@ namespace StoreService {
                     return new Order.State() { type = Order.State.Type.WAITING, dispatchDate = date };
                 case "DISPATCH_OCCURS_AT":
                     return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = date };
-                default:
-                    return null;
-            }
-        }
-
-        private Order.State nextState(string stateType) {
-            switch (stateType) {
-                case "WAITING":
-                    return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(2) };
-                case "DISPATCH_OCCURS_AT":
-                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now };
                 default:
                     return null;
             }
@@ -345,6 +339,21 @@ namespace StoreService {
             cmd.ExecuteNonQuery();
         }
 
+        private Order SetState(string id, string stateType) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    Order.State state = nextState(stateType);
+                    UpdateOrderState(c, id, state);
+                    Order order = getOrder(c, Guid.Parse(id));
+                    return order;
+                } catch (SqlException e) {
+                    Console.WriteLine("DB Exception: " + e);
+                }
+                return null;
+            }
+        }
+
         private void UpdateOrderState(SqlConnection c, string id, Order.State state) {
             string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
                         " WHERE Id = @id";
@@ -354,5 +363,18 @@ namespace StoreService {
             cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
             cmd.ExecuteNonQuery();
         }
+
+        // [TODO]: Correct this. One order can pass from WAITING directly to DISPATCHED_AT
+        private Order.State nextState(string stateType) {
+            switch (stateType) {
+                case "WAITING":
+                    return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = DateTime.Now.AddDays(2) };
+                case "DISPATCH_OCCURS_AT":
+                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now };
+                default:
+                    return null;
+            }
+        }
+
     }
 }
