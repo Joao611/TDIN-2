@@ -15,9 +15,6 @@ namespace WarehouseService {
         readonly string database;
 
         public CWarehouseService() {
-            if (!MessageQueue.Exists(queueName)) {
-                MessageQueue.Create(queueName, false);
-            }
             string connection = ConfigurationManager.ConnectionStrings["WarehouseDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
         }
