@@ -60,7 +60,7 @@ namespace StoreService {
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
                                 GetBook(reader["Book"].ToString()),
                                 Convert.ToInt32(reader["Quantity"]),
-                                getState(reader["State"].ToString(), reader.GetDateTime(6))
+                                getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"]))
                             );
                             orders.Add(order);
                         }
@@ -181,7 +181,7 @@ namespace StoreService {
                             UpdateStock(c, bookId, -quantity);
                             order.book.stock -= quantity;
                             break;
-                        case Order.State.Type.DELIVERED:
+                        case Order.State.Type.DISPATCHED_AT:
                             UpdateStock(c, bookId, -quantity);
                             order.book.stock -= quantity;
                             break;
@@ -266,6 +266,8 @@ namespace StoreService {
                     return new Order.State() { type = Order.State.Type.WAITING, dispatchDate = date };
                 case "DISPATCH_OCCURS_AT":
                     return new Order.State() { type = Order.State.Type.DISPATCH_OCCURS_AT, dispatchDate = date };
+                case "DISPATCHED_AT":
+                    return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = date };
                 default:
                     return null;
             }
@@ -281,7 +283,7 @@ namespace StoreService {
                 Order order = new Order(GetClient(c, Convert.ToInt32(reader["Client"])),
                     GetBook(reader["Book"].ToString()),
                     Convert.ToInt32(reader["Quantity"]),
-                    getState(reader["State"].ToString(), reader.GetDateTime(6)));//is 6 the index of DispatchDate column???
+                    getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"])));
                 reader.Close();
                 return order;
             }
