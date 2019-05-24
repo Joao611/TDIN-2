@@ -16,7 +16,11 @@ namespace StoreService {
         [WebGet(UriTemplate = "/clients", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         List<Client> GetClients();
-        
+
+        [WebGet(UriTemplate = "/clients/{clientId}/orders", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        List<Order> GetClientOrders(string clientId);
+
         [WebGet(UriTemplate = "/books/{id}", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Book GetBook(string id);

@@ -42,6 +42,38 @@ namespace StoreService {
             return orders;
         }
 
+        public List<Order> GetClientOrders(string clientId) {
+            var orders = new List<Order>();
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT *" +
+                                " FROM Orders" +
+                                    " INNER JOIN Clients ON (Orders.Client = Clients.Id)" +
+                                " WHERE Clients.Id = @id";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@id", Convert.ToInt32(clientId));
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            Order order = new Order(
+                                GetClient(c, Convert.ToInt32(reader["Client"])),
+                                GetBook(reader["Book"].ToString()),
+                                Convert.ToInt32(reader["Quantity"]),
+                                getState(reader["State"].ToString(), reader.GetDateTime(6))
+                            );
+                            orders.Add(order);
+                        }
+                        reader.Close();
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return orders;
+        }
+
         public List<Book> GetBooks() {
             var books = new List<Book>();
             using (SqlConnection c = new SqlConnection(database)) {
