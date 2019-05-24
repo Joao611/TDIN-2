@@ -82,6 +82,10 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WarehouseDB_log.ldf">
+      <DependentUpon>WarehouseDB.mdf</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Connected Services\StoreServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\StoreServiceReference\configuration.svcinfo" />
     <None Include="Connected Services\StoreServiceReference\Reference.svcmap">

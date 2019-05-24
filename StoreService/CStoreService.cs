@@ -28,7 +28,7 @@ namespace StoreService {
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
                                 GetBook(reader["Book"].ToString()),
                                 Convert.ToInt32(reader["Quantity"]),
-                                getState(reader["State"].ToString(), reader.GetDateTime(6))
+                                getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"]))
                             );
                             orders.Add(order);
                         }

@@ -97,7 +97,7 @@ namespace StoreClient {
             int bookId = books.Find(book => book.title == bookName).id;
             int quantity = Convert.ToInt32(quantityNumericUpDown.Value);
             quantityNumericUpDown.Value = 1;
-            Order newOrder = proxy.CreateOrder(bookId, quantity, clientId);
+            Order newOrder = proxy.CreateOrder(clientId, bookId, quantity);
             orders.Add(newOrder);
             requestsGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
             updateBookStock(newOrder.book.title, newOrder.book.stock);
