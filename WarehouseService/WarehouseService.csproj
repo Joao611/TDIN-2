@@ -84,7 +84,7 @@
   <ItemGroup>
     <Content Include="WarehouseDB_log.ldf">
       <DependentUpon>WarehouseDB.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Connected Services\StoreServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\StoreServiceReference\configuration.svcinfo" />
@@ -93,7 +93,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="WarehouseDB.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

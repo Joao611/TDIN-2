@@ -26,9 +26,6 @@ namespace WarehouseForm.WarehouseServiceReference {
         private string bookTitleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int idField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Guid orderGuidField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -56,19 +53,6 @@ namespace WarehouseForm.WarehouseServiceReference {
                 if ((object.ReferenceEquals(this.bookTitleField, value) != true)) {
                     this.bookTitleField = value;
                     this.RaisePropertyChanged("bookTitle");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int id {
-            get {
-                return this.idField;
-            }
-            set {
-                if ((this.idField.Equals(value) != true)) {
-                    this.idField = value;
-                    this.RaisePropertyChanged("id");
                 }
             }
         }
@@ -170,8 +154,20 @@ namespace WarehouseForm.WarehouseServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WarehouseServiceReference.IWarehouseService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WarehouseServiceReference.IWarehouseService", CallbackContract=typeof(WarehouseForm.WarehouseServiceReference.IWarehouseServiceCallback))]
     public interface IWarehouseService {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/Subscribe", ReplyAction="http://tempuri.org/IWarehouseService/SubscribeResponse")]
+        void Subscribe();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/Subscribe", ReplyAction="http://tempuri.org/IWarehouseService/SubscribeResponse")]
+        System.Threading.Tasks.Task SubscribeAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/Unsubscribe", ReplyAction="http://tempuri.org/IWarehouseService/UnsubscribeResponse")]
+        void Unsubscribe();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/Unsubscribe", ReplyAction="http://tempuri.org/IWarehouseService/UnsubscribeResponse")]
+        System.Threading.Tasks.Task UnsubscribeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/GetRequests", ReplyAction="http://tempuri.org/IWarehouseService/GetRequestsResponse")]
         WarehouseForm.WarehouseServiceReference.Request[] GetRequests();
@@ -187,30 +183,57 @@ namespace WarehouseForm.WarehouseServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IWarehouseServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseService/RequestCreated")]
+        void RequestCreated(WarehouseForm.WarehouseServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseService/RequestStateUpdated")]
+        void RequestStateUpdated(WarehouseForm.WarehouseServiceReference.Request request);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IWarehouseServiceChannel : WarehouseForm.WarehouseServiceReference.IWarehouseService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class WarehouseServiceClient : System.ServiceModel.ClientBase<WarehouseForm.WarehouseServiceReference.IWarehouseService>, WarehouseForm.WarehouseServiceReference.IWarehouseService {
+    public partial class WarehouseServiceClient : System.ServiceModel.DuplexClientBase<WarehouseForm.WarehouseServiceReference.IWarehouseService>, WarehouseForm.WarehouseServiceReference.IWarehouseService {
         
-        public WarehouseServiceClient() {
+        public WarehouseServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public WarehouseServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public WarehouseServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public WarehouseServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public WarehouseServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public WarehouseServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public WarehouseServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public WarehouseServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public WarehouseServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public void Subscribe() {
+            base.Channel.Subscribe();
+        }
+        
+        public System.Threading.Tasks.Task SubscribeAsync() {
+            return base.Channel.SubscribeAsync();
+        }
+        
+        public void Unsubscribe() {
+            base.Channel.Unsubscribe();
+        }
+        
+        public System.Threading.Tasks.Task UnsubscribeAsync() {
+            return base.Channel.UnsubscribeAsync();
         }
         
         public WarehouseForm.WarehouseServiceReference.Request[] GetRequests() {

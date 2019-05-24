@@ -9,9 +9,13 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IWarehouseService_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
+        <wsrm:RMAssertion xmlns:wsrm="http://schemas.xmlsoap.org/ws/2005/02/rm/policy">
+          <wsrm:InactivityTimeout Milliseconds="600000" />
+          <wsrm:AcknowledgementInterval Milliseconds="200" />
+        </wsrm:RMAssertion>
         <sp:SymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
           <wsp:Policy>
             <sp:ProtectionToken>
@@ -23,6 +27,7 @@
                       <wsp:Policy>
                         <sp:SignedParts>
                           <sp:Body />
+                          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
                           <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
                           <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
                           <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
@@ -101,15 +106,21 @@
             <sp:RequireServerEntropy />
           </wsp:Policy>
         </sp:Trust10>
+        <cdp:CompositeDuplex xmlns:cdp="http://schemas.microsoft.com/net/2006/06/duplex" />
+        <ow:OneWay xmlns:ow="http://schemas.microsoft.com/ws/2005/05/routing/policy" />
         <wsaw:UsingAddressing />
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IWarehouseService_GetRequests_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_Subscribe_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
           <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
           <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
@@ -124,11 +135,15 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IWarehouseService_GetRequests_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_Subscribe_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
           <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
           <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
@@ -143,11 +158,15 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IWarehouseService_SendBooks_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_Unsubscribe_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
           <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
           <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
@@ -162,11 +181,153 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSHttpBinding_IWarehouseService_SendBooks_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_Unsubscribe_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
           <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_GetRequests_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_GetRequests_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_SendBooks_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_SendBooks_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_RequestCreated_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IWarehouseService_RequestStateUpdated_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
           <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
           <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
@@ -191,6 +352,18 @@
   <wsdl:message name="IWarehouseQueueService_RequestBooks_InputMessage">
     <wsdl:part name="parameters" element="tns:RequestBooks" />
   </wsdl:message>
+  <wsdl:message name="IWarehouseService_Subscribe_InputMessage">
+    <wsdl:part name="parameters" element="tns:Subscribe" />
+  </wsdl:message>
+  <wsdl:message name="IWarehouseService_Subscribe_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubscribeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWarehouseService_Unsubscribe_InputMessage">
+    <wsdl:part name="parameters" element="tns:Unsubscribe" />
+  </wsdl:message>
+  <wsdl:message name="IWarehouseService_Unsubscribe_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnsubscribeResponse" />
+  </wsdl:message>
   <wsdl:message name="IWarehouseService_GetRequests_InputMessage">
     <wsdl:part name="parameters" element="tns:GetRequests" />
   </wsdl:message>
@@ -203,12 +376,26 @@
   <wsdl:message name="IWarehouseService_SendBooks_OutputMessage">
     <wsdl:part name="parameters" element="tns:SendBooksResponse" />
   </wsdl:message>
+  <wsdl:message name="IWarehouseService_RequestCreated_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RequestCreated" />
+  </wsdl:message>
+  <wsdl:message name="IWarehouseService_RequestStateUpdated_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:RequestStateUpdated" />
+  </wsdl:message>
   <wsdl:portType name="IWarehouseQueueService">
     <wsdl:operation name="RequestBooks">
       <wsdl:input wsaw:Action="http://tempuri.org/IWarehouseQueueService/RequestBooks" message="tns:IWarehouseQueueService_RequestBooks_InputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:portType name="IWarehouseService">
+    <wsdl:operation name="Subscribe">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWarehouseService/Subscribe" message="tns:IWarehouseService_Subscribe_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/SubscribeResponse" message="tns:IWarehouseService_Subscribe_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Unsubscribe">
+      <wsdl:input wsaw:Action="http://tempuri.org/IWarehouseService/Unsubscribe" message="tns:IWarehouseService_Unsubscribe_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/UnsubscribeResponse" message="tns:IWarehouseService_Unsubscribe_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetRequests">
       <wsdl:input wsaw:Action="http://tempuri.org/IWarehouseService/GetRequests" message="tns:IWarehouseService_GetRequests_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/GetRequestsResponse" message="tns:IWarehouseService_GetRequests_OutputMessage" />
@@ -216,6 +403,12 @@
     <wsdl:operation name="SendBooks">
       <wsdl:input wsaw:Action="http://tempuri.org/IWarehouseService/SendBooks" message="tns:IWarehouseService_SendBooks_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/SendBooksResponse" message="tns:IWarehouseService_SendBooks_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestCreated">
+      <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/RequestCreated" message="tns:IWarehouseService_RequestCreated_OutputCallbackMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestStateUpdated">
+      <wsdl:output wsaw:Action="http://tempuri.org/IWarehouseService/RequestStateUpdated" message="tns:IWarehouseService_RequestStateUpdated_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BookShopQueueEndpoint" type="tns:IWarehouseQueueService">
@@ -228,28 +421,64 @@
       </wsdl:input>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:binding name="WSHttpBinding_IWarehouseService" type="tns:IWarehouseService">
-    <wsp:PolicyReference URI="#WSHttpBinding_IWarehouseService_policy" />
+  <wsdl:binding name="WSDualHttpBinding_IWarehouseService" type="tns:IWarehouseService">
+    <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_policy" />
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetRequests">
-      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/GetRequests" style="document" />
+    <wsdl:operation name="Subscribe">
+      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/Subscribe" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IWarehouseService_GetRequests_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_Subscribe_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IWarehouseService_GetRequests_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_Subscribe_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Unsubscribe">
+      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/Unsubscribe" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_Unsubscribe_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_Unsubscribe_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRequests">
+      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/GetRequests" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_GetRequests_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_GetRequests_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="SendBooks">
       <soap12:operation soapAction="http://tempuri.org/IWarehouseService/SendBooks" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSHttpBinding_IWarehouseService_SendBooks_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_SendBooks_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSHttpBinding_IWarehouseService_SendBooks_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_SendBooks_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestCreated">
+      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/RequestCreated" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_RequestCreated_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestStateUpdated">
+      <soap12:operation soapAction="http://tempuri.org/IWarehouseService/RequestStateUpdated" style="document" />
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IWarehouseService_RequestStateUpdated_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -264,7 +493,7 @@
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
-    <wsdl:port name="WSHttpBinding_IWarehouseService" binding="tns:WSHttpBinding_IWarehouseService">
+    <wsdl:port name="WSDualHttpBinding_IWarehouseService" binding="tns:WSDualHttpBinding_IWarehouseService">
       <soap12:address location="http://localhost:8733/Design_Time_Addresses/WarehouseService/ws" />
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:8733/Design_Time_Addresses/WarehouseService/ws</wsa10:Address>

@@ -12,10 +12,9 @@ namespace WarehouseForm {
         /// </summary>
         [STAThread]
         static void Main() {
-            WarehouseServiceClient proxy = new WarehouseServiceClient();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WarehouseClientForm(proxy));
+            Application.Run(new WarehouseClientForm());
         }
     }
 }

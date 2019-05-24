@@ -14,30 +14,38 @@ namespace WarehouseService {
         void RequestBooks(string bookTitle, int quantity, Guid orderGuid);
     }
 
-    [ServiceContract]
+    [ServiceContract(CallbackContract=typeof(IRequestsChanged))]
     public interface IWarehouseService {
-        [WebGet(UriTemplate = "/requests", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        void Subscribe();
+
+        [OperationContract]
+        void Unsubscribe();
+
         [OperationContract]
         List<Request> GetRequests();
 
-        [WebInvoke(Method = "POST", UriTemplate = "/requests", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         void SendBooks(Request request);
+    }
+
+    public interface IRequestsChanged {
+        [OperationContract(IsOneWay = true)]
+        void RequestCreated(Request request);
+
+        [OperationContract(IsOneWay=true)]
+        void RequestStateUpdated(Request request);
     }
 
     [DataContract]
     public class Request {
 
-        public Request(int id, string bookTitle, int quantity, Guid orderGuid, bool ready) {
-            this.id = id;
+        public Request(string bookTitle, int quantity, Guid orderGuid, bool ready) {
             this.bookTitle = bookTitle;
             this.quantity = quantity;
             this.orderGuid = orderGuid;
             this.ready = ready;
         }
-
-        [DataMember]
-        public int id { get; private set; }
 
         [DataMember]
         public string bookTitle { get; private set; }
@@ -50,9 +58,5 @@ namespace WarehouseService {
 
         [DataMember]
         public bool ready { get; private set; }
-
-        
     }
-
-    
 }

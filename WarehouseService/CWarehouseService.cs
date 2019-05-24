@@ -9,14 +9,48 @@ using System.Messaging;
 using System.Data.SqlClient;
 
 namespace WarehouseService {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
+    [ServiceBehavior(InstanceContextMode=InstanceContextMode.PerCall)]
     public class CWarehouseService : IWarehouseQueueService, IWarehouseService {
-        string queueName = ".\\private$\\BookShopQueue";
-        readonly string database;
+        private readonly string database;
+        private static List<IRequestsChanged> subscribers = new List<IRequestsChanged>();
+
+        private enum RequestType {
+            CREATE,
+            UPDATE_STATE
+        }
 
         public CWarehouseService() {
             string connection = ConfigurationManager.ConnectionStrings["WarehouseDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        public void Subscribe() {
+            IRequestsChanged callback = OperationContext.Current.GetCallbackChannel<IRequestsChanged>();
+            if (!subscribers.Contains(callback)) {
+                subscribers.Add(callback);
+            }
+        }
+
+        public void Unsubscribe() {
+            IRequestsChanged callback = OperationContext.Current.GetCallbackChannel<IRequestsChanged>();
+            subscribers.Remove(callback);
+        }
+
+        private void NotifyClients(RequestType type, Request request) {
+            subscribers.ForEach(delegate(IRequestsChanged callback) {
+                if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
+                    switch (type) {
+                        case RequestType.CREATE:
+                            callback.RequestCreated(request);
+                            break;
+                        case RequestType.UPDATE_STATE:
+                            callback.RequestStateUpdated(request);
+                            break;
+                    }
+                } else {
+                    subscribers.Remove(callback);
+                }
+            });
         }
 
         public void RequestBooks(string bookTitle, int quantity, Guid orderGuid) {
@@ -24,12 +58,13 @@ namespace WarehouseService {
                 try {
                     c.Open();
                     string sql = "INSERT INTO Requests (BookTitle, Quantity, OrderGuid, Ready)" +
-                        " VALUES (@title, @quantity, @orderGuid, 0)";
+                        " VALUES (@title, @quantity, @guid, 0)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@title", bookTitle);
                     cmd.Parameters.AddWithValue("@quantity", quantity);
-                    cmd.Parameters.AddWithValue("@orderId", orderGuid);
+                    cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
                     cmd.ExecuteNonQuery();
+                    NotifyClients(RequestType.CREATE, new Request(bookTitle, quantity, orderGuid, false));
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
                 } finally {
@@ -47,12 +82,11 @@ namespace WarehouseService {
                     SqlCommand cmd = new SqlCommand(sql, c);
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
-                            int id = Convert.ToInt32(reader["Id"]);
                             string bookTitle = reader["BookTitle"].ToString();
                             int quantity = Convert.ToInt32(reader["Quantity"]);
                             Guid orderGuid = Guid.Parse(reader["OrderGuid"].ToString());
                             bool ready = Convert.ToInt16(reader["Ready"]) == 0 ? false : true;
-                            Request request = new Request(id, bookTitle, quantity, orderGuid, ready);
+                            Request request = new Request(bookTitle, quantity, orderGuid, ready);
                             requests.Add(request);
                         }
                         reader.Close();

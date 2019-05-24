@@ -9,10 +9,12 @@ using System.ServiceModel.Web;
 namespace StoreService {
     public class CStoreService : IStoreService {
         readonly string database;
+        WarehouseQueueServiceClient warehouseProxy;
 
         CStoreService() {
             string connection = ConfigurationManager.ConnectionStrings["StoreDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
+            warehouseProxy = new WarehouseQueueServiceClient();
         }
 
         public List<Order> GetOrders() {
@@ -176,6 +178,7 @@ namespace StoreService {
                     switch (order.state.type) {
                         case Order.State.Type.WAITING:
                             // TODO: warehouse MSMQ request
+                            warehouseProxy.RequestBooks(order.book.title, order.quantity, order.guid);
                             break;
                         case Order.State.Type.DISPATCH_OCCURS_AT:
                             UpdateStock(c, bookId, -quantity);
