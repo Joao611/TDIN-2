@@ -70,11 +70,20 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="WarehouseClientForm.resx">
+      <DependentUpon>WarehouseClientForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Connected Services\WarehouseServiceReference\service.wsdl" />
     <None Include="Connected Services\WarehouseServiceReference\service.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\WarehouseServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\WarehouseServiceReference\WarehouseForm.WarehouseServiceReference.Request.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WarehouseServiceReference\WarehouseService.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Settings.settings">

@@ -9,17 +9,181 @@
 //------------------------------------------------------------------------------
 
 namespace WarehouseForm.WarehouseServiceReference {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Request", Namespace="http://schemas.datacontract.org/2004/07/WarehouseService")]
+    [System.SerializableAttribute()]
+    public partial class Request : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string bookTitleField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int idField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Guid orderGuidField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int quantityField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool readyField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string bookTitle {
+            get {
+                return this.bookTitleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.bookTitleField, value) != true)) {
+                    this.bookTitleField = value;
+                    this.RaisePropertyChanged("bookTitle");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int id {
+            get {
+                return this.idField;
+            }
+            set {
+                if ((this.idField.Equals(value) != true)) {
+                    this.idField = value;
+                    this.RaisePropertyChanged("id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid orderGuid {
+            get {
+                return this.orderGuidField;
+            }
+            set {
+                if ((this.orderGuidField.Equals(value) != true)) {
+                    this.orderGuidField = value;
+                    this.RaisePropertyChanged("orderGuid");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int quantity {
+            get {
+                return this.quantityField;
+            }
+            set {
+                if ((this.quantityField.Equals(value) != true)) {
+                    this.quantityField = value;
+                    this.RaisePropertyChanged("quantity");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool ready {
+            get {
+                return this.readyField;
+            }
+            set {
+                if ((this.readyField.Equals(value) != true)) {
+                    this.readyField = value;
+                    this.RaisePropertyChanged("ready");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WarehouseServiceReference.IWarehouseQueueService")]
+    public interface IWarehouseQueueService {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseQueueService/RequestBooks")]
+        void RequestBooks(string bookTitle, int quantity, System.Guid orderGuid);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseQueueService/RequestBooks")]
+        System.Threading.Tasks.Task RequestBooksAsync(string bookTitle, int quantity, System.Guid orderGuid);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IWarehouseQueueServiceChannel : WarehouseForm.WarehouseServiceReference.IWarehouseQueueService, System.ServiceModel.IClientChannel {
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class WarehouseQueueServiceClient : System.ServiceModel.ClientBase<WarehouseForm.WarehouseServiceReference.IWarehouseQueueService>, WarehouseForm.WarehouseServiceReference.IWarehouseQueueService {
+        
+        public WarehouseQueueServiceClient() {
+        }
+        
+        public WarehouseQueueServiceClient(string endpointConfigurationName) : 
+                base(endpointConfigurationName) {
+        }
+        
+        public WarehouseQueueServiceClient(string endpointConfigurationName, string remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public WarehouseQueueServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(endpointConfigurationName, remoteAddress) {
+        }
+        
+        public WarehouseQueueServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(binding, remoteAddress) {
+        }
+        
+        public void RequestBooks(string bookTitle, int quantity, System.Guid orderGuid) {
+            base.Channel.RequestBooks(bookTitle, quantity, orderGuid);
+        }
+        
+        public System.Threading.Tasks.Task RequestBooksAsync(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.RequestBooksAsync(bookTitle, quantity, orderGuid);
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="WarehouseServiceReference.IWarehouseService")]
     public interface IWarehouseService {
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseService/requestBooks")]
-        void requestBooks(string bookTitle, int quantity, System.Guid orderGuid);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/GetRequests", ReplyAction="http://tempuri.org/IWarehouseService/GetRequestsResponse")]
+        WarehouseForm.WarehouseServiceReference.Request[] GetRequests();
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IWarehouseService/requestBooks")]
-        System.Threading.Tasks.Task requestBooksAsync(string bookTitle, int quantity, System.Guid orderGuid);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/GetRequests", ReplyAction="http://tempuri.org/IWarehouseService/GetRequestsResponse")]
+        System.Threading.Tasks.Task<WarehouseForm.WarehouseServiceReference.Request[]> GetRequestsAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
+        void SendBooks(WarehouseForm.WarehouseServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
+        System.Threading.Tasks.Task SendBooksAsync(WarehouseForm.WarehouseServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -49,12 +213,20 @@ namespace WarehouseForm.WarehouseServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public void requestBooks(string bookTitle, int quantity, System.Guid orderGuid) {
-            base.Channel.requestBooks(bookTitle, quantity, orderGuid);
+        public WarehouseForm.WarehouseServiceReference.Request[] GetRequests() {
+            return base.Channel.GetRequests();
         }
         
-        public System.Threading.Tasks.Task requestBooksAsync(string bookTitle, int quantity, System.Guid orderGuid) {
-            return base.Channel.requestBooksAsync(bookTitle, quantity, orderGuid);
+        public System.Threading.Tasks.Task<WarehouseForm.WarehouseServiceReference.Request[]> GetRequestsAsync() {
+            return base.Channel.GetRequestsAsync();
+        }
+        
+        public void SendBooks(WarehouseForm.WarehouseServiceReference.Request request) {
+            base.Channel.SendBooks(request);
+        }
+        
+        public System.Threading.Tasks.Task SendBooksAsync(WarehouseForm.WarehouseServiceReference.Request request) {
+            return base.Channel.SendBooksAsync(request);
         }
     }
 }

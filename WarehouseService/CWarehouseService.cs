@@ -10,7 +10,7 @@ using System.Data.SqlClient;
 
 namespace WarehouseService {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
-    public class CWarehouseService : IWarehouseService {
+    public class CWarehouseService : IWarehouseQueueService, IWarehouseService {
         string queueName = ".\\private$\\BookShopQueue";
         readonly string database;
 
@@ -22,12 +22,12 @@ namespace WarehouseService {
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
         }
 
-        public void requestBooks(string bookTitle, int quantity, Guid orderGuid) {
+        public void RequestBooks(string bookTitle, int quantity, Guid orderGuid) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "INSERT INTO Requests (Title, Quantity, OrderGuid)" +
-                        " VALUES (@title, @quantity, @orderGuid)";
+                    string sql = "INSERT INTO Requests (BookTitle, Quantity, OrderGuid, Ready)" +
+                        " VALUES (@title, @quantity, @orderGuid, 0)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@title", bookTitle);
                     cmd.Parameters.AddWithValue("@quantity", quantity);
@@ -39,6 +39,38 @@ namespace WarehouseService {
                     c.Close();
                 }
             }
+        }
+
+        public List<Request> GetRequests() {
+            List<Request> requests = new List<Request>();
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT * FROM Requests";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            int id = Convert.ToInt32(reader["Id"]);
+                            string bookTitle = reader["BookTitle"].ToString();
+                            int quantity = Convert.ToInt32(reader["Quantity"]);
+                            Guid orderGuid = Guid.Parse(reader["OrderGuid"].ToString());
+                            bool ready = Convert.ToInt16(reader["Ready"]) == 0 ? false : true;
+                            Request request = new Request(id, bookTitle, quantity, orderGuid, ready);
+                            requests.Add(request);
+                        }
+                        reader.Close();
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return requests;
+        }
+
+        public void SendBooks(Request request) {
+            throw new NotImplementedException();
         }
     }
 }

@@ -3,33 +3,56 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 
 namespace WarehouseService {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IWarehouseService {
+    public interface IWarehouseQueueService {
         [OperationContract(IsOneWay = true)]
-        void requestBooks(string bookTitle, int quantity, Guid orderGuid);
+        void RequestBooks(string bookTitle, int quantity, Guid orderGuid);
     }
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
-    // You can add XSD files into the project. After building the project, you can directly use the data types defined there, with the namespace "WarehouseService.ContractType".
+    [ServiceContract]
+    public interface IWarehouseService {
+        [WebGet(UriTemplate = "/requests", ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        List<Request> GetRequests();
+
+        [WebInvoke(Method = "POST", UriTemplate = "/requests", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        void SendBooks(Request request);
+    }
+
     [DataContract]
-    public class CompositeType {
-        bool boolValue = true;
-        string stringValue = "Hello ";
+    public class Request {
 
-        [DataMember]
-        public bool BoolValue {
-            get { return boolValue; }
-            set { boolValue = value; }
+        public Request(int id, string bookTitle, int quantity, Guid orderGuid, bool ready) {
+            this.id = id;
+            this.bookTitle = bookTitle;
+            this.quantity = quantity;
+            this.orderGuid = orderGuid;
+            this.ready = ready;
         }
 
         [DataMember]
-        public string StringValue {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
+        public int id { get; private set; }
+
+        [DataMember]
+        public string bookTitle { get; private set; }
+
+        [DataMember]
+        public int quantity { get; private set; }
+
+        [DataMember]
+        public Guid orderGuid { get; private set; }
+
+        [DataMember]
+        public bool ready { get; private set; }
+
+        
     }
+
+    
 }

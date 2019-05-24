@@ -65,6 +65,12 @@
     <None Include="Connected Services\WarehouseServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Connected Services\WarehouseServiceReference\StoreService.WarehouseServiceReference.Request.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\WarehouseServiceReference\WarehouseService.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\WarehouseServiceReference\configuration91.svcinfo" />
