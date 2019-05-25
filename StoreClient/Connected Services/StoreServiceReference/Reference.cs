@@ -403,7 +403,7 @@ namespace StoreClient.StoreServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Request", Namespace="http://schemas.datacontract.org/2004/07/WarehouseService")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Request", Namespace="http://schemas.datacontract.org/2004/07/StoreService")]
     [System.SerializableAttribute()]
     public partial class Request : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -557,6 +557,12 @@ namespace StoreClient.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
+        void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
+        System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -675,6 +681,14 @@ namespace StoreClient.StoreServiceReference {
         
         public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request) {
             return base.Channel.NotifyFutureArrivalAsync(request);
+        }
+        
+        public void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            base.Channel.SatisfyOrders(bookTitle, quantity, orderGuid, ready);
+        }
+        
+        public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid, ready);
         }
     }
 }

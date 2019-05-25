@@ -24,6 +24,7 @@ namespace StoreService {
             }
         }
 
+
         public void Unsubscribe() {
             IOrdersChanged callback = OperationContext.Current.GetCallbackChannel<IOrdersChanged>();
             subscribers.Remove(callback);
@@ -57,6 +58,57 @@ namespace StoreService {
             NotifyClients(OrderType.UPDATE_STATE, order);
             return order;
         }
+
+        public void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+            Request request = new Request(bookTitle, quantity, orderGuid, ready);
+            Book book = GetBookByTitle(request.bookTitle);
+            int tmpStock = book.stock + request.quantity;
+            Order.State state = new Order.State() {
+                type = Order.State.Type.DISPATCHED_AT,
+                dispatchDate = DateTime.Now
+            };
+
+            Order targetOrder = null;
+
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    UpdateOrderState(c, request.orderGuid, state);
+                    targetOrder = getOrder(c, request.orderGuid);
+                    tmpStock -= targetOrder.quantity;
+                } catch (SqlException e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            List<Order> orders = getOrdersByBook(book);
+            Order o = null;
+            while ((o = orders.Find(order => order.quantity <= tmpStock)) != null) {
+                using (SqlConnection c = new SqlConnection(database)) {
+                    try {
+                        c.Open();
+                        UpdateOrderState(c, o.guid, state);
+                        tmpStock -= o.quantity;
+                        orders.Remove(o);
+                    } catch (SqlException e) {
+                        Console.WriteLine("DB Exception: " + e);
+                    } finally {
+                        c.Close();
+                    }
+                }
+            }
+
+            UpdateBookStock(book.id, tmpStock);
+            book.stock = tmpStock;
+            orders.Add(targetOrder);
+            orders.ForEach(order => {
+                order.book = book;
+                NotifyClients(OrderType.UPDATE_STATE, order);
+            });
+            
+        }
+
     }
 
     [ServiceBehavior]
@@ -65,9 +117,9 @@ namespace StoreService {
     }
 
     public class CStoreService {
-        private readonly string database;
+        protected readonly string database;
         private readonly WarehouseQueueServiceClient warehouseProxy;
-        
+
         public CStoreService() {
             string connection = ConfigurationManager.ConnectionStrings["StoreDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
@@ -255,7 +307,7 @@ namespace StoreService {
 
             return null;
         }
-        
+
         public Client CreateClient(string name, string address, string email) {
             Client client = null;
             using (SqlConnection c = new SqlConnection(database)) {
@@ -316,7 +368,7 @@ namespace StoreService {
             if (stock < quantity) {
                 return new Order.State() { type = Order.State.Type.WAITING };
             } else {
-                   return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now.AddDays(1) };
+                return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now.AddDays(1) };
             }
         }
 
@@ -333,7 +385,7 @@ namespace StoreService {
             }
         }
 
-        private Order getOrder(SqlConnection c, Guid id) {
+        protected Order getOrder(SqlConnection c, Guid id) {
             string sql = "SELECT * FROM Orders" +
                         " WHERE Guid = @id";
             SqlCommand cmd = new SqlCommand(sql, c);
@@ -378,7 +430,37 @@ namespace StoreService {
             }
             return client;
         }
-        
+
+        protected Book GetBookByTitle(string title) {
+            Book book = null;
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT * FROM Books" +
+                        " WHERE Title = @title";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@title", title);
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        reader.Read();
+                        book = new Book() {
+                            id = Convert.ToInt32(reader["Id"]),
+                            title = reader["Title"].ToString(),
+                            stock = Convert.ToInt32(reader["stock"]),
+                            price = Convert.ToDouble(reader["price"])
+                        };
+                        reader.Close();
+                    }
+                } catch (SqlException e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return book;
+        }
+
         private void InsertOrderInDb(SqlConnection c, Order order) {
             string sql = "INSERT INTO Orders (Guid, Client, Book, Quantity, State, DispatchDate)" +
                         " VALUES (@guid, @c, @b, @qty, @state, @date)";
@@ -401,7 +483,7 @@ namespace StoreService {
             cmd.ExecuteNonQuery();
         }
 
-        private Order SetState(string id, string stateType) {
+        /*private Order SetState(string id, string stateType) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
@@ -414,15 +496,15 @@ namespace StoreService {
                 }
                 return null;
             }
-        }
+        }*/
 
-        private void UpdateOrderState(SqlConnection c, string id, Order.State state) {
+        protected void UpdateOrderState(SqlConnection c, Guid guid, Order.State state) {
             string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
-                        " WHERE Id = @id";
+                        " WHERE Guid = @id";
             SqlCommand cmd = new SqlCommand(sql, c);
             cmd.Parameters.AddWithValue("@s", state.type.ToString());
             cmd.Parameters.AddWithValue("@d", state.dispatchDate);
-            cmd.Parameters.AddWithValue("@id", Convert.ToInt32(id));
+            cmd.Parameters.AddWithValue("@id", guid.ToString());
             cmd.ExecuteNonQuery();
         }
 
@@ -437,5 +519,56 @@ namespace StoreService {
                     return null;
             }
         }
+
+        
+
+        protected List<Order> getOrdersByBook(Book book) {
+            List<Order> orders = new List<Order>();
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT * FROM Orders" +
+                        " WHERE Book = @bookId AND State <> 'DISPATCHED_AT'";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@bookId", book.id);
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            Order order = new Order(
+                                GetClient(c, Convert.ToInt32(reader["Client"])),
+                                book,
+                                Convert.ToInt32(reader["Quantity"]),
+                                getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"]))
+                            );
+                            orders.Add(order);
+                        }
+                        reader.Close();
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return orders;
+        }
+
+        protected void UpdateBookStock(int bookId, int stock) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "UPDATE Books SET Stock = @s" +
+                        " WHERE Id = @id";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@s", stock);
+                    cmd.Parameters.AddWithValue("@id", bookId);
+                    cmd.ExecuteNonQuery();
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+        }
+
     }
 }

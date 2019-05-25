@@ -22,6 +22,8 @@ namespace StoreClient {
             stockPanel.Location = newOrderPanel.Location;
             requestsPanel.Parent = this;
             requestsPanel.Location = newOrderPanel.Location;
+            ordersPanel.Parent = this;
+            ordersPanel.Location = newOrderPanel.Location;
             newClientPanel.Parent = newOrderPanel;
             regClientPanel.Parent = newOrderPanel;
             newClientPanel.Location = regClientPanel.Location;
@@ -39,8 +41,12 @@ namespace StoreClient {
             setVisibility(1);
         }
 
-        private void requestsButton_Click(object sender, EventArgs e) {
+        private void ordersButton_Click(object sender, EventArgs e) {
             setVisibility(2);
+        }
+
+        private void requestsButton_Click(object sender, EventArgs e) {
+            setVisibility(3);
         }
 
         private void resClientButton_Click(object sender, EventArgs e) {
@@ -102,12 +108,12 @@ namespace StoreClient {
             quantityNumericUpDown.Value = 1;
             Order newOrder = await proxy.CreateOrderAsync(clientId, bookId, quantity);
             orders.Add(newOrder);
-            requestsGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
+            ordersGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
             updateBookStock(newOrder.book.title, newOrder.book.stock);
         }
 
         public void setVisibility(int index) {
-            List<Panel> panels = new List<Panel>() { newOrderPanel, stockPanel, requestsPanel };
+            List<Panel> panels = new List<Panel>() { newOrderPanel, stockPanel, ordersPanel, requestsPanel };
             panels.ForEach(panel => panel.Visible = false);
             panels[index].Visible = true;
         }
@@ -129,7 +135,7 @@ namespace StoreClient {
             orders = new List<Order>(proxy.GetOrders());
             orders.ForEach(order => {
                 Console.WriteLine(order.state.ToString());
-                requestsGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
+                ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
                 });
         }
 
@@ -171,15 +177,43 @@ namespace StoreClient {
         }
 
         public void OrderCreated(Order order) {
-            throw new NotImplementedException();
+            orders.Add(order);
+            ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, order.state);
         }
 
         public void OrderStateUpdated(Order order) {
-            throw new NotImplementedException();
+            Order o = orders.Find(or => or.guid == order.guid);
+            o.state = order.state;
+            if(order.state.type == Order.State.Type.DISPATCHED_AT) {
+                Book book = books.Find(b => b.id == order.book.id);
+                if(book.stock != order.book.stock) {
+                    book.stock = order.book.stock;
+                    DataGridViewRow row = stockGrid.Rows
+                            .Cast<DataGridViewRow>()
+                            .FirstOrDefault(r => (string)r.Cells["bookNameColumn"].Value == book.title);
+                    row.Cells["bookStockColumn"].Value = book.stock;
+                }
+            }
         }
 
         private void StoreClientForm_FormClosing(object sender, FormClosingEventArgs e) {
             proxy.Unsubscribe();
+            proxy.Close();
         }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (ordersGrid.SelectedRows.Count > 0) {
+                DataGridViewRow row = ordersGrid.SelectedRows[0];
+                // [TODO]
+                //proxy.SatisfyOrders();
+                //(string)row.Cells["bookColumn"].Value
+                proxy.SatisfyOrders((string)row.Cells["bookColumn"].Value,
+                    (int)row.Cells["quantityColumn"].Value,
+                    (Guid)row.Cells["orderIdColumn"].Value,
+                    false);
+            }
+        }
+
+        
     }
 }

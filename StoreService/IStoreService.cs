@@ -85,6 +85,9 @@ namespace StoreService {
         //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
         [OperationContract]
         Order NotifyFutureArrival(Request request);
+
+        [OperationContract]
+        void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready);
     }
 
     public interface IOrdersChanged {
@@ -128,7 +131,7 @@ namespace StoreService {
         public Guid guid { get; private set; }
 
         [DataMember]
-        public Book book { get; private set; }
+        public Book book { get; set; }
 
         [DataMember]
         public int quantity { get; private set; }
@@ -156,5 +159,28 @@ namespace StoreService {
         public string title;
         public int stock;
         public double price;
+    }
+
+    [DataContract]
+    public class Request {
+
+        public Request(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+            this.bookTitle = bookTitle;
+            this.quantity = quantity;
+            this.orderGuid = orderGuid;
+            this.ready = ready;
+        }
+
+        [DataMember]
+        public string bookTitle { get; private set; }
+
+        [DataMember]
+        public int quantity { get; private set; }
+
+        [DataMember]
+        public Guid orderGuid { get; private set; }
+
+        [DataMember]
+        public bool ready { get; private set; }
     }
 }
