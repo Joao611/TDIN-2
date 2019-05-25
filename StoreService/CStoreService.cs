@@ -8,14 +8,14 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 
 namespace StoreService {
+    public enum OrderType {
+        CREATE,
+        UPDATE_STATE
+    }
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class CStoreDualService : CStoreService, IStoreDualService {
         private static List<IOrdersChanged> subscribers = new List<IOrdersChanged>();
-
-        private enum OrderType {
-            CREATE,
-            UPDATE_STATE
-        }
 
         public void Subscribe() {
             IOrdersChanged callback = OperationContext.Current.GetCallbackChannel<IOrdersChanged>();
@@ -350,6 +350,7 @@ namespace StoreService {
                     Book book = GetBook(bookId.ToString());
                     Order order = new Order(GetClient(c, clientId), book, quantity, getState(book.stock, quantity));
                     InsertOrderInDb(c, order);
+
                     switch (order.state.type) {
                         case Order.State.Type.WAITING:
                             warehouseProxy.RequestBooks(order.book.title, order.quantity + 10, order.guid);
@@ -363,6 +364,7 @@ namespace StoreService {
                             break;
                     }
 
+                    Email.SendEmail(OrderType.CREATE, order);
                     return order;
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);

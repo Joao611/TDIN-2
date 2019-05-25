@@ -52,6 +52,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Email.cs" />
     <Compile Include="IStoreService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CStoreService.cs" />
