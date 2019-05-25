@@ -12,10 +12,9 @@ namespace StoreClient {
         /// </summary>
         [STAThread]
         static void Main() {
-            StoreServiceClient proxy = new StoreServiceClient();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new StoreClientForm(proxy));
+            Application.Run(new StoreClientForm());
         }
     }
 }

@@ -37,7 +37,7 @@ namespace WarehouseService {
         }
 
         private void NotifyClients(RequestType type, Request request) {
-            subscribers.ForEach(delegate(IRequestsChanged callback) {
+            subscribers.ForEach(callback => {
                 if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
                     switch (type) {
                         case RequestType.CREATE:

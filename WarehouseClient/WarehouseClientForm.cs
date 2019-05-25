@@ -24,7 +24,8 @@ namespace WarehouseForm {
         }
 
         public void RequestCreated(Request request) {
-            throw new NotImplementedException();
+            return;
+            //throw new NotImplementedException();
         }
 
         public void RequestStateUpdated(Request request) {

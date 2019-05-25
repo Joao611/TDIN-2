@@ -4,14 +4,71 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.ServiceModel;
 using System.ServiceModel.Web;
 
 namespace StoreService {
-    public class CStoreService : IStoreService {
-        readonly string database;
-        WarehouseQueueServiceClient warehouseProxy;
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
+    public class CStoreDualService : CStoreService, IStoreDualService {
+        private static List<IOrdersChanged> subscribers = new List<IOrdersChanged>();
 
-        CStoreService() {
+        private enum OrderType {
+            CREATE,
+            UPDATE_STATE
+        }
+
+        public void Subscribe() {
+            IOrdersChanged callback = OperationContext.Current.GetCallbackChannel<IOrdersChanged>();
+            if (!subscribers.Contains(callback)) {
+                subscribers.Add(callback);
+            }
+        }
+
+        public void Unsubscribe() {
+            IOrdersChanged callback = OperationContext.Current.GetCallbackChannel<IOrdersChanged>();
+            subscribers.Remove(callback);
+        }
+
+        private void NotifyClients(OrderType type, Order order) {
+            subscribers.ForEach(callback => {
+                if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
+                    switch (type) {
+                        case OrderType.CREATE:
+                            callback.OrderCreated(order);
+                            break;
+                        case OrderType.UPDATE_STATE:
+                            callback.OrderStateUpdated(order);
+                            break;
+                    }
+                } else {
+                    subscribers.Remove(callback);
+                }
+            });
+        }
+
+        public new Order CreateOrder(int clientId, int bookId, int quantity) {
+            Order order = base.CreateOrder(clientId, bookId, quantity);
+            NotifyClients(OrderType.CREATE, order);
+            return order;
+        }
+
+        public new Order NotifyFutureArrival(Request request) {
+            Order order = base.NotifyFutureArrival(request);
+            NotifyClients(OrderType.UPDATE_STATE, order);
+            return order;
+        }
+    }
+
+    [ServiceBehavior]
+    public class CStoreWebService : CStoreService, IStoreWebService {
+
+    }
+
+    public class CStoreService {
+        private readonly string database;
+        private readonly WarehouseQueueServiceClient warehouseProxy;
+        
+        public CStoreService() {
             string connection = ConfigurationManager.ConnectionStrings["StoreDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
             warehouseProxy = new WarehouseQueueServiceClient();
@@ -177,12 +234,7 @@ namespace StoreService {
                     InsertOrderInDb(c, order);
                     switch (order.state.type) {
                         case Order.State.Type.WAITING:
-                            // TODO: warehouse MSMQ request
                             warehouseProxy.RequestBooks(order.book.title, order.quantity, order.guid);
-                            break;
-                        case Order.State.Type.DISPATCH_OCCURS_AT:
-                            UpdateStock(c, bookId, -quantity);
-                            order.book.stock -= quantity;
                             break;
                         case Order.State.Type.DISPATCHED_AT:
                             UpdateStock(c, bookId, -quantity);
@@ -232,7 +284,7 @@ namespace StoreService {
             return client;
         }
 
-        public void NotifyFutureArrival(Request request) {
+        public Order NotifyFutureArrival(Request request) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
@@ -243,12 +295,17 @@ namespace StoreService {
                     cmd.Parameters.AddWithValue("@d", DateTime.Now.AddDays(2));
                     cmd.Parameters.AddWithValue("@id", request.orderGuid.ToString());
                     cmd.ExecuteNonQuery();
+
+                    Order order = getOrder(c, request.orderGuid);
+                    return order;
                 } catch (Exception e) {
                     Console.WriteLine("DB Exception: " + e);
                 } finally {
                     c.Close();
                 }
             }
+
+            return null;
         }
 
         /** 
@@ -380,6 +437,5 @@ namespace StoreService {
                     return null;
             }
         }
-
     }
 }

@@ -414,9 +414,6 @@ namespace StoreClient.StoreServiceReference {
         private string bookTitleField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int idField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Guid orderGuidField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -444,19 +441,6 @@ namespace StoreClient.StoreServiceReference {
                 if ((object.ReferenceEquals(this.bookTitleField, value) != true)) {
                     this.bookTitleField = value;
                     this.RaisePropertyChanged("bookTitle");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int id {
-            get {
-                return this.idField;
-            }
-            set {
-                if ((this.idField.Equals(value) != true)) {
-                    this.idField = value;
-                    this.RaisePropertyChanged("id");
                 }
             }
         }
@@ -511,83 +495,122 @@ namespace StoreClient.StoreServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="StoreServiceReference.IStoreService")]
-    public interface IStoreService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="StoreServiceReference.IStoreDualService", CallbackContract=typeof(StoreClient.StoreServiceReference.IStoreDualServiceCallback))]
+    public interface IStoreDualService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBooks", ReplyAction="http://tempuri.org/IStoreService/GetBooksResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/Subscribe", ReplyAction="http://tempuri.org/IStoreDualService/SubscribeResponse")]
+        void Subscribe();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/Subscribe", ReplyAction="http://tempuri.org/IStoreDualService/SubscribeResponse")]
+        System.Threading.Tasks.Task SubscribeAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/Unsubscribe", ReplyAction="http://tempuri.org/IStoreDualService/UnsubscribeResponse")]
+        void Unsubscribe();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/Unsubscribe", ReplyAction="http://tempuri.org/IStoreDualService/UnsubscribeResponse")]
+        System.Threading.Tasks.Task UnsubscribeAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetBooks", ReplyAction="http://tempuri.org/IStoreDualService/GetBooksResponse")]
         StoreClient.StoreServiceReference.Book[] GetBooks();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBooks", ReplyAction="http://tempuri.org/IStoreService/GetBooksResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetBooks", ReplyAction="http://tempuri.org/IStoreDualService/GetBooksResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book[]> GetBooksAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetClients", ReplyAction="http://tempuri.org/IStoreService/GetClientsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetClients", ReplyAction="http://tempuri.org/IStoreDualService/GetClientsResponse")]
         StoreClient.StoreServiceReference.Client[] GetClients();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetClients", ReplyAction="http://tempuri.org/IStoreService/GetClientsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetClients", ReplyAction="http://tempuri.org/IStoreDualService/GetClientsResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Client[]> GetClientsAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetClientOrders", ReplyAction="http://tempuri.org/IStoreService/GetClientOrdersResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetClientOrders", ReplyAction="http://tempuri.org/IStoreDualService/GetClientOrdersResponse")]
         StoreClient.StoreServiceReference.Order[] GetClientOrders(string clientId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetClientOrders", ReplyAction="http://tempuri.org/IStoreService/GetClientOrdersResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetClientOrders", ReplyAction="http://tempuri.org/IStoreDualService/GetClientOrdersResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order[]> GetClientOrdersAsync(string clientId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBook", ReplyAction="http://tempuri.org/IStoreService/GetBookResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetBook", ReplyAction="http://tempuri.org/IStoreDualService/GetBookResponse")]
         StoreClient.StoreServiceReference.Book GetBook(string id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetBook", ReplyAction="http://tempuri.org/IStoreService/GetBookResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetBook", ReplyAction="http://tempuri.org/IStoreDualService/GetBookResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Book> GetBookAsync(string id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetOrders", ReplyAction="http://tempuri.org/IStoreService/GetOrdersResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetOrders", ReplyAction="http://tempuri.org/IStoreDualService/GetOrdersResponse")]
         StoreClient.StoreServiceReference.Order[] GetOrders();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/GetOrders", ReplyAction="http://tempuri.org/IStoreService/GetOrdersResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetOrders", ReplyAction="http://tempuri.org/IStoreDualService/GetOrdersResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order[]> GetOrdersAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateOrder", ReplyAction="http://tempuri.org/IStoreService/CreateOrderResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/CreateOrder", ReplyAction="http://tempuri.org/IStoreDualService/CreateOrderResponse")]
         StoreClient.StoreServiceReference.Order CreateOrder(int clientId, int bookId, int quantity);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateOrder", ReplyAction="http://tempuri.org/IStoreService/CreateOrderResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/CreateOrder", ReplyAction="http://tempuri.org/IStoreDualService/CreateOrderResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> CreateOrderAsync(int clientId, int bookId, int quantity);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateClient", ReplyAction="http://tempuri.org/IStoreService/CreateClientResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/CreateClient", ReplyAction="http://tempuri.org/IStoreDualService/CreateClientResponse")]
         StoreClient.StoreServiceReference.Client CreateClient(string name, string address, string email);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/CreateClient", ReplyAction="http://tempuri.org/IStoreService/CreateClientResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/CreateClient", ReplyAction="http://tempuri.org/IStoreDualService/CreateClientResponse")]
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Client> CreateClientAsync(string name, string address, string email);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreService/NotifyFutureArrivalResponse")]
-        void NotifyFutureArrival(StoreClient.StoreServiceReference.Request request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
+        StoreClient.StoreServiceReference.Order NotifyFutureArrival(StoreClient.StoreServiceReference.Request request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreService/NotifyFutureArrivalResponse")]
-        System.Threading.Tasks.Task NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IStoreServiceChannel : StoreClient.StoreServiceReference.IStoreService, System.ServiceModel.IClientChannel {
+    public interface IStoreDualServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/OrderCreated")]
+        void OrderCreated(StoreClient.StoreServiceReference.Order order);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/OrderStateUpdated")]
+        void OrderStateUpdated(StoreClient.StoreServiceReference.Order order);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IStoreDualServiceChannel : StoreClient.StoreServiceReference.IStoreDualService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class StoreServiceClient : System.ServiceModel.ClientBase<StoreClient.StoreServiceReference.IStoreService>, StoreClient.StoreServiceReference.IStoreService {
+    public partial class StoreDualServiceClient : System.ServiceModel.DuplexClientBase<StoreClient.StoreServiceReference.IStoreDualService>, StoreClient.StoreServiceReference.IStoreDualService {
         
-        public StoreServiceClient() {
+        public StoreDualServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public StoreServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public StoreDualServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public StoreServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public StoreDualServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public StoreServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public StoreDualServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public StoreServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public StoreDualServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
+        }
+        
+        public void Subscribe() {
+            base.Channel.Subscribe();
+        }
+        
+        public System.Threading.Tasks.Task SubscribeAsync() {
+            return base.Channel.SubscribeAsync();
+        }
+        
+        public void Unsubscribe() {
+            base.Channel.Unsubscribe();
+        }
+        
+        public System.Threading.Tasks.Task UnsubscribeAsync() {
+            return base.Channel.UnsubscribeAsync();
         }
         
         public StoreClient.StoreServiceReference.Book[] GetBooks() {
@@ -646,11 +669,11 @@ namespace StoreClient.StoreServiceReference {
             return base.Channel.CreateClientAsync(name, address, email);
         }
         
-        public void NotifyFutureArrival(StoreClient.StoreServiceReference.Request request) {
-            base.Channel.NotifyFutureArrival(request);
+        public StoreClient.StoreServiceReference.Order NotifyFutureArrival(StoreClient.StoreServiceReference.Request request) {
+            return base.Channel.NotifyFutureArrival(request);
         }
         
-        public System.Threading.Tasks.Task NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request) {
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request) {
             return base.Channel.NotifyFutureArrivalAsync(request);
         }
     }

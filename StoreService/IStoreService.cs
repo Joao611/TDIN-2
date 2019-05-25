@@ -8,7 +8,7 @@ using System.ServiceModel.Web;
 
 namespace StoreService {
     [ServiceContract]
-    public interface IStoreService {
+    public interface IStoreWebService {
 
         [WebGet(UriTemplate = "/books", ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
@@ -45,7 +45,55 @@ namespace StoreService {
         //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
         [WebInvoke(Method = "PATCH", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        void NotifyFutureArrival(Request request);
+        Order NotifyFutureArrival(Request request);
+    }
+
+    [ServiceContract(CallbackContract = typeof(IOrdersChanged))]
+    public interface IStoreDualService {
+
+        [OperationContract]
+        void Subscribe();
+
+        [OperationContract]
+        void Unsubscribe();
+
+        [OperationContract]
+        List<Book> GetBooks();
+
+        [OperationContract]
+        List<Client> GetClients();
+
+        [OperationContract]
+        List<Order> GetClientOrders(string clientId);
+
+        [OperationContract]
+        Book GetBook(string id);
+
+        [OperationContract]
+        List<Order> GetOrders();
+
+        [OperationContract]
+        Order CreateOrder(int clientId, int bookId, int quantity);
+
+        /*[WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
+        [OperationContract]
+        Order SetState(string id, string stateType);*/
+
+        [OperationContract]
+        Client CreateClient(string name, string address, string email);
+
+        //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
+        [OperationContract]
+        Order NotifyFutureArrival(Request request);
+    }
+
+    public interface IOrdersChanged {
+
+        [OperationContract(IsOneWay = true)]
+        void OrderCreated(Order order);
+
+        [OperationContract(IsOneWay = true)]
+        void OrderStateUpdated(Order order);
     }
 
     /**

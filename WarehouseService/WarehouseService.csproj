@@ -77,21 +77,24 @@
     <None Include="Connected Services\StoreServiceReference\WarehouseService.StoreServiceReference.Order.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\StoreServiceReference\WarehouseService.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="WarehouseDB_log.ldf">
-      <DependentUpon>WarehouseDB.mdf</DependentUpon>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Connected Services\StoreServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\StoreServiceReference\configuration.svcinfo" />
     <None Include="Connected Services\StoreServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="WarehouseDB_log.ldf">
+      <DependentUpon>WarehouseDB.mdf</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="WarehouseDB.mdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

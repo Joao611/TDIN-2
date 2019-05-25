@@ -2,19 +2,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Windows.Forms;
 
 namespace StoreClient {
-    public partial class StoreClientForm : Form {
-        StoreServiceClient proxy;
+    [CallbackBehavior(UseSynchronizationContext = false)]
+    public partial class StoreClientForm : Form, IStoreDualServiceCallback {
+        StoreDualServiceClient proxy;
         List<Book> books = new List<Book>();
         List<Client> clients = new List<Client>();
         List<Order> orders = new List<Order>();
         Book selectedBook = null;
         double totalPrice = 0;
-        public StoreClientForm(StoreServiceClient proxy) {
+        public StoreClientForm() {
             InitializeComponent();
-            this.proxy = proxy;
+            proxy = new StoreDualServiceClient(new InstanceContext(this));
             newOrderPanel.Parent = this;
             stockPanel.Parent = this;
             stockPanel.Location = newOrderPanel.Location;
@@ -71,12 +73,13 @@ namespace StoreClient {
         }
 
         private void StoreClientForm_Shown(object sender, EventArgs e) {
+            proxy.Subscribe();
             addBooksToForm();
             addClientsToForm();
             addOrdersToForm();
         }
 
-        private void payButton_Click(object sender, EventArgs e) {
+        private async void payButton_Click(object sender, EventArgs e) {
             if (booksComboBox.SelectedItem == null) {
                 return;
             }
@@ -97,7 +100,7 @@ namespace StoreClient {
             int bookId = books.Find(book => book.title == bookName).id;
             int quantity = Convert.ToInt32(quantityNumericUpDown.Value);
             quantityNumericUpDown.Value = 1;
-            Order newOrder = proxy.CreateOrder(clientId, bookId, quantity);
+            Order newOrder = await proxy.CreateOrderAsync(clientId, bookId, quantity);
             orders.Add(newOrder);
             requestsGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
             updateBookStock(newOrder.book.title, newOrder.book.stock);
@@ -167,6 +170,16 @@ namespace StoreClient {
             }
         }
 
+        public void OrderCreated(Order order) {
+            throw new NotImplementedException();
+        }
 
+        public void OrderStateUpdated(Order order) {
+            throw new NotImplementedException();
+        }
+
+        private void StoreClientForm_FormClosing(object sender, FormClosingEventArgs e) {
+            proxy.Unsubscribe();
+        }
     }
 }
