@@ -40,11 +40,10 @@ namespace WarehouseService {
     [DataContract]
     public class Request {
 
-        public Request(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+        public Request(string bookTitle, int quantity, Guid orderGuid) {
             this.bookTitle = bookTitle;
             this.quantity = quantity;
             this.orderGuid = orderGuid;
-            this.ready = ready;
         }
 
         [DataMember]

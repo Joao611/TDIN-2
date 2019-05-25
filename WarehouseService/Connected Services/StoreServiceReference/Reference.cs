@@ -563,6 +563,12 @@ namespace WarehouseService.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
         System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetRequests", ReplyAction="http://tempuri.org/IStoreDualService/GetRequestsResponse")]
+        WarehouseService.StoreServiceReference.Request[] GetRequests();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetRequests", ReplyAction="http://tempuri.org/IStoreDualService/GetRequestsResponse")]
+        System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Request[]> GetRequestsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -692,6 +698,14 @@ namespace WarehouseService.StoreServiceReference {
         
         public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
             return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid, ready);
+        }
+        
+        public WarehouseService.StoreServiceReference.Request[] GetRequests() {
+            return base.Channel.GetRequests();
+        }
+        
+        public System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Request[]> GetRequestsAsync() {
+            return base.Channel.GetRequestsAsync();
         }
     }
 }

@@ -227,8 +227,11 @@ namespace StoreClient {
                 DataGridViewRow row = requestsGrid.SelectedRows[0];
                 proxy.SatisfyOrders((string)row.Cells["requestBookNameColumn"].Value,
                     (int)row.Cells["requestQuantityColumn"].Value,
-                    (Guid)row.Cells["requestOrderIdColumn"].Value,
-                    false);
+                    (Guid)row.Cells["requestOrderIdColumn"].Value);
+                
+                BeginInvoke((Action)delegate () {
+                    requestsGrid.Rows.Remove(row);
+                });
             }
         }
 

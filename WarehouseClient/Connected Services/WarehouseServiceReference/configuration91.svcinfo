@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="JXtG+OrSS/TZxCYxUGgQsHvC908=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="K7ALiNOZ7Z+PXhNtd44hcDFe09o=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="netMsmqBinding" name="BookShopQueueEndpoint">
       <properties>
@@ -102,8 +102,8 @@
         <property path="/security/transport/msmqProtectionLevel" isComplexType="false" isExplicitlyDefined="false" clrType="System.Net.Security.ProtectionLevel, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>Sign</serializedValue>
         </property>
-        <property path="/security/transport/msmqSecureHashAlgorithm" isComplexType="false" isExplicitlyDefined="false" clrType="System.ServiceModel.MsmqSecureHashAlgorithm, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>Sha1</serializedValue>
+        <property path="/security/transport/msmqSecureHashAlgorithm" isComplexType="false" isExplicitlyDefined="true" clrType="System.ServiceModel.MsmqSecureHashAlgorithm, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+          <serializedValue>Sha256</serializedValue>
         </property>
         <property path="/security/message" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.MessageSecurityOverMsmqElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.MessageSecurityOverMsmqElement</serializedValue>
