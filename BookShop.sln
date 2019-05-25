@@ -23,6 +23,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarehouseClient", "Warehous
 		{BE4607F7-457E-4040-9A14-00F48056E6AD} = {BE4607F7-457E-4040-9A14-00F48056E6AD}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Printer", "Printer\Printer.csproj", "{29D28DFC-F3AE-4C62-972F-D3873588540C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8AB4ED96-EF23-4D20-8819-BBA00AE2770D} = {8AB4ED96-EF23-4D20-8819-BBA00AE2770D}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +54,10 @@ Global
 		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD098764-6428-49DD-901F-BC6CD9B3CF99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29D28DFC-F3AE-4C62-972F-D3873588540C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29D28DFC-F3AE-4C62-972F-D3873588540C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29D28DFC-F3AE-4C62-972F-D3873588540C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29D28DFC-F3AE-4C62-972F-D3873588540C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
