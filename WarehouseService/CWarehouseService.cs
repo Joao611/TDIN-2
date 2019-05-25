@@ -60,14 +60,14 @@ namespace WarehouseService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "INSERT INTO Requests (BookTitle, Quantity, OrderGuid, Ready)" +
-                        " VALUES (@title, @quantity, @guid, 0)";
+                    string sql = "INSERT INTO Requests (BookTitle, Quantity, OrderGuid)" +
+                        " VALUES (@title, @quantity, @guid)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@title", bookTitle);
                     cmd.Parameters.AddWithValue("@quantity", quantity);
                     cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
                     cmd.ExecuteNonQuery();
-                    Request request = new Request(bookTitle, quantity, orderGuid, false);
+                    Request request = new Request(bookTitle, quantity, orderGuid);
                     NotifyClients(RequestType.CREATE, request);
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
@@ -89,8 +89,7 @@ namespace WarehouseService {
                             string bookTitle = reader["BookTitle"].ToString();
                             int quantity = Convert.ToInt32(reader["Quantity"]);
                             Guid orderGuid = Guid.Parse(reader["OrderGuid"].ToString());
-                            bool ready = Convert.ToInt16(reader["Ready"]) == 0 ? false : true;
-                            Request request = new Request(bookTitle, quantity, orderGuid, ready);
+                            Request request = new Request(bookTitle, quantity, orderGuid);
                             requests.Add(request);
                         }
                         reader.Close();
@@ -113,11 +112,28 @@ namespace WarehouseService {
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
                     cmd.ExecuteNonQuery();
-                    Request request = new Request(bookTitle, quantity, orderGuid, false);
+                    Request request = new Request(bookTitle, quantity, orderGuid);
+                    RemoveRequestFromDB(request);
                     NotifyClients(RequestType.UPDATE_STATE, request);
                     proxy.NotifyFutureArrival(bookTitle, quantity, orderGuid);
                 } catch (Exception e) {
                     Console.WriteLine("Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+        }
+
+        private void RemoveRequestFromDB(Request request) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "DELETE FROM Requests WHERE OrderGuid LIKE @orderGuid";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@orderGuid", request.orderGuid.ToString());
+                    cmd.ExecuteNonQuery();
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
                 } finally {
                     c.Close();
                 }

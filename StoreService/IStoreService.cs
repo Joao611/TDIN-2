@@ -34,10 +34,6 @@ namespace StoreService {
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity);
 
-        /*[WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        [OperationContract]
-        Order SetState(string id, string stateType);*/
-
         [WebInvoke(Method = "POST", UriTemplate = "/clients", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
         Client CreateClient(string name, string address, string email);
@@ -75,10 +71,6 @@ namespace StoreService {
         [OperationContract]
         Order CreateOrder(int clientId, int bookId, int quantity);
 
-        /*[WebInvoke(Method = "PATCH", UriTemplate = "/orders/{id}/state", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
-        [OperationContract]
-        Order SetState(string id, string stateType);*/
-
         [OperationContract]
         Client CreateClient(string name, string address, string email);
 
@@ -87,7 +79,7 @@ namespace StoreService {
         Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid);
 
         [OperationContract]
-        void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready);
+        void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid);
     }
 
     public interface IOrdersChanged {
@@ -176,11 +168,10 @@ namespace StoreService {
     [DataContract]
     public class Request {
 
-        public Request(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+        public Request(string bookTitle, int quantity, Guid orderGuid) {
             this.bookTitle = bookTitle;
             this.quantity = quantity;
             this.orderGuid = orderGuid;
-            this.ready = ready;
         }
 
         [DataMember]

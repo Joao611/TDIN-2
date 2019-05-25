@@ -35,13 +35,6 @@ namespace WarehouseForm {
             });
         }
 
-        //private void selectRowEvent(object sender, DataGridViewRowStateChangedEventArgs e) {
-        //    // For any other operation except, StateChanged, do nothing
-        //    if (e.StateChanged != DataGridViewElementStates.Selected) return;
-        //    proxy.SendBooks(new Request());
-
-        //}
-
         private void WarehouseClientForm_Shown(object sender, EventArgs e) {
             List<Request> requests = new List<Request>(proxy.GetRequests());
             requests.ForEach(request => {

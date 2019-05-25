@@ -66,14 +66,15 @@ namespace StoreService {
         public new Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid) {
             Order order = base.NotifyFutureArrival(bookTitle, quantity, orderGuid);
             NotifyClients(OrderType.UPDATE_STATE, order);
-            Request request = new Request(bookTitle, quantity, orderGuid, true);
+            Request request = new Request(bookTitle, quantity, orderGuid);
             SendRequest(request);
             //[TODO]: Guardar request na DB
             return order;
         }
 
-        public void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready) {
-            Request request = new Request(bookTitle, quantity, orderGuid, ready);
+        public void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid) {
+            Request request = new Request(bookTitle, quantity, orderGuid);
+            RemoveRequestFromDB(request);
             Book book = GetBookByTitle(request.bookTitle);
             int tmpStock = book.stock + request.quantity;
             Order.State state = new Order.State() {
@@ -121,6 +122,22 @@ namespace StoreService {
                 NotifyClients(OrderType.UPDATE_STATE, order);
             });
             
+        }
+
+        private void RemoveRequestFromDB(Request request) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "DELETE FROM Requests WHERE Order LIKE @orderGuid";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@orderGuid", request.orderGuid.ToString());
+                    cmd.ExecuteNonQuery();
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
         }
 
     }
@@ -353,7 +370,7 @@ namespace StoreService {
         }
 
         public Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid) {
-            Request request = new Request(bookTitle, quantity, orderGuid, true);
+            Request request = new Request(bookTitle, quantity, orderGuid);
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
