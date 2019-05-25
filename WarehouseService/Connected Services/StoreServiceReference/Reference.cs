@@ -559,10 +559,10 @@ namespace WarehouseService.StoreServiceReference {
         System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Order> NotifyFutureArrivalAsync(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
-        void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
-        System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetRequests", ReplyAction="http://tempuri.org/IStoreDualService/GetRequestsResponse")]
         WarehouseService.StoreServiceReference.Request[] GetRequests();
@@ -692,12 +692,12 @@ namespace WarehouseService.StoreServiceReference {
             return base.Channel.NotifyFutureArrivalAsync(bookTitle, quantity, orderGuid);
         }
         
-        public void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
-            base.Channel.SatisfyOrders(bookTitle, quantity, orderGuid, ready);
+        public void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid) {
+            base.Channel.SatisfyOrders(bookTitle, quantity, orderGuid);
         }
         
-        public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
-            return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid, ready);
+        public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid);
         }
         
         public WarehouseService.StoreServiceReference.Request[] GetRequests() {

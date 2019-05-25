@@ -142,8 +142,7 @@ namespace StoreService {
                             Request request = new Request(
                                 reader["Title"].ToString(),
                                 Convert.ToInt32(reader["Quantity"]),
-                                Guid.Parse(reader["Guid"].ToString()),
-                                false
+                                Guid.Parse(reader["Guid"].ToString())
                             );
                             requests.Add(request);
                         }
