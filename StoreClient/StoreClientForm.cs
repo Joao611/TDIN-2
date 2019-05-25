@@ -87,7 +87,8 @@ namespace StoreClient {
         }
 
         private void payButton_Click(object sender, EventArgs e) {
-            if (booksComboBox.SelectedItem == null) {
+            if (booksComboBox.SelectedItem == null || 
+                (nameTextBox.Text == "" && clientsComboBox.SelectedItem == null)) {
                 return;
             }
             int clientId = 0;
