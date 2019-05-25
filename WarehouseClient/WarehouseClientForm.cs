@@ -18,14 +18,12 @@ namespace WarehouseForm {
         public WarehouseClientForm() {
             InitializeComponent();
             proxy = new WarehouseServiceClient(new InstanceContext(this));
-            List<Request> requests = new List<Request>(proxy.GetRequests());
-            requests.ForEach(request => {
-                RequestCreated(request);
-            });
         }
 
         public void RequestCreated(Request request) {
-            requestsGrid.Rows.Add(request.orderGuid, request.bookTitle, request.quantity);
+            BeginInvoke((Action)delegate () {
+                requestsGrid.Rows.Add(request.orderGuid, request.bookTitle, request.quantity);
+            });
         }
 
         public void RequestStateUpdated(Request request) {
@@ -45,6 +43,10 @@ namespace WarehouseForm {
         //}
 
         private void WarehouseClientForm_Shown(object sender, EventArgs e) {
+            List<Request> requests = new List<Request>(proxy.GetRequests());
+            requests.ForEach(request => {
+                RequestCreated(request);
+            });
             proxy.Subscribe();
         }
 
