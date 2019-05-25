@@ -88,6 +88,9 @@ namespace StoreService {
 
         [OperationContract]
         void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready);
+
+        [OperationContract]
+        List<Request> GetRequests();
     }
 
     public interface IOrdersChanged {

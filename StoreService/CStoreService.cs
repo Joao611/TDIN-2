@@ -96,7 +96,7 @@ namespace StoreService {
             }
             List<Order> orders = getOrdersByBook(book, tmpStock);
             orders.ForEach(o => {
-                if(o.quantity <= tmpStock) {
+                if (o.quantity <= tmpStock) {
                     using (SqlConnection c = new SqlConnection(database)) {
                         try {
                             c.Open();
@@ -119,7 +119,38 @@ namespace StoreService {
                 order.book = book;
                 NotifyClients(OrderType.UPDATE_STATE, order);
             });
-            
+
+        }
+
+        public List<Request> GetRequests() {
+            var requests = new List<Request>();
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "SELECT B.Title, R.Quantity, O.Guid" +
+                                " FROM Requests R" +
+                                "   INNER JOIN Books B ON (R.Book = B.Id)" +
+                                "   INNER JOIN Orders O ON (R.Order = O.Id)";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    using (SqlDataReader reader = cmd.ExecuteReader()) {
+                        while (reader.Read()) {
+                            Request request = new Request(
+                                reader["Title"].ToString(),
+                                Convert.ToInt32(reader["Quantity"]),
+                                Guid.Parse(reader["Guid"].ToString()),
+                                false
+                            );
+                            requests.Add(request);
+                        }
+                        reader.Close();
+                    }
+                } catch (Exception e) {
+                    Console.WriteLine("DB Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
+            return requests;
         }
 
     }
@@ -498,7 +529,7 @@ namespace StoreService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "INSERT INTO Orders (Book, Quantity, Order)" +
+                    string sql = "INSERT INTO Requests (Book, Quantity, Order)" +
                         " VALUES ((SELECT Id FROM Books WHERE title LIKE @b)," +
                         " @qty," +
                         " (SELECT Id FROM Orders WHERE Guid LIKE @o))";

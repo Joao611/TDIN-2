@@ -64,6 +64,12 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Order.State.Type" nillable="true" type="tns:Order.State.Type" />
+  <xs:complexType name="ArrayOfRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Request" nillable="true" type="tns:Request" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequest" nillable="true" type="tns:ArrayOfRequest" />
   <xs:complexType name="Request">
     <xs:sequence>
       <xs:element minOccurs="0" name="bookTitle" nillable="true" type="xs:string" />
