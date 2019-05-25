@@ -47,15 +47,28 @@ namespace StoreService {
             });
         }
 
+        private void SendRequest(Request request) {
+            subscribers.ForEach(callback => {
+                if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
+                    callback.AddRequest(request);
+                } else {
+                    subscribers.Remove(callback);
+                }
+            });
+        }
+
         public new Order CreateOrder(int clientId, int bookId, int quantity) {
             Order order = base.CreateOrder(clientId, bookId, quantity);
             NotifyClients(OrderType.CREATE, order);
             return order;
         }
 
-        public new Order NotifyFutureArrival(Request request) {
-            Order order = base.NotifyFutureArrival(request);
+        public new Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid) {
+            Order order = base.NotifyFutureArrival(bookTitle, quantity, orderGuid);
             NotifyClients(OrderType.UPDATE_STATE, order);
+            Request request = new Request(bookTitle, quantity, orderGuid, true);
+            SendRequest(request);
+            //[TODO]: Guardar request na DB
             return order;
         }
 
@@ -136,6 +149,7 @@ namespace StoreService {
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
                             Order order = new Order(
+                                Guid.Parse(reader["Guid"].ToString()),
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
                                 GetBook(reader["Book"].ToString()),
                                 Convert.ToInt32(reader["Quantity"]),
@@ -168,6 +182,7 @@ namespace StoreService {
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
                             Order order = new Order(
+                                Guid.Parse(reader["Guid"].ToString()),
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
                                 GetBook(reader["Book"].ToString()),
                                 Convert.ToInt32(reader["Quantity"]),
@@ -336,12 +351,13 @@ namespace StoreService {
             return client;
         }
 
-        public Order NotifyFutureArrival(Request request) {
+        public Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid) {
+            Request request = new Request(bookTitle, quantity, orderGuid, true);
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
                     string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
-                        " WHERE Guid = @id";
+                        " WHERE Guid LIKE @id";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@s", "DISPATCH_OCCURS_AT");
                     cmd.Parameters.AddWithValue("@d", DateTime.Now.AddDays(2));
@@ -366,7 +382,7 @@ namespace StoreService {
 
         private Order.State getState(int stock, int quantity) {
             if (stock < quantity) {
-                return new Order.State() { type = Order.State.Type.WAITING };
+                return new Order.State() { type = Order.State.Type.WAITING, dispatchDate = DateTime.Now};
             } else {
                 return new Order.State() { type = Order.State.Type.DISPATCHED_AT, dispatchDate = DateTime.Now.AddDays(1) };
             }
@@ -387,15 +403,18 @@ namespace StoreService {
 
         protected Order getOrder(SqlConnection c, Guid id) {
             string sql = "SELECT * FROM Orders" +
-                        " WHERE Guid = @id";
+                        " WHERE Guid LIKE @id";
             SqlCommand cmd = new SqlCommand(sql, c);
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.Parameters.AddWithValue("@id", id.ToString());
             using (SqlDataReader reader = cmd.ExecuteReader()) {
                 reader.Read();
-                Order order = new Order(GetClient(c, Convert.ToInt32(reader["Client"])),
+                Order order = new Order(
+                    id,
+                    GetClient(c, Convert.ToInt32(reader["Client"])),
                     GetBook(reader["Book"].ToString()),
                     Convert.ToInt32(reader["Quantity"]),
-                    getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"])));
+                    getState(reader["State"].ToString(), Convert.ToDateTime(reader["DispatchDate"]))
+                );
                 reader.Close();
                 return order;
             }
@@ -437,7 +456,7 @@ namespace StoreService {
                 try {
                     c.Open();
                     string sql = "SELECT * FROM Books" +
-                        " WHERE Title = @title";
+                        " WHERE Title LIKE @title";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@title", title);
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
@@ -470,7 +489,7 @@ namespace StoreService {
             cmd.Parameters.AddWithValue("@b", order.book.id);
             cmd.Parameters.AddWithValue("@qty", order.quantity);
             cmd.Parameters.AddWithValue("@state", order.state.type.ToString());
-            cmd.Parameters.AddWithValue("@date", order.state.dispatchDate.ToString("s"));
+            cmd.Parameters.AddWithValue("@date", order.state.dispatchDate);
             cmd.ExecuteNonQuery();
         }
 
@@ -500,7 +519,7 @@ namespace StoreService {
 
         protected void UpdateOrderState(SqlConnection c, Guid guid, Order.State state) {
             string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
-                        " WHERE Guid = @id";
+                        " WHERE Guid LIKE @id";
             SqlCommand cmd = new SqlCommand(sql, c);
             cmd.Parameters.AddWithValue("@s", state.type.ToString());
             cmd.Parameters.AddWithValue("@d", state.dispatchDate);
@@ -534,6 +553,7 @@ namespace StoreService {
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
                             Order order = new Order(
+                                Guid.Parse(reader["Guid"].ToString()),
                                 GetClient(c, Convert.ToInt32(reader["Client"])),
                                 book,
                                 Convert.ToInt32(reader["Quantity"]),

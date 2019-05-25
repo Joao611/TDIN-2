@@ -106,10 +106,10 @@ namespace StoreClient {
             int bookId = books.Find(book => book.title == bookName).id;
             int quantity = Convert.ToInt32(quantityNumericUpDown.Value);
             quantityNumericUpDown.Value = 1;
-            Order newOrder = proxy.CreateOrder(clientId, bookId, quantity);
-            orders.Add(newOrder);
-            ordersGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
-            updateBookStock(newOrder.book.title, newOrder.book.stock);
+            proxy.CreateOrder(clientId, bookId, quantity);
+            // orders.Add(newOrder);
+            // ordersGrid.Rows.Add(newOrder.guid, newOrder.book.title, newOrder.quantity, stateToString(newOrder.state));
+            //updateBookStock(newOrder.book.title, newOrder.book.stock);
         }
 
         public void setVisibility(int index) {
@@ -146,7 +146,7 @@ namespace StoreClient {
                 case Order.State.Type.DISPATCHED_AT:
                     return "Dispatched at " + state.dispatchDate.ToString("MM/dd/yyyy");
                 case Order.State.Type.DISPATCH_OCCURS_AT:
-                    return "Dispatch will occur at" + state.dispatchDate.ToString("MM/dd/yyyy");
+                    return "Dispatch will occur at " + state.dispatchDate.ToString("MM/dd/yyyy");
                 default:
                     return "";
             }
@@ -178,22 +178,35 @@ namespace StoreClient {
 
         public void OrderCreated(Order order) {
             orders.Add(order);
-            ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, order.state);
+            BeginInvoke((Action) (() => {
+                ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
+            }));
+            updateBookStock(order.book.title, order.book.stock);
         }
 
         public void OrderStateUpdated(Order order) {
             Order o = orders.Find(or => or.guid == order.guid);
             o.state = order.state;
-            if(order.state.type == Order.State.Type.DISPATCHED_AT) {
+            DataGridViewRow row = ordersGrid.Rows
+                            .Cast<DataGridViewRow>()
+                            .FirstOrDefault(r => (Guid)r.Cells["orderIdColumn"].Value == order.guid);
+            row.Cells["stateColumn"].Value = stateToString(order.state);
+            if (order.state.type == Order.State.Type.DISPATCHED_AT) {
                 Book book = books.Find(b => b.id == order.book.id);
                 if(book.stock != order.book.stock) {
                     book.stock = order.book.stock;
-                    DataGridViewRow row = stockGrid.Rows
+                    row = stockGrid.Rows
                             .Cast<DataGridViewRow>()
                             .FirstOrDefault(r => (string)r.Cells["bookNameColumn"].Value == book.title);
                     row.Cells["bookStockColumn"].Value = book.stock;
                 }
             }
+        }
+
+        public void AddRequest(Request request) {
+            BeginInvoke((Action)(() => {
+                requestsGrid.Rows.Add(request.orderGuid, request.bookTitle, request.quantity);
+            }));
         }
 
         private void StoreClientForm_FormClosing(object sender, FormClosingEventArgs e) {
@@ -202,14 +215,11 @@ namespace StoreClient {
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e) {
-            if (ordersGrid.SelectedRows.Count > 0) {
-                DataGridViewRow row = ordersGrid.SelectedRows[0];
-                // [TODO]
-                //proxy.SatisfyOrders();
-                //(string)row.Cells["bookColumn"].Value
-                proxy.SatisfyOrders((string)row.Cells["bookColumn"].Value,
-                    (int)row.Cells["quantityColumn"].Value,
-                    (Guid)row.Cells["orderIdColumn"].Value,
+            if (requestsGrid.SelectedRows.Count > 0) {
+                DataGridViewRow row = requestsGrid.SelectedRows[0];
+                proxy.SatisfyOrders((string)row.Cells["requestBookNameColumn"].Value,
+                    (int)row.Cells["requestQuantityColumn"].Value,
+                    (Guid)row.Cells["requestOrderIdColumn"].Value,
                     false);
             }
         }

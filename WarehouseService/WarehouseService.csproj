@@ -77,9 +77,6 @@
     <None Include="Connected Services\StoreServiceReference\WarehouseService.StoreServiceReference.Order.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\StoreServiceReference\WarehouseService.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

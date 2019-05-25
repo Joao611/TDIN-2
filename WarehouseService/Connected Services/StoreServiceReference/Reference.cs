@@ -403,7 +403,7 @@ namespace WarehouseService.StoreServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Request", Namespace="http://schemas.datacontract.org/2004/07/WarehouseService")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Request", Namespace="http://schemas.datacontract.org/2004/07/StoreService")]
     [System.SerializableAttribute()]
     public partial class Request : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -553,10 +553,16 @@ namespace WarehouseService.StoreServiceReference {
         System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Client> CreateClientAsync(string name, string address, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
-        WarehouseService.StoreServiceReference.Order NotifyFutureArrival(WarehouseService.StoreServiceReference.Request request);
+        WarehouseService.StoreServiceReference.Order NotifyFutureArrival(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
-        System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Order> NotifyFutureArrivalAsync(WarehouseService.StoreServiceReference.Request request);
+        System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Order> NotifyFutureArrivalAsync(string bookTitle, int quantity, System.Guid orderGuid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
+        void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
+        System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -567,6 +573,9 @@ namespace WarehouseService.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/OrderStateUpdated")]
         void OrderStateUpdated(WarehouseService.StoreServiceReference.Order order);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/AddRequest")]
+        void AddRequest(WarehouseService.StoreServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -669,12 +678,20 @@ namespace WarehouseService.StoreServiceReference {
             return base.Channel.CreateClientAsync(name, address, email);
         }
         
-        public WarehouseService.StoreServiceReference.Order NotifyFutureArrival(WarehouseService.StoreServiceReference.Request request) {
-            return base.Channel.NotifyFutureArrival(request);
+        public WarehouseService.StoreServiceReference.Order NotifyFutureArrival(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.NotifyFutureArrival(bookTitle, quantity, orderGuid);
         }
         
-        public System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Order> NotifyFutureArrivalAsync(WarehouseService.StoreServiceReference.Request request) {
-            return base.Channel.NotifyFutureArrivalAsync(request);
+        public System.Threading.Tasks.Task<WarehouseService.StoreServiceReference.Order> NotifyFutureArrivalAsync(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.NotifyFutureArrivalAsync(bookTitle, quantity, orderGuid);
+        }
+        
+        public void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            base.Channel.SatisfyOrders(bookTitle, quantity, orderGuid, ready);
+        }
+        
+        public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid, ready);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace StoreService {
         //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
         [WebInvoke(Method = "PATCH", UriTemplate = "/orders", BodyStyle = WebMessageBodyStyle.WrappedRequest, RequestFormat = WebMessageFormat.Json, ResponseFormat = WebMessageFormat.Json)]
         [OperationContract]
-        Order NotifyFutureArrival(Request request);
+        Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid);
     }
 
     [ServiceContract(CallbackContract = typeof(IOrdersChanged))]
@@ -84,7 +84,7 @@ namespace StoreService {
 
         //[TODO]: shoul we pass the {id} (oreder id) in the uri??? The warehouse currently doesn't know the order's id, just the Guid
         [OperationContract]
-        Order NotifyFutureArrival(Request request);
+        Order NotifyFutureArrival(string bookTitle, int quantity, Guid orderGuid);
 
         [OperationContract]
         void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid, bool ready);
@@ -97,6 +97,9 @@ namespace StoreService {
 
         [OperationContract(IsOneWay = true)]
         void OrderStateUpdated(Order order);
+
+        [OperationContract(IsOneWay = true)]
+        void AddRequest(Request request);
     }
 
     /**
@@ -120,6 +123,15 @@ namespace StoreService {
 
         public Order(Client client, Book book, int quantity, Order.State state) {
             guid = Guid.NewGuid();
+            this.book = book;
+            this.quantity = quantity;
+            this.client = client;
+            this.state = state;
+            totalPrice = quantity * book.price;
+        }
+
+        public Order(Guid guid, Client client, Book book, int quantity, Order.State state) {
+            this.guid = guid;
             this.book = book;
             this.quantity = quantity;
             this.client = client;

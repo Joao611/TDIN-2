@@ -11,7 +11,7 @@ using WarehouseService.StoreServiceReference;
 
 namespace WarehouseService {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
-    public class CWarehouseService : IWarehouseQueueService, IWarehouseService {
+    public class CWarehouseService : IWarehouseQueueService, IWarehouseService, IStoreDualServiceCallback {
         private readonly string database;
         private static List<IRequestsChanged> subscribers = new List<IRequestsChanged>();
         private StoreDualServiceClient proxy;
@@ -67,7 +67,8 @@ namespace WarehouseService {
                     cmd.Parameters.AddWithValue("@quantity", quantity);
                     cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
                     cmd.ExecuteNonQuery();
-                    NotifyClients(RequestType.CREATE, new Request(bookTitle, quantity, orderGuid, false));
+                    Request request = new Request(bookTitle, quantity, orderGuid, false);
+                    NotifyClients(RequestType.CREATE, request);
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
                 } finally {
@@ -104,7 +105,6 @@ namespace WarehouseService {
         }
 
         public void SendBooks(string bookTitle, int quantity, Guid orderGuid, bool ready) {
-            Request request = new Request(bookTitle, quantity, orderGuid, ready);
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
@@ -113,13 +113,31 @@ namespace WarehouseService {
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
                     cmd.ExecuteNonQuery();
+                    Request request = new Request(bookTitle, quantity, orderGuid, false);
                     NotifyClients(RequestType.UPDATE_STATE, request);
+                    proxy.NotifyFutureArrival(bookTitle, quantity, orderGuid);
                 } catch (Exception e) {
                     Console.WriteLine("Exception: " + e);
                 } finally {
                     c.Close();
                 }
             }
+        }
+
+        /**
+         * Functions below only defined so we can call the Store's dual service.
+         */
+
+        public void OrderCreated(Order order) {
+            throw new NotImplementedException();
+        }
+
+        public void OrderStateUpdated(Order order) {
+            throw new NotImplementedException();
+        }
+
+        public void AddRequest(StoreServiceReference.Request request) {
+            throw new NotImplementedException();
         }
     }
 }

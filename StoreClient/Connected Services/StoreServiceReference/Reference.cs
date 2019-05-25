@@ -553,10 +553,10 @@ namespace StoreClient.StoreServiceReference {
         System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Client> CreateClientAsync(string name, string address, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
-        StoreClient.StoreServiceReference.Order NotifyFutureArrival(StoreClient.StoreServiceReference.Request request);
+        StoreClient.StoreServiceReference.Order NotifyFutureArrival(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/NotifyFutureArrival", ReplyAction="http://tempuri.org/IStoreDualService/NotifyFutureArrivalResponse")]
-        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request);
+        System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
         void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
@@ -573,6 +573,9 @@ namespace StoreClient.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/OrderStateUpdated")]
         void OrderStateUpdated(StoreClient.StoreServiceReference.Order order);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/AddRequest")]
+        void AddRequest(StoreClient.StoreServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -675,12 +678,12 @@ namespace StoreClient.StoreServiceReference {
             return base.Channel.CreateClientAsync(name, address, email);
         }
         
-        public StoreClient.StoreServiceReference.Order NotifyFutureArrival(StoreClient.StoreServiceReference.Request request) {
-            return base.Channel.NotifyFutureArrival(request);
+        public StoreClient.StoreServiceReference.Order NotifyFutureArrival(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.NotifyFutureArrival(bookTitle, quantity, orderGuid);
         }
         
-        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(StoreClient.StoreServiceReference.Request request) {
-            return base.Channel.NotifyFutureArrivalAsync(request);
+        public System.Threading.Tasks.Task<StoreClient.StoreServiceReference.Order> NotifyFutureArrivalAsync(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.NotifyFutureArrivalAsync(bookTitle, quantity, orderGuid);
         }
         
         public void SatisfyOrders(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {

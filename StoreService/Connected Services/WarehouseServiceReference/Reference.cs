@@ -176,10 +176,10 @@ namespace StoreService.WarehouseServiceReference {
         System.Threading.Tasks.Task<StoreService.WarehouseServiceReference.Request[]> GetRequestsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
-        void SendBooks(StoreService.WarehouseServiceReference.Request request);
+        void SendBooks(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
-        System.Threading.Tasks.Task SendBooksAsync(StoreService.WarehouseServiceReference.Request request);
+        System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -244,12 +244,12 @@ namespace StoreService.WarehouseServiceReference {
             return base.Channel.GetRequestsAsync();
         }
         
-        public void SendBooks(StoreService.WarehouseServiceReference.Request request) {
-            base.Channel.SendBooks(request);
+        public void SendBooks(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            base.Channel.SendBooks(bookTitle, quantity, orderGuid, ready);
         }
         
-        public System.Threading.Tasks.Task SendBooksAsync(StoreService.WarehouseServiceReference.Request request) {
-            return base.Channel.SendBooksAsync(request);
+        public System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
+            return base.Channel.SendBooksAsync(bookTitle, quantity, orderGuid, ready);
         }
     }
 }

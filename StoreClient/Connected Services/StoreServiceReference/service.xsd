@@ -121,7 +121,9 @@
   <xs:element name="NotifyFutureArrival">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="request" nillable="true" type="q8:Request" />
+        <xs:element minOccurs="0" name="bookTitle" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="quantity" type="xs:int" />
+        <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="orderGuid" type="q8:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -158,6 +160,13 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="order" nillable="true" type="q12:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="request" nillable="true" type="q13:Request" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

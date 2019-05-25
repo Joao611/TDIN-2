@@ -64,4 +64,13 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Order.State.Type" nillable="true" type="tns:Order.State.Type" />
+  <xs:complexType name="Request">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="bookTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="orderGuid" type="ser:guid" />
+      <xs:element minOccurs="0" name="quantity" type="xs:int" />
+      <xs:element minOccurs="0" name="ready" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Request" nillable="true" type="tns:Request" />
 </xs:schema>
