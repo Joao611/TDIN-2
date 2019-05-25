@@ -87,9 +87,13 @@ namespace StoreService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    UpdateOrderState(c, request.orderGuid, state);
                     targetOrder = getOrder(c, request.orderGuid);
-                    tmpStock -= targetOrder.quantity;
+                    if(targetOrder.state.type != Order.State.Type.DISPATCHED_AT) {
+                        UpdateOrderState(c, request.orderGuid, state);
+                        tmpStock -= targetOrder.quantity;
+                        targetOrder.state = state;
+                    }
+                    
                 } catch (SqlException e) {
                     Console.WriteLine("DB Exception: " + e);
                 } finally {
