@@ -68,7 +68,6 @@ namespace StoreService {
             NotifyClients(OrderType.UPDATE_STATE, order);
             Request request = new Request(bookTitle, quantity, orderGuid, true);
             SendRequest(request);
-            //[TODO]: Guardar request na DB
             return order;
         }
 
@@ -373,6 +372,7 @@ namespace StoreService {
                     c.Close();
                 }
             }
+            InsertRequestInDb(request);
 
             return null;
         }
@@ -492,6 +492,25 @@ namespace StoreService {
             cmd.Parameters.AddWithValue("@state", order.state.type.ToString());
             cmd.Parameters.AddWithValue("@date", order.state.dispatchDate);
             cmd.ExecuteNonQuery();
+        }
+
+        private void InsertRequestInDb(Request request) {
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "INSERT INTO Orders (Book, Quantity, Order)" +
+                        " VALUES ((SELECT Id FROM Books WHERE title LIKE @b)," +
+                        " @qty," +
+                        " (SELECT Id FROM Orders WHERE Guid LIKE @o))";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@b", request.bookTitle);
+                    cmd.Parameters.AddWithValue("@qty", request.quantity);
+                    cmd.Parameters.AddWithValue("@o", request.orderGuid.ToString());
+                    cmd.ExecuteNonQuery();
+                } catch (Exception e) {
+                    Console.WriteLine(e);
+                }
+            }
         }
 
         private void UpdateStock(SqlConnection c, int bookId, int quantity) {
