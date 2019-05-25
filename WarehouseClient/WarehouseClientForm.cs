@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using WarehouseForm.WarehouseServiceReference;
 
 namespace WarehouseForm {
+    [CallbackBehavior(UseSynchronizationContext = false)]
     public partial class WarehouseClientForm : Form, IWarehouseServiceCallback {
         readonly WarehouseServiceClient proxy;
 
@@ -19,25 +20,29 @@ namespace WarehouseForm {
             proxy = new WarehouseServiceClient(new InstanceContext(this));
             List<Request> requests = new List<Request>(proxy.GetRequests());
             requests.ForEach(request => {
-                requestsGrid.Rows.Add(request.orderGuid, request.bookTitle, request.quantity);
+                RequestCreated(request);
             });
         }
 
         public void RequestCreated(Request request) {
-            return;
-            //throw new NotImplementedException();
+            requestsGrid.Rows.Add(request.orderGuid, request.bookTitle, request.quantity);
         }
 
         public void RequestStateUpdated(Request request) {
-            throw new NotImplementedException();
+            DataGridViewRow row = requestsGrid.Rows
+                        .Cast<DataGridViewRow>()
+                        .FirstOrDefault(r => (Guid)r.Cells["orderIdColumn"].Value == request.orderGuid);
+            BeginInvoke((Action) delegate() {
+                requestsGrid.Rows.Remove(row);
+            });
         }
 
-        private void selectRowEvent(object sender, DataGridViewRowStateChangedEventArgs e) {
-            // For any other operation except, StateChanged, do nothing
-            if (e.StateChanged != DataGridViewElementStates.Selected) return;
+        //private void selectRowEvent(object sender, DataGridViewRowStateChangedEventArgs e) {
+        //    // For any other operation except, StateChanged, do nothing
+        //    if (e.StateChanged != DataGridViewElementStates.Selected) return;
+        //    proxy.SendBooks(new Request());
 
-
-        }
+        //}
 
         private void WarehouseClientForm_Shown(object sender, EventArgs e) {
             proxy.Subscribe();
@@ -46,6 +51,18 @@ namespace WarehouseForm {
         private void WarehouseClientForm_FormClosing(object sender, FormClosingEventArgs e) {
             proxy.Unsubscribe();
             proxy.Close();
+        }
+
+        private void RequestsGrid_CellClick(object sender, DataGridViewCellEventArgs e) {
+            if (requestsGrid.SelectedRows.Count > 0) {
+                DataGridViewRow row = requestsGrid.SelectedRows[0];
+                proxy.SendBooks(
+                    (string)row.Cells["bookColumn"].Value,
+                    (int)row.Cells["quantityColumn"].Value,
+                    (Guid)row.Cells["orderIdColumn"].Value,
+                    false
+                );
+            }
         }
     }
 }
