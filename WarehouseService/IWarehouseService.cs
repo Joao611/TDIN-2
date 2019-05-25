@@ -26,7 +26,7 @@ namespace WarehouseService {
         List<Request> GetRequests();
 
         [OperationContract]
-        void SendBooks(Request request);
+        void SendBooks(string bookTitle, int quantity, Guid orderGuid, bool ready);
     }
 
     public interface IRequestsChanged {

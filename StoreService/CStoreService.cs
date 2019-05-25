@@ -286,7 +286,7 @@ namespace StoreService {
                     InsertOrderInDb(c, order);
                     switch (order.state.type) {
                         case Order.State.Type.WAITING:
-                            warehouseProxy.RequestBooks(order.book.title, order.quantity, order.guid);
+                            warehouseProxy.RequestBooks(order.book.title, order.quantity + 10, order.guid);
                             break;
                         case Order.State.Type.DISPATCHED_AT:
                             UpdateStock(c, bookId, -quantity);

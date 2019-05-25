@@ -7,12 +7,14 @@ using System.Text;
 using System.Configuration;
 using System.Messaging;
 using System.Data.SqlClient;
+using WarehouseService.StoreServiceReference;
 
 namespace WarehouseService {
-    [ServiceBehavior(InstanceContextMode=InstanceContextMode.PerCall)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class CWarehouseService : IWarehouseQueueService, IWarehouseService {
         private readonly string database;
         private static List<IRequestsChanged> subscribers = new List<IRequestsChanged>();
+        private StoreDualServiceClient proxy;
 
         private enum RequestType {
             CREATE,
@@ -22,6 +24,7 @@ namespace WarehouseService {
         public CWarehouseService() {
             string connection = ConfigurationManager.ConnectionStrings["WarehouseDB"].ConnectionString;
             database = String.Format(connection, AppDomain.CurrentDomain.BaseDirectory);
+            proxy = new StoreDualServiceClient(new InstanceContext(this));
         }
 
         public void Subscribe() {
@@ -100,8 +103,23 @@ namespace WarehouseService {
             return requests;
         }
 
-        public void SendBooks(Request request) {
-            throw new NotImplementedException();
+        public void SendBooks(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+            Request request = new Request(bookTitle, quantity, orderGuid, ready);
+            using (SqlConnection c = new SqlConnection(database)) {
+                try {
+                    c.Open();
+                    string sql = "DELETE FROM Requests" +
+                                " WHERE OrderGuid LIKE @guid";
+                    SqlCommand cmd = new SqlCommand(sql, c);
+                    cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
+                    cmd.ExecuteNonQuery();
+                    NotifyClients(RequestType.UPDATE_STATE, request);
+                } catch (Exception e) {
+                    Console.WriteLine("Exception: " + e);
+                } finally {
+                    c.Close();
+                }
+            }
         }
     }
 }
