@@ -83,6 +83,7 @@ namespace StoreClient {
             addBooksToForm();
             addClientsToForm();
             addOrdersToForm();
+            addRequestsToForm();
         }
 
         private void payButton_Click(object sender, EventArgs e) {
@@ -137,7 +138,14 @@ namespace StoreClient {
             orders.ForEach(order => {
                 Console.WriteLine(order.state.ToString());
                 ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
-                });
+            });
+        }
+
+        public void addRequestsToForm() {
+            List<Request> requests = new List<Request>(proxy.GetRequests());
+            requests.ForEach(request => {
+                AddRequest(request);
+            });
         }
 
         private string stateToString(Order.State state) {
