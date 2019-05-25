@@ -95,22 +95,23 @@ namespace StoreService {
                     c.Close();
                 }
             }
-            List<Order> orders = getOrdersByBook(book);
-            Order o = null;
-            while ((o = orders.Find(order => order.quantity <= tmpStock)) != null) {
-                using (SqlConnection c = new SqlConnection(database)) {
-                    try {
-                        c.Open();
-                        UpdateOrderState(c, o.guid, state);
-                        tmpStock -= o.quantity;
-                        orders.Remove(o);
-                    } catch (SqlException e) {
-                        Console.WriteLine("DB Exception: " + e);
-                    } finally {
-                        c.Close();
+            List<Order> orders = getOrdersByBook(book, tmpStock);
+            orders.ForEach(o => {
+                if(o.quantity <= tmpStock) {
+                    using (SqlConnection c = new SqlConnection(database)) {
+                        try {
+                            c.Open();
+                            UpdateOrderState(c, o.guid, state);
+                            o.state = state;
+                            tmpStock -= o.quantity;
+                        } catch (SqlException e) {
+                            Console.WriteLine("DB Exception: " + e);
+                        } finally {
+                            c.Close();
+                        }
                     }
                 }
-            }
+            });
 
             UpdateBookStock(book.id, tmpStock);
             book.stock = tmpStock;
@@ -357,7 +358,7 @@ namespace StoreService {
                 try {
                     c.Open();
                     string sql = "UPDATE Orders SET State = @s, DispatchDate = @d" +
-                        " WHERE Guid LIKE @id";
+                        " WHERE Guid LIKE @id AND State <> 'DISPATCHED_AT'";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@s", "DISPATCH_OCCURS_AT");
                     cmd.Parameters.AddWithValue("@d", DateTime.Now.AddDays(2));
@@ -541,15 +542,16 @@ namespace StoreService {
 
         
 
-        protected List<Order> getOrdersByBook(Book book) {
+        protected List<Order> getOrdersByBook(Book book, int stock) {
             List<Order> orders = new List<Order>();
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
                     string sql = "SELECT * FROM Orders" +
-                        " WHERE Book = @bookId AND State <> 'DISPATCHED_AT'";
+                        " WHERE Book = @bookId AND State <> 'DISPATCHED_AT' AND Quantity <= @stock";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@bookId", book.id);
+                    cmd.Parameters.AddWithValue("@stock", stock);
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
                             Order order = new Order(

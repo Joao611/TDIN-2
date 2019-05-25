@@ -155,7 +155,7 @@ namespace StoreService {
         public double totalPrice { get; private set; }
 
         [DataMember]
-        public State state { get; private set; }
+        public State state { get; set; }
         
     }
 
