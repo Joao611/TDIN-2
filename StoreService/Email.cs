@@ -106,7 +106,12 @@ namespace StoreService {
                 message.Body = body ?? "";
                 message.IsBodyHtml = isBodyHtml;
 
-                message.To.Add(email);
+                try {
+                    message.To.Add(email);
+                } catch {
+                    Console.WriteLine("Bad e-mail format.");
+                    return;
+                }
 
                 if (ccemailTo != null && ccemailTo.Length > 0) {
                     foreach (string emailCc in ccemailTo) {
