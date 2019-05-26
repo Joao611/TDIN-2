@@ -26,7 +26,7 @@ namespace WarehouseService {
         List<Request> GetRequests();
 
         [OperationContract]
-        void SendBooks(string bookTitle, int quantity, Guid orderGuid, bool ready);
+        void SendBooks(string bookTitle, int quantity, Guid orderGuid);
     }
 
     public interface IRequestsChanged {
@@ -54,8 +54,5 @@ namespace WarehouseService {
 
         [DataMember]
         public Guid orderGuid { get; private set; }
-
-        [DataMember]
-        public bool ready { get; private set; }
     }
 }

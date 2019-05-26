@@ -142,7 +142,7 @@ namespace StoreService {
                 if (order.state.type == Order.State.Type.DISPATCHED_AT) {
                     Email.SendEmail(OrderType.UPDATE_STATE, order);
                 }
-            });
+            }); 
         }
 
         public List<Request> GetRequests() {

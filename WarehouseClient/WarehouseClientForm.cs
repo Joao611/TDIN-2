@@ -54,8 +54,7 @@ namespace WarehouseForm {
                 proxy.SendBooks(
                     (string)row.Cells["bookColumn"].Value,
                     (int)row.Cells["quantityColumn"].Value,
-                    (Guid)row.Cells["orderIdColumn"].Value,
-                    false
+                    (Guid)row.Cells["orderIdColumn"].Value
                 );
             }
         }

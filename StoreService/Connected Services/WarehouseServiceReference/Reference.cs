@@ -31,9 +31,6 @@ namespace StoreService.WarehouseServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int quantityField;
         
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool readyField;
-        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -79,19 +76,6 @@ namespace StoreService.WarehouseServiceReference {
                 if ((this.quantityField.Equals(value) != true)) {
                     this.quantityField = value;
                     this.RaisePropertyChanged("quantity");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool ready {
-            get {
-                return this.readyField;
-            }
-            set {
-                if ((this.readyField.Equals(value) != true)) {
-                    this.readyField = value;
-                    this.RaisePropertyChanged("ready");
                 }
             }
         }
@@ -176,10 +160,10 @@ namespace StoreService.WarehouseServiceReference {
         System.Threading.Tasks.Task<StoreService.WarehouseServiceReference.Request[]> GetRequestsAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
-        void SendBooks(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        void SendBooks(string bookTitle, int quantity, System.Guid orderGuid);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IWarehouseService/SendBooks", ReplyAction="http://tempuri.org/IWarehouseService/SendBooksResponse")]
-        System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready);
+        System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -244,12 +228,12 @@ namespace StoreService.WarehouseServiceReference {
             return base.Channel.GetRequestsAsync();
         }
         
-        public void SendBooks(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
-            base.Channel.SendBooks(bookTitle, quantity, orderGuid, ready);
+        public void SendBooks(string bookTitle, int quantity, System.Guid orderGuid) {
+            base.Channel.SendBooks(bookTitle, quantity, orderGuid);
         }
         
-        public System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid, bool ready) {
-            return base.Channel.SendBooksAsync(bookTitle, quantity, orderGuid, ready);
+        public System.Threading.Tasks.Task SendBooksAsync(string bookTitle, int quantity, System.Guid orderGuid) {
+            return base.Channel.SendBooksAsync(bookTitle, quantity, orderGuid);
         }
     }
 }

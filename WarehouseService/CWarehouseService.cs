@@ -95,7 +95,7 @@ namespace WarehouseService {
                         reader.Close();
                     }
                 } catch (Exception e) {
-                    Console.WriteLine("Exception: " + e);
+                    Console.WriteLine("Exception: " + e.Message);
                 } finally {
                     c.Close();
                 }
@@ -103,21 +103,16 @@ namespace WarehouseService {
             return requests;
         }
 
-        public void SendBooks(string bookTitle, int quantity, Guid orderGuid, bool ready) {
+        public void SendBooks(string bookTitle, int quantity, Guid orderGuid) {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "DELETE FROM Requests" +
-                                " WHERE OrderGuid LIKE @guid";
-                    SqlCommand cmd = new SqlCommand(sql, c);
-                    cmd.Parameters.AddWithValue("@guid", orderGuid.ToString());
-                    cmd.ExecuteNonQuery();
                     Request request = new Request(bookTitle, quantity, orderGuid);
                     RemoveRequestFromDB(request);
                     NotifyClients(RequestType.UPDATE_STATE, request);
                     proxy.NotifyFutureArrival(bookTitle, quantity, orderGuid);
                 } catch (Exception e) {
-                    Console.WriteLine("Exception: " + e);
+                    Console.WriteLine("Exception: " + e.Message);
                 } finally {
                     c.Close();
                 }
@@ -133,7 +128,7 @@ namespace WarehouseService {
                     cmd.Parameters.AddWithValue("@orderGuid", request.orderGuid.ToString());
                     cmd.ExecuteNonQuery();
                 } catch (Exception e) {
-                    Console.WriteLine("DB Exception: " + e);
+                    Console.WriteLine("DB Exception: " + e.Message);
                 } finally {
                     c.Close();
                 }
