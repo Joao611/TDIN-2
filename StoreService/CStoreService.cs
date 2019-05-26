@@ -123,6 +123,7 @@ namespace StoreService {
             orders.ForEach(order => {
                 order.book = book;
                 NotifyClients(OrderType.UPDATE_STATE, order);
+                Email.SendEmail(OrderType.UPDATE_STATE, order);
             });
 
         }

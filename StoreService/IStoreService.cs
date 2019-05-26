@@ -106,7 +106,6 @@ namespace StoreService {
         public class State {
             [DataContract]
             public enum Type {
-                [EnumMember] DELIVERED,
                 [EnumMember] WAITING,
                 [EnumMember] DISPATCH_OCCURS_AT,
                 [EnumMember] DISPATCHED_AT,
