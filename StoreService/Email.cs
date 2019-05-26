@@ -68,7 +68,6 @@ namespace StoreService {
             <p> Total price: &euro; {order.totalPrice} </p>";
         }
 
-        // TODO: E-mail body.
         public static void SendEmail(OrderType type, Order order) {
             string email = order.client.email;
             string subject = (type == OrderType.CREATE) ?
@@ -108,8 +107,8 @@ namespace StoreService {
 
                 try {
                     message.To.Add(email);
-                } catch {
-                    Console.WriteLine("Bad e-mail format.");
+                } catch (Exception e) {
+                    Console.WriteLine("Bad e-mail format: " + e.Message);
                     return;
                 }
 

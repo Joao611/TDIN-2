@@ -385,7 +385,7 @@ namespace StoreService {
                 try {
                     c.Open();
                     string sql = "INSERT INTO Clients (Name, Email, Address)" +
-                        " VALUES (@name, @address, @email);" +
+                        " VALUES (@name, @email, @address);" +
                         " SELECT CAST(scope_identity() AS int)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@name", name);
