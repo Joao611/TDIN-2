@@ -95,6 +95,9 @@ namespace StoreService {
 
         [OperationContract(IsOneWay = true)]
         void AddRequest(Request request);
+
+        [OperationContract(IsOneWay = true)]
+        void DeleteRequest(Request request);
     }
 
     /**

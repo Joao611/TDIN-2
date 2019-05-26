@@ -57,7 +57,6 @@
   <xs:element name="Order.State" nillable="true" type="tns:Order.State" />
   <xs:simpleType name="Order.State.Type">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="DELIVERED" />
       <xs:enumeration value="WAITING" />
       <xs:enumeration value="DISPATCH_OCCURS_AT" />
       <xs:enumeration value="DISPATCHED_AT" />

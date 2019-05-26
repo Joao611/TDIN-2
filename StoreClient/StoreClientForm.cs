@@ -218,6 +218,16 @@ namespace StoreClient {
             }));
         }
 
+        public void DeleteRequest(Request request) {
+            DataGridViewRow row = requestsGrid.Rows
+                        .Cast<DataGridViewRow>()
+                        .FirstOrDefault(r => (Guid)r.Cells["requestOrderIdColumn"].Value == request.orderGuid);
+
+            BeginInvoke((Action)delegate () {
+                requestsGrid.Rows.Remove(row);
+            });
+        }
+
         private void StoreClientForm_FormClosing(object sender, FormClosingEventArgs e) {
             proxy.Unsubscribe();
             proxy.Close();
@@ -229,13 +239,7 @@ namespace StoreClient {
                 proxy.SatisfyOrders((string)row.Cells["requestBookNameColumn"].Value,
                     (int)row.Cells["requestQuantityColumn"].Value,
                     (Guid)row.Cells["requestOrderIdColumn"].Value);
-                
-                BeginInvoke((Action)delegate () {
-                    requestsGrid.Rows.Remove(row);
-                });
             }
         }
-
-        
     }
 }

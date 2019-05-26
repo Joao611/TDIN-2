@@ -57,6 +57,16 @@ namespace StoreService {
             });
         }
 
+        private void NotifyDeleteRequest(Request request) {
+            subscribers.ForEach(callback => {
+                if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
+                    callback.DeleteRequest(request);
+                } else {
+                    subscribers.Remove(callback);
+                }
+            });
+        }
+
         public new Order CreateOrder(int clientId, int bookId, int quantity) {
             Order order = base.CreateOrder(clientId, bookId, quantity);
             NotifyClients(OrderType.CREATE, order);
@@ -74,6 +84,7 @@ namespace StoreService {
         public void SatisfyOrders(string bookTitle, int quantity, Guid orderGuid) {
             Request request = new Request(bookTitle, quantity, orderGuid);
             RemoveRequestFromDB(request);
+            NotifyDeleteRequest(request);
             Book book = GetBookByTitle(request.bookTitle);
             int tmpStock = book.stock + request.quantity;
             Order.State state = new Order.State() {
@@ -136,7 +147,7 @@ namespace StoreService {
                     string sql = "SELECT B.Title, R.Quantity, O.Guid" +
                                 " FROM Requests R" +
                                 "   INNER JOIN Books B ON (R.Book = B.Id)" +
-                                "   INNER JOIN Orders O ON (R.Order = O.Id)";
+                                "   INNER JOIN Orders O ON (R.[Order] = O.Id)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     using (SqlDataReader reader = cmd.ExecuteReader()) {
                         while (reader.Read()) {
@@ -162,7 +173,9 @@ namespace StoreService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "DELETE FROM Requests WHERE Order LIKE @orderGuid";
+                    string sql = "DELETE FROM Requests" +
+                                " WHERE [Order] = (SELECT Id FROM Orders" +
+                                                " WHERE Guid LIKE @orderGuid)";
                     SqlCommand cmd = new SqlCommand(sql, c);
                     cmd.Parameters.AddWithValue("@orderGuid", request.orderGuid.ToString());
                     cmd.ExecuteNonQuery();
@@ -552,7 +565,7 @@ namespace StoreService {
             using (SqlConnection c = new SqlConnection(database)) {
                 try {
                     c.Open();
-                    string sql = "INSERT INTO Requests (Book, Quantity, Order)" +
+                    string sql = "INSERT INTO Requests (Book, Quantity, [Order])" +
                         " VALUES ((SELECT Id FROM Books WHERE title LIKE @b)," +
                         " @qty," +
                         " (SELECT Id FROM Orders WHERE Guid LIKE @o))";

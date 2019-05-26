@@ -57,13 +57,18 @@
   <xs:element name="Order.State" nillable="true" type="tns:Order.State" />
   <xs:simpleType name="Order.State.Type">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="DELIVERED" />
       <xs:enumeration value="WAITING" />
       <xs:enumeration value="DISPATCH_OCCURS_AT" />
       <xs:enumeration value="DISPATCHED_AT" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Order.State.Type" nillable="true" type="tns:Order.State.Type" />
+  <xs:complexType name="ArrayOfRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Request" nillable="true" type="tns:Request" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequest" nillable="true" type="tns:ArrayOfRequest" />
   <xs:complexType name="Request">
     <xs:sequence>
       <xs:element minOccurs="0" name="bookTitle" nillable="true" type="xs:string" />

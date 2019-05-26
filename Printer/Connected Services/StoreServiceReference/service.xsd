@@ -148,24 +148,43 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="OrderCreated">
+  <xs:element name="GetRequests">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRequestsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="order" nillable="true" type="q11:Order" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="GetRequestsResult" nillable="true" type="q11:ArrayOfRequest" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="OrderStateUpdated">
+  <xs:element name="OrderCreated">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="order" nillable="true" type="q12:Order" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="OrderStateUpdated">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="order" nillable="true" type="q13:Order" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="AddRequest">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="request" nillable="true" type="q13:Request" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="request" nillable="true" type="q14:Request" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/StoreService" minOccurs="0" name="request" nillable="true" type="q15:Request" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
