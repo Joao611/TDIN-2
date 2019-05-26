@@ -38,11 +38,11 @@
                 var date = order.state.dispatchDate;
                 var date_parsed = new Date(parseInt(date.substr(6))).toLocaleString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
                 switch (order.state.type) {
-                    case 1:
+                    case 0:
                         return "Waiting Expedition";
-                    case 2:
+                    case 1:
                         return "Dispatched at " + date_parsed;
-                    case 3:
+                    case 2:
                         return "Dispatch will occur at " + date_parsed;
                     default:
                         return "";
