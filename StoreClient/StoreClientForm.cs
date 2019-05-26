@@ -136,7 +136,6 @@ namespace StoreClient {
         public void addOrdersToForm() {
             orders = new List<Order>(proxy.GetOrders());
             orders.ForEach(order => {
-                Console.WriteLine(order.state.ToString());
                 ordersGrid.Rows.Add(order.guid, order.book.title, order.quantity, stateToString(order.state));
             });
         }
