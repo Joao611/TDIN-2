@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import 'bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootswatch/dist/united/bootstrap.css';
 import App from './App.vue';
 
 Vue.config.productionTip = true;

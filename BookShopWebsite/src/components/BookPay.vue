@@ -1,16 +1,22 @@
 ﻿<template>
-    <div v-if="book">
-        <h3>{{book.title}}</h3>
-        <p>Availability: {{book.stock ? 'Immediate from store' : 'Needs shipping from the warehouse'}}</p>
-        <form @submit.stop.prevent="submitOrder">
-            <div class="form-group">
-                <label for="quantity-input">Quantity</label>
-                <input type="number" v-model="quantity" class="form-control"
-                       placeholder="Quantity" id="quantity-input" />
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Checkout</button>
-        </form>
+    <div class="container" v-if="book">
+        <img :src="book.src" />
+        <div class="order-info">
+            <span>
+                <h3>{{book.title}}</h3>
+                <p>Available stock: {{book.stock}}</p>
+            </span>
+            <form @submit.stop.prevent="submitOrder">
+                <div class="form-group">
+                    <label for="quantity-input">Quantity</label>
+                    <input type="number" v-model="quantity" class="form-control"
+                           placeholder="Quantity" id="quantity-input" />
+                </div>
+
+                <button type="submit" class="btn btn-primary">Checkout</button>
+            </form>
+        </div>
+        
     </div>
 </template>
 
@@ -25,13 +31,16 @@
                     id: this.$route.params.id,
                     title: 'Metro 2033 - HARDCODED',
                     stock: 2,
-                    price: 10.5
+                    price: 10.5,
+                    src: ""
                 },
                 quantity: Number
             }
         },
         async created() {
             this.book = (await axiosInstance.get(`/books/${this.$route.params.id}`)).data;
+            let index = parseInt(this.$route.params.id) - 1;
+            this.book.src = this.$store.state.images[index];
         },
         methods: {
             async submitOrder() {
@@ -53,4 +62,19 @@
 </script>
 
 <style scoped>
+    div.container img {
+        width: 450px;
+        height: 450px;
+    }
+    div.container {
+        display: flex;
+        margin-top: 20px;
+    }
+
+    div.order-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-left: 20px;
+    }
 </style>

@@ -21,12 +21,16 @@
                     id: 0,
                     title: 'Metro 2033 - HARDCODED',
                     stock: 2,
-                    price: 10.5
+                    price: 10.5,
+                    src: ""
                 }]
             }
         },
         async created() {
             this.books = (await axiosInstance.get('/books')).data;
+            for (let i = 0; i < this.$store.state.images.length; i++) {
+                this.books[i].src = this.$store.state.images[i];
+            }
         }
     };
 </script>

@@ -48,4 +48,7 @@
 </script>
 
 <style scoped>
+    form {
+        width: 50%;
+    }
 </style>

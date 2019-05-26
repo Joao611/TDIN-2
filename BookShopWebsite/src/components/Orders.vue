@@ -6,6 +6,7 @@
                 <th scope="col">Quantity</th>
                 <th scope="col">Title</th>
                 <th scope="col">Price</th>
+                <th scope="col">State</th>
             </tr>
         </thead>
         <tbody>
@@ -14,30 +15,39 @@
                 <td>{{order.quantity}}</td>
                 <td>{{order.book.title}}</td>
                 <td>{{order.totalPrice}}</td>
+                <td>{{getState(order)}}</td>
             </tr>
         </tbody>
     </table>
 </template>
-
 <script>
     import axiosInstance from '../utils/axiosInstance';
-
     export default {
         name: 'Orders',
         data() {
             return {
-                orders: [{
-                    guid: 0,
-                    book: {
-                        title: 'The Diary of a Wimpy Kid - HARDCODED',
-                    },
-                    quantity: 2,
-                    totalPrice: 10.5
-                }]
+                orders: []
             }
         },
         async created() {
             this.orders = (await axiosInstance.get(`/clients/${this.clientId}/orders`)).data;
+        },
+        methods: {
+            getState(order) {
+                console.log(order); 
+                var date = order.state.dispatchDate;
+                var date_parsed = new Date(parseInt(date.substr(6))).toLocaleString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+                switch (order.state.type) {
+                    case 1:
+                        return "Waiting Expedition";
+                    case 2:
+                        return "Dispatched at " + date_parsed;
+                    case 3:
+                        return "Dispatch will occur at " + date_parsed;
+                    default:
+                        return "";
+                }
+            }  
         },
         computed: {
             clientId() {
@@ -51,6 +61,5 @@
         }
     }
 </script>
-
 <style scoped>
 </style>
