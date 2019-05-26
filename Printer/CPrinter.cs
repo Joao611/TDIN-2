@@ -84,5 +84,6 @@ namespace Printer {
         // Unused hooks.
         public void AddRequest(Request request) { }
         public void OrderStateUpdated(Order order) { }
+        public void DeleteRequest(Request request) { }
     }
 }

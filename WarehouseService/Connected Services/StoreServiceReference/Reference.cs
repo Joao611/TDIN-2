@@ -387,16 +387,13 @@ namespace WarehouseService.StoreServiceReference {
             public enum Type : int {
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                DELIVERED = 0,
+                WAITING = 0,
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                WAITING = 1,
+                DISPATCH_OCCURS_AT = 1,
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                DISPATCH_OCCURS_AT = 2,
-                
-                [System.Runtime.Serialization.EnumMemberAttribute()]
-                DISPATCHED_AT = 3,
+                DISPATCHED_AT = 2,
             }
         }
     }
@@ -582,6 +579,9 @@ namespace WarehouseService.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/AddRequest")]
         void AddRequest(WarehouseService.StoreServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/DeleteRequest")]
+        void DeleteRequest(WarehouseService.StoreServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

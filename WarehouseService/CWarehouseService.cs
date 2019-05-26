@@ -155,5 +155,9 @@ namespace WarehouseService {
         public void AddRequest(StoreServiceReference.Request request) {
             throw new NotImplementedException();
         }
+
+        public void DeleteRequest(StoreServiceReference.Request request) {
+            throw new NotImplementedException();
+        }
     }
 }

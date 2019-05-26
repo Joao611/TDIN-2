@@ -387,16 +387,13 @@ namespace Printer.StoreServiceReference {
             public enum Type : int {
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                DELIVERED = 0,
+                WAITING = 0,
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                WAITING = 1,
+                DISPATCH_OCCURS_AT = 1,
                 
                 [System.Runtime.Serialization.EnumMemberAttribute()]
-                DISPATCH_OCCURS_AT = 2,
-                
-                [System.Runtime.Serialization.EnumMemberAttribute()]
-                DISPATCHED_AT = 3,
+                DISPATCHED_AT = 2,
             }
         }
     }
@@ -563,6 +560,12 @@ namespace Printer.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/SatisfyOrders", ReplyAction="http://tempuri.org/IStoreDualService/SatisfyOrdersResponse")]
         System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetRequests", ReplyAction="http://tempuri.org/IStoreDualService/GetRequestsResponse")]
+        Printer.StoreServiceReference.Request[] GetRequests();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IStoreDualService/GetRequests", ReplyAction="http://tempuri.org/IStoreDualService/GetRequestsResponse")]
+        System.Threading.Tasks.Task<Printer.StoreServiceReference.Request[]> GetRequestsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -576,6 +579,9 @@ namespace Printer.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/AddRequest")]
         void AddRequest(Printer.StoreServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/DeleteRequest")]
+        void DeleteRequest(Printer.StoreServiceReference.Request request);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -692,6 +698,14 @@ namespace Printer.StoreServiceReference {
         
         public System.Threading.Tasks.Task SatisfyOrdersAsync(string bookTitle, int quantity, System.Guid orderGuid) {
             return base.Channel.SatisfyOrdersAsync(bookTitle, quantity, orderGuid);
+        }
+        
+        public Printer.StoreServiceReference.Request[] GetRequests() {
+            return base.Channel.GetRequests();
+        }
+        
+        public System.Threading.Tasks.Task<Printer.StoreServiceReference.Request[]> GetRequestsAsync() {
+            return base.Channel.GetRequestsAsync();
         }
     }
 }

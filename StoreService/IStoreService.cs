@@ -95,6 +95,9 @@ namespace StoreService {
 
         [OperationContract(IsOneWay = true)]
         void AddRequest(Request request);
+
+        [OperationContract(IsOneWay = true)]
+        void DeleteRequest(Request request);
     }
 
     /**
@@ -106,7 +109,6 @@ namespace StoreService {
         public class State {
             [DataContract]
             public enum Type {
-                [EnumMember] DELIVERED,
                 [EnumMember] WAITING,
                 [EnumMember] DISPATCH_OCCURS_AT,
                 [EnumMember] DISPATCHED_AT,
