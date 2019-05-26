@@ -139,9 +139,10 @@ namespace StoreService {
             orders.ForEach(order => {
                 order.book = book;
                 NotifyClients(OrderType.UPDATE_STATE, order);
-                Email.SendEmail(OrderType.UPDATE_STATE, order);
+                if (order.state.type == Order.State.Type.DISPATCHED_AT) {
+                    Email.SendEmail(OrderType.UPDATE_STATE, order);
+                }
             });
-
         }
 
         public List<Request> GetRequests() {
