@@ -56,7 +56,14 @@
             async refreshClients({ commit }) {
                 const clients = (await axiosInstance.get('/clients')).data;
                 commit(REFRESH_CLIENTS, clients);
+                return clients;
             },
+            async initClients({ commit, dispatch }) {
+                const clients = await dispatch('refreshClients');
+                if (clients.length >= 1) {
+                    commit('setActiveClient', clients[0]);
+                }
+            }
         },
     });
 
@@ -67,7 +74,7 @@
             Navbar,
         },
         created() {
-            store.dispatch('refreshClients');
+            store.dispatch('initClients');
         },
         router,
         store,
