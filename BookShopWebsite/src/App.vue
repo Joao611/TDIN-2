@@ -13,8 +13,11 @@
     import router from './router/index';
     import Vue from 'vue';
     import Vuex from 'vuex';
+    import axiosInstance from './utils/axiosInstance';
 
     Vue.use(Vuex);
+
+    const REFRESH_CLIENTS = 'REFRESH_CLIENTS';
 
     const store = new Vuex.Store({
         state: {
@@ -22,6 +25,7 @@
                 id: Number,
                 name: String,
             },
+            clients: [],
             images: [
                 "https://static.fnac-static.com/multimedia/Images/PT/NR/35/14/40/4199477/1540-1.jpg",
                 "https://static.fnac-static.com/multimedia/Images/PT/NR/4d/06/00/1613/1540-1.jpg",
@@ -43,7 +47,16 @@
         mutations: {
             setActiveClient(state, newClient) {
                 state.client = newClient;
-            }
+            },
+            [REFRESH_CLIENTS](state, newClients) {
+                state.clients = newClients;
+            },
+        },
+        actions: {
+            async refreshClients({ commit }) {
+                const clients = (await axiosInstance.get('/clients')).data;
+                commit(REFRESH_CLIENTS, clients);
+            },
         },
     });
 
@@ -52,6 +65,9 @@
         components: {
             Books,
             Navbar,
+        },
+        created() {
+            store.dispatch('refreshClients');
         },
         router,
         store,

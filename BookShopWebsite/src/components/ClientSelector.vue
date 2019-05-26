@@ -10,27 +10,14 @@
 </template>
 
 <script>
-    import axiosInstance from '../utils/axiosInstance';
-
     export default {
         name: 'ClientSelector',
-        data() {
-            return {
-                clients: [{
-                    id: 0,
-                    name: 'J.R.R. Tolkien',
-                }],
-            }
-        },
-        async created() {
-            this.clients = (await axiosInstance('/clients')).data;
-        },
-        methods: {
-            setActiveClient(c) {
-                this.$store.dispatch('setActiveClient', c);
-            }
-        },
         computed: {
+            clients: {
+                get() {
+                    return this.$store.state.clients;
+                },
+            },
             client: {
                 get() {
                     return this.$store.state.client;

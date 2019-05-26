@@ -32,12 +32,13 @@
         methods: {
             async submitRegister() {
                 const body = {
-                    email: this.email,
                     name: this.name,
+                    email: this.email,
                     address: this.address,
                 };
                 try {
                     await axiosInstance.post('/clients', body);
+                    this.$store.dispatch('refreshClients');
                     this.$router.push('/');
                 } catch (e) {
                     alert('Bad request');
