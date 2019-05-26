@@ -582,6 +582,9 @@ namespace Printer.StoreServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/DeleteRequest")]
         void DeleteRequest(Printer.StoreServiceReference.Request request);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IStoreDualService/ClientAdded")]
+        void ClientAdded(Printer.StoreServiceReference.Client client);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

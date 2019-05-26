@@ -24,7 +24,6 @@ namespace StoreService {
             }
         }
 
-
         public void Unsubscribe() {
             IOrdersChanged callback = OperationContext.Current.GetCallbackChannel<IOrdersChanged>();
             subscribers.Remove(callback);
@@ -61,6 +60,16 @@ namespace StoreService {
             subscribers.ForEach(callback => {
                 if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
                     callback.DeleteRequest(request);
+                } else {
+                    subscribers.Remove(callback);
+                }
+            });
+        }
+
+        private void NotifyCreateClient(Client client) {
+            subscribers.ForEach(callback => {
+                if (((ICommunicationObject)callback).State == CommunicationState.Opened) {
+                    callback.ClientAdded(client);
                 } else {
                     subscribers.Remove(callback);
                 }
@@ -172,6 +181,12 @@ namespace StoreService {
             SqlCommand cmd = new SqlCommand(sql, c, t);
             cmd.Parameters.AddWithValue("@orderGuid", request.orderGuid.ToString());
             cmd.ExecuteNonQuery();
+        }
+
+        public new Client CreateClient(string name, string address, string email) {
+            Client client = base.CreateClient(name, address, email);
+            NotifyCreateClient(client);
+            return client;
         }
     }
 

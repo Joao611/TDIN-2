@@ -65,6 +65,9 @@
     <None Include="Connected Services\StoreServiceReference\Printer.StoreServiceReference.Order.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\StoreServiceReference\Printer.StoreServiceReference.Request1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\StoreServiceReference\service.wsdl" />
     <None Include="Connected Services\StoreServiceReference\service.xsd">
       <SubType>Designer</SubType>

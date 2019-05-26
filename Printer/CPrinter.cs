@@ -85,5 +85,6 @@ namespace Printer {
         public void AddRequest(Request request) { }
         public void OrderStateUpdated(Order order) { }
         public void DeleteRequest(Request request) { }
+        public void ClientAdded(Client client) { }
     }
 }

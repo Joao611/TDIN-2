@@ -168,8 +168,6 @@ namespace StoreClient {
             string email = emailTextBox.Text;
             emailTextBox.Text = "";
             Client newClient = proxy.CreateClient(name, address, email);
-            clients.Add(newClient);
-            clientsComboBox.Items.Add(newClient.name);
             return newClient.id;
         }
 
@@ -225,6 +223,13 @@ namespace StoreClient {
             BeginInvoke((Action)delegate () {
                 requestsGrid.Rows.Remove(row);
             });
+        }
+
+        public void ClientAdded(Client client) {
+            clients.Add(client);
+            BeginInvoke((Action)(() => {
+                clientsComboBox.Items.Add(client.name);
+            }));
         }
 
         private void StoreClientForm_FormClosing(object sender, FormClosingEventArgs e) {

@@ -142,6 +142,8 @@ namespace WarehouseService {
 
         /**
          * Functions below only defined so we can call the Store's dual service.
+         * They may remain throwing an exception because the Warehouse
+         * never subscribes to the Store, thus these callbacks are never called.
          */
 
         public void OrderCreated(Order order) {
@@ -157,6 +159,10 @@ namespace WarehouseService {
         }
 
         public void DeleteRequest(StoreServiceReference.Request request) {
+            throw new NotImplementedException();
+        }
+
+        public void ClientAdded(Client client) {
             throw new NotImplementedException();
         }
     }
