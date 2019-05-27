@@ -1,11 +1,11 @@
 # TDIN-2
 
-* Callbacks: 
+* Abrir o projeto no Visual Studio.
 
-- Warehouse: Adicionar novo request à lista de requests do form (WarehouseClient); Atualizar o estado do request (passa a Ready quando clicado) para que possamos ter mais do que um cliente/form abertos na warehouse (todos serão atualizados).
+* Nas propriedades da solução BookShop em Common Properties > Startup Project, selecionar a opção "Multiple startup projects".
 
-- Store: Atualizar o estado das Orders (DISPATCH_WILL_OCCUR quando a warehouse notifica a store e DISPATCHED quando o empregado clica numa order); Adicionar nova order a lista quando ela é criada tanto no form da store comono website (os multiplos StoreClientForm que forem abertos estarão sempre atualizados/de acordo com a DB do StoreService).
+* Todos os projetos, excepto o BookShopWebsite, devem ter o "Action" a Start, sendo que os serviços devem ser inicializados primeiro que os clientes (StoreService e WarehouseService no topo da lista)
 
-## TODO
+* Dar "Start" à solução.
 
-- Callback na criação de users na store
+* Correr o script chrome_cors.bat que se encontra no caminho TDIN-2\BookShopWebsite\scripts
