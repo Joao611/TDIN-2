@@ -15,3 +15,7 @@
     - npm run serve
 
 * Correr o script chrome_cors.bat que se encontra no caminho TDIN-2\BookShopWebsite\scripts e navegar para localhost:8080
+
+## Autores
+- Beatriz Baldaia
+- João Esteves
