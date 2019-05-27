@@ -34,7 +34,6 @@
         },
         methods: {
             getState(order) {
-                console.log(order); 
                 var date = order.state.dispatchDate;
                 var date_parsed = new Date(parseInt(date.substr(6))).toLocaleString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
                 switch (order.state.type) {
