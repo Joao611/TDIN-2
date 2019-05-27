@@ -1,17 +1,17 @@
 # TDIN-2
 
-## InstruÁıes
+## Instru√ß√µes
 
 * Abrir o projeto no Visual Studio.
 
-* Nas propriedades da soluÁ„o BookShop em Common Properties > Startup Project, selecionar a opÁ„o "Multiple startup projects".
+* Nas propriedades da solu√ß√£o BookShop em Common Properties > Startup Project, selecionar a op√ß√£o "Multiple startup projects".
 
-* Todos os projetos, excepto o BookShopWebsite, devem ter o "Action" a Start, sendo que os serviÁos devem ser inicializados primeiro que os clientes (StoreService e WarehouseService no topo da lista)
+* Todos os projetos, excepto o BookShopWebsite, devem ter o "Action" a Start, sendo que os servi√ßos devem ser inicializados primeiro que os clientes (StoreService e WarehouseService no topo da lista)
 
-* Dar "Start" ‡ soluÁ„o.
+* Dar "Start" √† solu√ß√£o
 
-* Correr o script chrome_cors.bat que se encontra no caminho TDIN-2\BookShopWebsite\scripts
+* Na pasta TDIN-2/BookShopWebsite, correr os seguintes comandos:
+    - npm install
+    - npm run serve
 
-* Correr os seguintes comandos:
-- npm install
-- npm run serve
+* Correr o script chrome_cors.bat que se encontra no caminho TDIN-2\BookShopWebsite\scripts e navegar para localhost:8080
